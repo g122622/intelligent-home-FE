@@ -52,7 +52,7 @@ if (unref(layoutTheme)) {
 }
 
 /** 默认灵动模式 */
-const markValue = ref($storage.configure?.showModel ?? "smart");
+const markValue = ref($storage.configure?.showModel ?? "chrome");
 
 const logoVal = ref($storage.configure?.showLogo ?? true);
 
@@ -219,6 +219,11 @@ const themeOptions = computed<Array<OptionsType>>(() => {
 const markOptions = computed<Array<OptionsType>>(() => {
   return [
     {
+      label: "谷歌",
+      tip: "谷歌风格，经典美观",
+      value: "chrome"
+    },
+    {
       label: "灵动",
       tip: "灵动标签，添趣生辉",
       value: "smart"
@@ -227,11 +232,6 @@ const markOptions = computed<Array<OptionsType>>(() => {
       label: "卡片",
       tip: "卡片标签，高效浏览",
       value: "card"
-    },
-    {
-      label: "谷歌",
-      tip: "谷歌风格，经典美观",
-      value: "chrome"
     }
   ];
 });
@@ -440,7 +440,7 @@ onUnmounted(() => removeMatchMedia);
       <Segmented
         resize
         class="select-none"
-        :modelValue="markValue === 'smart' ? 0 : markValue === 'card' ? 1 : 2"
+        :modelValue="markValue === 'smart' ? 1 : markValue === 'card' ? 2 : 0"
         :options="markOptions"
         @change="onChange"
       />

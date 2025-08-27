@@ -107,7 +107,7 @@ const handlePositionChange = (position: number) => {
           @change="handleTemperatureChange"
           show-input
         />
-        
+
         <span>模式</span>
         <el-select
           :model-value="device.mode || 'cool'"
@@ -116,7 +116,7 @@ const handlePositionChange = (position: number) => {
         >
           <el-option label="制冷" value="cool" />
           <el-option label="制热" value="heat" />
-          <el-option label送风" value="fan" />
+          <el-option label="送风" value="fan" />
           <el-option label="自动" value="auto" />
         </el-select>
 
@@ -254,7 +254,7 @@ const handlePositionChange = (position: number) => {
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .device-controls {
     margin-top: 16px;
   }
