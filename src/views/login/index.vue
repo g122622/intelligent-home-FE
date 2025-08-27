@@ -29,7 +29,7 @@ const router = useRouter();
 const loading = ref(false);
 const disabled = ref(false);
 const ruleFormRef = ref<FormInstance>();
-const activeRole = ref("owner"); // owner: 房主, member: 家庭成员, guest: 访客
+const activeRole = ref("admin"); // admin: 房主, homeowner: 家庭成员, guest: 访客
 
 const { initStorage } = useLayout();
 initStorage();
@@ -45,23 +45,28 @@ const ruleForm = reactive({
 
 const onLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-  await formEl.validate(valid => {
+  await formEl.validate(async valid => {
     if (valid) {
       loading.value = true;
+      await useUserStoreHook().loginByUsername({
+        username: ruleForm.phone,
+        password: ruleForm.password
+      });
       login({
         phone: ruleForm.phone,
         password: ruleForm.password
       })
         .then(res => {
-          if (res.data?.token) {
+          console.log(res);
+          if (res.token) {
             // 存储token和角色信息
-            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("token", res.token);
             localStorage.setItem("userRole", activeRole.value);
-            
+
             // 设置用户信息到store
             useUserStoreHook().SET_USERNAME(ruleForm.phone);
             useUserStoreHook().SET_ROLES([activeRole.value]);
-            
+
             // 手动设置角色信息到userKey存储中，用于菜单权限过滤
             const userInfo = {
               username: ruleForm.phone,
@@ -71,7 +76,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
               expires: Date.now() + 7 * 24 * 60 * 60 * 1000 // 7天后过期
             };
             localStorage.setItem("user-info", JSON.stringify(userInfo));
-            
+
             // 获取后端路由
             return initRouter().then(() => {
               disabled.value = true;
@@ -144,8 +149,8 @@ useEventListener(document, "keydown", ({ code }) => {
             <Motion :delay="50">
               <el-form-item>
                 <el-radio-group v-model="activeRole" class="w-full">
-                  <el-radio-button label="owner">房主</el-radio-button>
-                  <el-radio-button label="member">家庭成员</el-radio-button>
+                  <el-radio-button label="admin">房主</el-radio-button>
+                  <el-radio-button label="homeowner">家庭成员</el-radio-button>
                   <el-radio-button label="guest">访客</el-radio-button>
                 </el-radio-group>
               </el-form-item>

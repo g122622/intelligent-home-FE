@@ -24,7 +24,7 @@
         <div class="test-items">
           <div class="test-item">
             <span>房主按钮: </span>
-            <el-button v-perms="{ role: 'owner' }" size="small"
+            <el-button v-perms="{ role: 'admin' }" size="small"
               >房主专属</el-button
             >
             <span class="status">{{
