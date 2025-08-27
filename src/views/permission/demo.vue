@@ -7,8 +7,13 @@
         </div>
       </template>
 
-      <el-alert title="当前用户角色" :description="currentRole" type="info" class="mb-4" />
-      
+      <el-alert
+        title="当前用户角色"
+        :description="currentRole"
+        type="info"
+        class="mb-4"
+      />
+
       <div class="demo-section">
         <h3>1. 按钮权限控制</h3>
         <div class="button-group">
@@ -21,9 +26,7 @@
           <el-button type="warning" v-perms="{ role: 'guest' }">
             访客按钮
           </el-button>
-          <el-button type="info" v-perms="'btn.edit'">
-            编辑权限按钮
-          </el-button>
+          <el-button type="info" v-perms="'btn.edit'"> 编辑权限按钮 </el-button>
         </div>
       </div>
 
@@ -70,13 +73,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from "vue";
 
-const currentRole = ref('')
+const currentRole = ref("");
 
 onMounted(() => {
-  currentRole.value = localStorage.getItem('userRole') || '未登录'
-})
+  currentRole.value = localStorage.getItem("userRole") || "未登录";
+});
 </script>
 
 <style scoped>
