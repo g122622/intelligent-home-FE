@@ -57,17 +57,27 @@ export const getHomeDetail = (homeId: number) => {
 
 /** 创建房间 */
 export const createRoom = (homeId: number, name: string) => {
-  return http.request<{ message: string }>("post", `/home/${homeId}/room/create`, { 
-    data: { name } 
-  });
+  return http.request<{ message: string }>(
+    "post",
+    `/home/${homeId}/room/create`,
+    {
+      data: { name }
+    }
+  );
 };
 
 /** 获取房间列表 */
 export const getRooms = (homeId: number) => {
-  return http.request<{ rooms: RoomInfo[] }>("get", `/home/${homeId}/room/list`);
+  return http.request<{ rooms: RoomInfo[] }>(
+    "get",
+    `/home/${homeId}/room/list`
+  );
 };
 
 /** 删除房间 */
 export const deleteRoom = (homeId: number, roomId: number) => {
-  return http.request<{ message: string }>("delete", `/home/${homeId}/room/delete/${roomId}`);
+  return http.request<{ message: string }>(
+    "delete",
+    `/home/${homeId}/room/delete/${roomId}`
+  );
 };

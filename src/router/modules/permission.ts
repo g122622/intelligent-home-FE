@@ -9,7 +9,7 @@ export default {
     icon: "ep/lock",
     title: "权限管理",
     rank: 10,
-    roles: ["owner"] // 只有房主可以访问
+    roles: ["admin", "homeowner"] // 只有房主可以访问
   },
   children: [
     {
@@ -18,7 +18,7 @@ export default {
       component: () => import("@/views/permission/guest.vue"),
       meta: {
         title: "访客权限管理",
-        roles: ["owner"] // 只有房主可以访问
+        roles: ["admin", "homeowner"] // 只有房主可以访问
       }
     },
     {
@@ -27,7 +27,7 @@ export default {
       component: () => import("@/views/permission/demo.vue"),
       meta: {
         title: "权限演示",
-        roles: ["owner", "member", "guest"] // 所有角色都可以访问
+        roles: ["admin", "homeowner", "member", "guest"] // 所有角色都可以访问
       }
     },
     {
@@ -36,7 +36,7 @@ export default {
       component: () => import("@/views/permission/test.vue"),
       meta: {
         title: "权限测试",
-        roles: ["owner", "member", "guest"] // 所有角色都可以访问
+        roles: ["admin", "homeowner", "member", "guest"] // 所有角色都可以访问
       }
     },
     {
@@ -45,7 +45,7 @@ export default {
       component: () => import("@/views/permission/debug.vue"),
       meta: {
         title: "权限调试",
-        roles: ["owner", "member", "guest"] // 所有角色都可以访问
+        roles: ["admin", "homeowner", "member", "guest"] // 所有角色都可以访问
       }
     }
   ]
