@@ -59,7 +59,9 @@ export const updateDevice = (id: string, data: Partial<Device>) => {
 };
 
 /** 批量更新设备状态 */
-export const batchUpdateDevices = (data: Array<{ id: string; updates: Partial<Device> }>) => {
+export const batchUpdateDevices = (
+  data: Array<{ id: string; updates: Partial<Device> }>
+) => {
   return http.request<Device[]>("post", "/devices/batch-update", { data });
 };
 

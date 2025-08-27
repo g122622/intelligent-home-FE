@@ -64,7 +64,10 @@ const handlePositionChange = (position: number) => {
     <!-- 设备头部信息 -->
     <div class="device-header">
       <div class="device-info">
-        <el-icon :size="24" :class="['device-icon', device.status ? 'active' : 'inactive']">
+        <el-icon
+          :size="24"
+          :class="['device-icon', device.status ? 'active' : 'inactive']"
+        >
           <component :is="deviceIcons[device.type]" />
         </el-icon>
         <div class="device-details">
@@ -133,7 +136,10 @@ const handlePositionChange = (position: number) => {
       </div>
 
       <!-- 窗帘控制 -->
-      <div v-if="device.type === 'curtain' && device.status" class="control-item">
+      <div
+        v-if="device.type === 'curtain' && device.status"
+        class="control-item"
+      >
         <span>位置</span>
         <el-slider
           :model-value="device.position || 0"
@@ -148,7 +154,9 @@ const handlePositionChange = (position: number) => {
       <!-- 传感器显示 -->
       <div v-if="device.type === 'sensor'" class="sensor-data">
         <div class="sensor-value">在线</div>
-        <div class="last-update">最后更新: {{ new Date(device.lastUpdate).toLocaleTimeString() }}</div>
+        <div class="last-update">
+          最后更新: {{ new Date(device.lastUpdate).toLocaleTimeString() }}
+        </div>
       </div>
     </div>
 

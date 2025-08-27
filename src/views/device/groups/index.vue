@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useDeviceStore } from "@/store/modules/device";
-import { createDeviceGroup, updateDeviceGroup, deleteDeviceGroup, executeGroupAction } from "@/api/device";
+import {
+  createDeviceGroup,
+  updateDeviceGroup,
+  deleteDeviceGroup,
+  executeGroupAction
+} from "@/api/device";
 import GroupDialog from "./components/GroupDialog.vue";
 import GroupCard from "./components/GroupCard.vue";
 
@@ -133,7 +138,7 @@ onMounted(async () => {
     gap: 16px;
     align-items: stretch;
   }
-  
+
   .groups-grid {
     grid-template-columns: 1fr;
   }

@@ -15,7 +15,7 @@ const emit = defineEmits<{
 
 // 获取分组中的设备信息
 const groupDevices = computed(() => {
-  return props.devices.filter(device => 
+  return props.devices.filter(device =>
     props.group.deviceIds.includes(device.id)
   );
 });
@@ -58,10 +58,17 @@ const handleExecute = () => {
     <div class="devices-list">
       <div v-for="device in groupDevices" :key="device.id" class="device-item">
         <el-icon size="16">
-          <component :is="device.type === 'light' ? 'ep-light' : 
-                       device.type === 'ac' ? 'ep-cold' : 
-                       device.type === 'curtain' ? 'ep-document' : 
-                       'ep-monitor'" />
+          <component
+            :is="
+              device.type === 'light'
+                ? 'ep-light'
+                : device.type === 'ac'
+                  ? 'ep-cold'
+                  : device.type === 'curtain'
+                    ? 'ep-document'
+                    : 'ep-monitor'
+            "
+          />
         </el-icon>
         <span class="device-name">{{ device.name }}</span>
         <span class="device-room">{{ device.room }}</span>
@@ -70,8 +77,12 @@ const handleExecute = () => {
 
     <!-- 操作按钮 -->
     <div class="card-actions">
-      <el-button size="small" type="primary" @click="handleEdit">编辑</el-button>
-      <el-button size="small" type="danger" @click="handleDelete">删除</el-button>
+      <el-button size="small" type="primary" @click="handleEdit"
+        >编辑</el-button
+      >
+      <el-button size="small" type="danger" @click="handleDelete"
+        >删除</el-button
+      >
     </div>
   </el-card>
 </template>
@@ -162,11 +173,11 @@ const handleExecute = () => {
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .card-actions {
     justify-content: stretch;
   }
-  
+
   .card-actions .el-button {
     flex: 1;
   }
