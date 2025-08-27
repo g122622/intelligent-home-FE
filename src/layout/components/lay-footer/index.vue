@@ -8,14 +8,14 @@ const TITLE = getConfig("Title");
   <footer
     class="layout-footer text-[rgba(0,0,0,0.6)] dark:text-[rgba(220,220,242,0.8)]"
   >
-    Copyright © 2020-present
     <a
       class="hover:text-primary!"
-      href="https://github.com/pure-admin"
+      href="https://github.com/Crossng/intelligent-home-FE"
       target="_blank"
     >
       &nbsp;{{ TITLE }}
     </a>
+    Copyright © 2025 - 重庆大学计算机学院软件实训项目2部 - 第5组
   </footer>
 </template>
 

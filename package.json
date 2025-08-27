@@ -1,5 +1,5 @@
 {
-  "name": "pure-admin-thin",
+  "name": "Homepilot",
   "version": "6.1.0",
   "private": true,
   "type": "module",
@@ -22,11 +22,8 @@
     "preinstall": "npx only-allow pnpm"
   },
   "keywords": [
-    "pure-admin-thin",
-    "vue-pure-admin",
     "element-plus",
     "tailwindcss",
-    "pure-admin",
     "typescript",
     "pinia",
     "vue3",
