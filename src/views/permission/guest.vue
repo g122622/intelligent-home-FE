@@ -30,7 +30,7 @@
         <el-table-column label="状态">
           <template #default="{ row }">
             <el-tag :type="row.status === 'active' ? 'success' : 'info'">
-              {{ row.status === 'active' ? '活跃' : '已过期' }}
+              {{ row.status === "active" ? "活跃" : "已过期" }}
             </el-tag>
           </template>
         </el-table-column>
@@ -83,77 +83,77 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
-import { message } from '@/utils/message'
-import { getHomeDetail } from '@/api/home'
+import { ref, reactive, onMounted } from "vue";
+import { message } from "@/utils/message";
+import { getHomeDetail } from "@/api/home";
 
 interface GuestPermission {
-  id: number
-  username: string
-  phone: string
-  devices: Array<{ id: number; name: string }>
-  expireTime: string
-  status: 'active' | 'expired'
+  id: number;
+  username: string;
+  phone: string;
+  devices: Array<{ id: number; name: string }>;
+  expireTime: string;
+  status: "active" | "expired";
 }
 
 interface DeviceInfo {
-  id: number
-  name: string
-  typeName: string
+  id: number;
+  name: string;
+  typeName: string;
 }
 
-const showAddDialog = ref(false)
-const guestList = ref<GuestPermission[]>([])
-const availableDevices = ref<DeviceInfo[]>([])
+const showAddDialog = ref(false);
+const guestList = ref<GuestPermission[]>([]);
+const availableDevices = ref<DeviceInfo[]>([]);
 
 const guestForm = reactive({
-  phone: '',
-  expireTime: '',
+  phone: "",
+  expireTime: "",
   devicePermissions: [] as number[]
-})
+});
 
 // 加载家庭设备和访客权限数据
 const loadHomeData = async () => {
   try {
     // 这里应该调用API获取家庭详情，包含设备信息
     // 假设homeId为1，实际应该从store或路由参数获取
-    const response = await getHomeDetail(1)
-    availableDevices.value = response.data?.devices || []
-    
+    const response = await getHomeDetail(1);
+    availableDevices.value = response.data?.devices || [];
+
     // 模拟访客数据（实际应该从API获取）
     guestList.value = [
       {
         id: 1,
-        username: '访客用户',
-        phone: '13800138001',
+        username: "访客用户",
+        phone: "13800138001",
         devices: availableDevices.value.slice(0, 2),
-        expireTime: '2024-12-31 23:59:59',
-        status: 'active'
+        expireTime: "2024-12-31 23:59:59",
+        status: "active"
       }
-    ]
+    ];
   } catch (error) {
-    message('加载数据失败', { type: 'error' })
+    message("加载数据失败", { type: "error" });
   }
-}
+};
 
 // 添加访客权限
 const addGuestPermission = () => {
   // 这里应该调用API添加访客权限
-  message('访客权限添加成功', { type: 'success' })
-  showAddDialog.value = false
-  loadHomeData()
-}
+  message("访客权限添加成功", { type: "success" });
+  showAddDialog.value = false;
+  loadHomeData();
+};
 
 // 回收权限
 const revokePermission = (id: number) => {
   // 这里应该调用API回收权限
-  message('权限回收成功', { type: 'success' })
-  loadHomeData()
-}
+  message("权限回收成功", { type: "success" });
+  loadHomeData();
+};
 
 onMounted(() => {
-  loadHomeData()
-})
+  loadHomeData();
+});
 </script>
 
 <style scoped>
