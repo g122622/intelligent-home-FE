@@ -13,7 +13,7 @@ const TITLE = getConfig("Title");
       href="https://github.com/Crossng/intelligent-home-FE"
       target="_blank"
     >
-      &nbsp;{{ TITLE }}
+      {{ TITLE }}&nbsp;&nbsp;&nbsp;
     </a>
     Copyright © 2025 - 重庆大学计算机学院软件实训项目2部 - 第5组
   </footer>
