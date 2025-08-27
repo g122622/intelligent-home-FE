@@ -15,12 +15,12 @@ const emit = defineEmits<{
 
 // 判断是否为预设场景
 const isPresetScene = computed(() => {
-  return !props.scene.id.startsWith('custom');
+  return !props.scene.id.startsWith("custom");
 });
 
 // 获取场景中的设备信息
 const sceneDevices = computed(() => {
-  return props.devices.filter(device => 
+  return props.devices.filter(device =>
     Object.keys(props.scene.actions).includes(device.id)
   );
 });
@@ -50,8 +50,11 @@ const handleExecute = () => {
     <!-- 场景头部 -->
     <div class="scene-header">
       <div class="scene-info">
-        <el-icon :size="24" :class="['scene-icon', scene.isActive ? 'active' : 'inactive']">
-          <ep-magic-stick />
+        <el-icon
+          :size="24"
+          :class="['scene-icon', scene.isActive ? 'active' : 'inactive']"
+        >
+          <MagicStick />
         </el-icon>
         <div class="scene-details">
           <div class="scene-name">{{ scene.name }}</div>
@@ -68,10 +71,17 @@ const handleExecute = () => {
     <div class="devices-list">
       <div v-for="device in sceneDevices" :key="device.id" class="device-item">
         <el-icon size="16">
-          <component :is="device.type === 'light' ? 'ep-light' : 
-                       device.type === 'ac' ? 'ep-cold' : 
-                       device.type === 'curtain' ? 'ep-document' : 
-                       'ep-monitor'" />
+          <component
+            :is="
+              device.type === 'light'
+                ? 'ep-light'
+                : device.type === 'ac'
+                  ? 'ep-cold'
+                  : device.type === 'curtain'
+                    ? 'ep-document'
+                    : 'ep-monitor'
+            "
+          />
         </el-icon>
         <span class="device-name">{{ device.name }}</span>
         <span class="device-room">{{ device.room }}</span>
@@ -80,23 +90,24 @@ const handleExecute = () => {
 
     <!-- 操作按钮 -->
     <div class="card-actions">
-      <el-button size="small" type="primary" @click="handleExecute">执行</el-button>
-      <el-button 
-        v-if="!isPresetScene" 
-        size="small" 
-        @click="handleEdit"
-      >编辑</el-button>
-      <el-button 
-        v-if="!isPresetScene" 
-        size="small" 
-        type="danger" 
+      <el-button size="small" type="primary" @click="handleExecute"
+        >执行</el-button
+      >
+      <el-button v-if="!isPresetScene" size="small" @click="handleEdit"
+        >编辑</el-button
+      >
+      <el-button
+        v-if="!isPresetScene"
+        size="small"
+        type="danger"
         @click="handleDelete"
-      >删除</el-button>
+        >删除</el-button
+      >
     </div>
 
     <!-- 执行状态指示 -->
     <div v-if="scene.isActive" class="execution-status">
-      <el-icon color="var(--el-color-success)"><ep-loading /></el-icon>
+      <el-icon color="var(--el-color-success)"><Loading /></el-icon>
       <span>执行中...</span>
     </div>
   </el-card>
@@ -209,8 +220,12 @@ const handleExecute = () => {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .execution-status .el-icon {
@@ -223,11 +238,11 @@ const handleExecute = () => {
     align-items: flex-start;
     gap: 8px;
   }
-  
+
   .card-actions {
     justify-content: stretch;
   }
-  
+
   .card-actions .el-button {
     flex: 1;
   }

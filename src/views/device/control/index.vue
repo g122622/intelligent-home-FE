@@ -14,9 +14,13 @@ const searchKeyword = ref("");
 // 过滤后的设备列表
 const filteredDevices = computed(() => {
   return deviceStore.devices.filter(device => {
-    const roomMatch = selectedRoom.value === "all" || device.room === selectedRoom.value;
-    const typeMatch = selectedType.value === "all" || device.type === selectedType.value;
-    const keywordMatch = device.name.toLowerCase().includes(searchKeyword.value.toLowerCase());
+    const roomMatch =
+      selectedRoom.value === "all" || device.room === selectedRoom.value;
+    const typeMatch =
+      selectedType.value === "all" || device.type === selectedType.value;
+    const keywordMatch = device.name
+      .toLowerCase()
+      .includes(searchKeyword.value.toLowerCase());
     return roomMatch && typeMatch && keywordMatch;
   });
 });
@@ -62,7 +66,7 @@ onUnmounted(() => {
         clearable
       >
         <template #prefix>
-          <el-icon><search /></el-icon>
+          <el-icon><Search /></el-icon>
         </template>
       </el-input>
 
@@ -121,7 +125,7 @@ onUnmounted(() => {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .device-grid {
     grid-template-columns: 1fr;
   }

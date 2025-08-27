@@ -12,11 +12,11 @@ const emit = defineEmits<{
 
 // 设备图标映射
 const deviceIcons = {
-  light: "ep-light",
-  ac: "ep-cold",
-  curtain: "ep-document",
-  sensor: "ep-monitor",
-  switch: "ep-switch"
+  light: "Sunrise",
+  ac: "Refrigerator",
+  curtain: "Document",
+  sensor: "Platform",
+  switch: "SwitchButton"
 };
 
 // 设备类型名称映射

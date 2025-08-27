@@ -119,6 +119,7 @@ import {
   ElMessageBox, // $msgbox、$alert、$confirm、$prompt 全局属性对象globalProperties
   ElNotification // $notify 全局属性对象globalProperties
 } from "element-plus";
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
 const components = [
   ElAffix,
@@ -245,4 +246,8 @@ export function useElementPlus(app: App) {
   plugins.forEach(plugin => {
     app.use(plugin);
   });
+  // 全局注册图标
+  for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component);
+  }
 }

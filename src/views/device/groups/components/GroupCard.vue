@@ -42,7 +42,7 @@ const handleExecute = () => {
     <div class="group-header">
       <div class="group-info">
         <el-icon :size="24" class="group-icon">
-          <ep-folder />
+          <Folder />
         </el-icon>
         <div class="group-details">
           <div class="group-name">{{ group.name }}</div>
