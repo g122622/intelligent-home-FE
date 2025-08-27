@@ -1,5 +1,3 @@
-import auth from "./src/auth";
-
-const Auth = auth;
+import Auth from "./src/Auth.vue";
 
 export { Auth };
