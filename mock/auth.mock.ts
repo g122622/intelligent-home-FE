@@ -7,16 +7,16 @@ export default defineFakeRoute([
     method: "post",
     response: ({ body }) => {
       const { phone, password } = body;
-      
+
       // 模拟不同角色的登录
       if (phone === "13800138000" && password === "password123") {
         return {
-          token: "eyJhbGciOiJIUzUxMiJ9.owner_token",
+          token: "eyJhbGciOiJIUzUxMiJ9.admin_token",
           message: "登录成功"
         };
       } else if (phone === "13800138001" && password === "password123") {
         return {
-          token: "eyJhbGciOiJIUzUxMiJ9.member_token", 
+          token: "eyJhbGciOiJIUzUxMiJ9.member_token",
           message: "登录成功"
         };
       } else if (phone === "13800138002" && password === "password123") {
@@ -45,7 +45,7 @@ export default defineFakeRoute([
     method: "get",
     response: ({ query }) => {
       const { phone } = query;
-      
+
       if (phone === "13800138000") {
         return {
           status: "success",
@@ -54,7 +54,7 @@ export default defineFakeRoute([
         };
       } else if (phone === "13800138001") {
         return {
-          status: "success", 
+          status: "success",
           name: "家庭成员",
           userId: 2
         };
