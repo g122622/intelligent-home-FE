@@ -14,6 +14,7 @@ import { initRouter, getTopMenu } from "@/router/utils";
 import { bg, avatar, illustration } from "./utils/static";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
+import { login } from "@/api/auth";
 
 import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
@@ -28,6 +29,7 @@ const router = useRouter();
 const loading = ref(false);
 const disabled = ref(false);
 const ruleFormRef = ref<FormInstance>();
+const activeRole = ref("admin"); // admin: 房主, homeowner: 家庭成员, guest: 访客
 
 const { initStorage } = useLayout();
 initStorage();
@@ -37,22 +39,44 @@ dataThemeChange(overallStyle.value);
 const { title } = useNav();
 
 const ruleForm = reactive({
-  username: "admin",
-  password: "admin123"
+  phone: "13800138000",
+  password: "password123"
 });
 
 const onLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-  await formEl.validate(valid => {
+  await formEl.validate(async valid => {
     if (valid) {
       loading.value = true;
-      useUserStoreHook()
-        .loginByUsername({
-          username: ruleForm.username,
-          password: ruleForm.password
-        })
+      await useUserStoreHook().loginByUsername({
+        username: ruleForm.phone,
+        password: ruleForm.password
+      });
+      login({
+        phone: ruleForm.phone,
+        password: ruleForm.password
+      })
         .then(res => {
-          if (res.success) {
+          console.log(res);
+          if (res.token) {
+            // 存储token和角色信息
+            localStorage.setItem("token", res.token);
+            localStorage.setItem("userRole", activeRole.value);
+
+            // 设置用户信息到store
+            useUserStoreHook().SET_USERNAME(ruleForm.phone);
+            useUserStoreHook().SET_ROLES([activeRole.value]);
+
+            // 手动设置角色信息到userKey存储中，用于菜单权限过滤
+            const userInfo = {
+              username: ruleForm.phone,
+              roles: [activeRole.value],
+              permissions: [],
+              refreshToken: "",
+              expires: Date.now() + 7 * 24 * 60 * 60 * 1000 // 7天后过期
+            };
+            localStorage.setItem("user-info", JSON.stringify(userInfo));
+
             // 获取后端路由
             return initRouter().then(() => {
               disabled.value = true;
@@ -66,6 +90,9 @@ const onLogin = async (formEl: FormInstance | undefined) => {
           } else {
             message("登录失败", { type: "error" });
           }
+        })
+        .catch(error => {
+          message(error.message || "登录失败", { type: "error" });
         })
         .finally(() => (loading.value = false));
     }
@@ -118,21 +145,32 @@ useEventListener(document, "keydown", ({ code }) => {
             :rules="loginRules"
             size="large"
           >
+            <!-- 角色选择 -->
+            <Motion :delay="50">
+              <el-form-item>
+                <el-radio-group v-model="activeRole" class="w-full">
+                  <el-radio-button label="admin">房主</el-radio-button>
+                  <el-radio-button label="homeowner">家庭成员</el-radio-button>
+                  <el-radio-button label="guest">访客</el-radio-button>
+                </el-radio-group>
+              </el-form-item>
+            </Motion>
+
             <Motion :delay="100">
               <el-form-item
                 :rules="[
                   {
                     required: true,
-                    message: '请输入账号',
+                    message: '请输入手机号',
                     trigger: 'blur'
                   }
                 ]"
-                prop="username"
+                prop="phone"
               >
                 <el-input
-                  v-model="ruleForm.username"
+                  v-model="ruleForm.phone"
                   clearable
-                  placeholder="账号"
+                  placeholder="手机号"
                   :prefix-icon="useRenderIcon(User)"
                 />
               </el-form-item>
