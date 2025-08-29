@@ -6,7 +6,7 @@ export default {
   component: Layout,
   redirect: "/permission/guest",
   meta: {
-    icon: "ep/lock",
+    icon: "ep:lock",
     title: "权限管理",
     rank: 10,
     roles: ["admin", "homeowner"] // 只有房主可以访问
@@ -21,15 +21,16 @@ export default {
         roles: ["admin", "homeowner"] // 只有房主可以访问
       }
     },
-    {
-      path: "/permission/demo",
-      name: "PermissionDemo",
-      component: () => import("@/views/permission/demo.vue"),
-      meta: {
-        title: "权限演示",
-        roles: ["admin", "homeowner", "member", "guest"] // 所有角色都可以访问
-      }
-    },
+    // vibe coding 的副产物。完全没必要显示在界面上。
+    // {
+    //   path: "/permission/demo",
+    //   name: "PermissionDemo",
+    //   component: () => import("@/views/permission/demo.vue"),
+    //   meta: {
+    //     title: "权限演示",
+    //     roles: ["admin", "homeowner", "member", "guest"] // 所有角色都可以访问
+    //   }
+    // },
     {
       path: "/permission/test",
       name: "PermissionTest",

@@ -84,7 +84,7 @@
     width: 24px;
     height: 24px;
     outline: none;
-    border-radius: 4px;
+    border-radius: 10px;
     transition:
       background-color 0.2s,
       color 0.2s;
@@ -118,7 +118,7 @@
 
   & .el-message__closeBtn {
     outline: none;
-    border-radius: 4px;
+    border-radius: 10px;
     transition:
       background-color 0.2s,
       color 0.2s;
@@ -186,4 +186,29 @@
   ::-webkit-scrollbar-thumb:hover {
     background: rgb(199 201 203); /* 滑块hover颜色 */
   }
+}
+
+.el-card,
+.el-popper,
+.el-tooltip,
+.el-popover,
+.el-dropdown-menu,
+.el-input__wrapper,
+.el-select__wrapper,
+.el-tooltip__trigger,
+.el-tooltip__trigger,
+.el-menu--vertical .el-menu-item.is-active.nest-menu::before,
+.el-drawer,
+.el-message-box,
+.el-notification,
+.el-notification__group,
+.el-message,
+.el-message__group,
+.el-alert,
+button {
+  border-radius: 10px !important;
+}
+
+.el-dialog {
+  border-radius: 15px !important;
 }

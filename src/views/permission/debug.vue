@@ -9,11 +9,13 @@
       </template>
 
       <el-alert
+        show-icon
         :title="`当前用户角色: ${currentRole}`"
         type="info"
         class="mb-4"
       />
       <el-alert
+        show-icon
         :title="`user-info 存储: ${userInfoStr}`"
         type="warning"
         class="mb-4"
@@ -27,18 +29,18 @@
             <el-button v-perms="{ role: 'admin' }" size="small"
               >房主专属</el-button
             >
-            <span class="status">{{
-              hasOwnerPermission ? "可见" : "隐藏"
-            }}</span>
+            <span class="status"
+              >可见性状态：{{ hasOwnerPermission ? "可见" : "隐藏" }}</span
+            >
           </div>
           <div class="test-item">
             <span>成员按钮: </span>
             <el-button v-perms="{ role: 'member' }" size="small"
               >成员专属</el-button
             >
-            <span class="status">{{
-              hasMemberPermission ? "可见" : "隐藏"
-            }}</span>
+            <span class="status">
+              {{ hasMemberPermission ? "可见" : "隐藏" }}</span
+            >
           </div>
           <div class="test-item">
             <span>访客按钮: </span>
@@ -70,9 +72,9 @@
       <div class="debug-section">
         <h3>存储状态</h3>
         <el-descriptions :column="1" border>
-          <el-descriptions-item label="userRole (localStorage)">
+          <!-- <el-descriptions-item label="userRole (localStorage)">
             {{ localStorage.userRole || "未设置" }}
-          </el-descriptions-item>
+          </el-descriptions-item> -->
           <el-descriptions-item label="user-info (localStorage)">
             {{ localStorageInfo }}
           </el-descriptions-item>

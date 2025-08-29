@@ -9,7 +9,7 @@ import { defineFakeRoute } from "vite-plugin-fake-server/client";
 const permissionRouter = {
   path: "/permission",
   meta: {
-    title: "权限管理",
+    title: "权限管理（old）",
     icon: "ep:lollipop",
     rank: 10
   },

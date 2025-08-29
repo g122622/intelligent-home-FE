@@ -119,7 +119,16 @@ const loadHomeData = async () => {
     // 调用API获取家庭详情，包含设备信息
     // 假设homeId为1，实际应该从store或路由参数获取
     const response = await getHomeDetail(1);
-    availableDevices.value = response.data?.devices || [];
+    // TODO 模拟数据，实际应该从API获取
+    availableDevices.value = response.data?.devices || [
+      { id: 1, name: "智能门锁", typeName: "智能门锁" },
+      { id: 2, name: "智能摄像头", typeName: "智能摄像头" },
+      { id: 3, name: "智能音箱", typeName: "智能音箱" },
+      { id: 4, name: "智能空调", typeName: "智能空调" },
+      { id: 5, name: "智能窗帘", typeName: "智能窗帘" },
+      { id: 6, name: "智能灯泡", typeName: "智能灯泡" },
+      { id: 7, name: "智能插座", typeName: "智能插座" }
+    ];
 
     // 模拟访客数据（实际应该从API获取）
     // 注意：系统中没有专门的访客API，所以这部分仍然使用模拟数据
@@ -141,31 +150,35 @@ const loadHomeData = async () => {
 // 添加访客权限
 const addGuestPermission = async () => {
   try {
-    if (!guestForm.phone || !guestForm.expireTime || guestForm.devicePermissions.length === 0) {
+    if (
+      !guestForm.phone ||
+      !guestForm.expireTime ||
+      guestForm.devicePermissions.length === 0
+    ) {
       message("请填写完整的访客信息", { type: "warning" });
       return;
     }
-    
+
     // 先通过手机号搜索用户
     const userResponse = await searchUserByPhone(guestForm.phone);
-    
+
     if (userResponse.data?.status !== "success") {
       message("未找到该手机号对应的用户", { type: "error" });
       return;
     }
-    
+
     // 这里应该调用添加访客权限的API
     // 由于没有专门的访客权限API，这里仍使用模拟实现
-    
+
     // 模拟添加成功
     message("访客权限添加成功", { type: "success" });
     showAddDialog.value = false;
-    
+
     // 重置表单
     guestForm.phone = "";
     guestForm.expireTime = "";
     guestForm.devicePermissions = [];
-    
+
     // 重新加载数据
     loadHomeData();
   } catch (error) {
@@ -178,10 +191,10 @@ const revokePermission = async (id: number) => {
   try {
     // 这里应该调用API回收权限
     // 由于没有专门的访客权限API，这里仍使用模拟实现
-    
+
     // 模拟回收成功
     message("权限回收成功", { type: "success" });
-    
+
     // 重新加载数据
     loadHomeData();
   } catch (error) {

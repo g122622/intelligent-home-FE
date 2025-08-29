@@ -6,7 +6,7 @@ export default {
   component: Layout,
   redirect: "/device/control",
   meta: {
-    icon: "ep-monitor",
+    icon: "ep:operation",
     title: "设备控制",
     rank: 10,
     showLink: true,
