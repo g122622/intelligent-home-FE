@@ -4,26 +4,26 @@ import ReCol from "@/components/ReCol";
 import { useDark } from "./utils";
 import { ReNormalCountTo } from "@/components/ReCountTo";
 import Segmented, { type OptionsType } from "@/components/ReSegmented";
-import { 
-  dashboardCards, 
-  temperatureTrendData, 
-  energyDistributionData, 
+import {
+  dashboardCards,
+  temperatureTrendData,
+  energyDistributionData,
   humidityGaugeData,
   viewModeOptions,
   type TemperatureTrend,
   type EnergyDistribution
 } from "./data";
-import { 
-  ChartBar, 
-  ChartLine, 
-  ChartRound, 
-  GaugeChart, 
+import {
+  ChartBar,
+  ChartLine,
+  ChartRound,
+  GaugeChart,
   PieChart,
-  TemperatureChart 
+  TemperatureChart
 } from "./components/charts";
-import { 
-  getDashboardOverview, 
-  getTemperatureTrend, 
+import {
+  getDashboardOverview,
+  getTemperatureTrend,
   getEnergyDistribution,
   type DashboardData
 } from "@/api/dashboard";
@@ -64,7 +64,7 @@ const loadDashboardData = async () => {
   try {
     const response = await getDashboardOverview();
     dashboardData.value = response.data;
-    
+
     // 更新本地数据
     if (response.data) {
       temperatureTrend.value = response.data.temperatureTrend;
@@ -88,9 +88,9 @@ onMounted(() => {
   <div class="dashboard-container">
     <!-- 视图模式切换 -->
     <div class="view-mode-selector">
-      <Segmented 
-        v-model="currentViewMode" 
-        :options="viewModeOptions" 
+      <Segmented
+        v-model="currentViewMode"
+        :options="viewModeOptions"
         size="large"
       />
     </div>
@@ -165,6 +165,9 @@ onMounted(() => {
     <el-row :gutter="24" class="charts-row">
       <!-- 温度趋势图 -->
       <re-col
+        v-if="
+          currentViewMode === 'overview' || currentViewMode === 'environment'
+        "
         v-motion
         class="mb-[18px]"
         :value="12"
@@ -180,7 +183,6 @@ onMounted(() => {
             delay: 400
           }
         }"
-        v-if="currentViewMode === 'overview' || currentViewMode === 'environment'"
       >
         <el-card class="chart-card" shadow="never">
           <div class="flex justify-between items-center mb-4">
@@ -193,9 +195,10 @@ onMounted(() => {
 
       <!-- 能耗分布饼图 -->
       <re-col
+        v-if="currentViewMode === 'overview' || currentViewMode === 'energy'"
         v-motion
         class="mb-[18px]"
-        :value="6"
+        :value="12"
         :xs="24"
         :initial="{
           opacity: 0,
@@ -208,7 +211,6 @@ onMounted(() => {
             delay: 480
           }
         }"
-        v-if="currentViewMode === 'overview' || currentViewMode === 'energy'"
       >
         <el-card class="chart-card" shadow="never">
           <div class="flex justify-between items-center mb-4">
@@ -220,6 +222,9 @@ onMounted(() => {
 
       <!-- 湿度仪表盘 -->
       <re-col
+        v-if="
+          currentViewMode === 'overview' || currentViewMode === 'environment'
+        "
         v-motion
         class="mb-[18px]"
         :value="6"
@@ -235,14 +240,13 @@ onMounted(() => {
             delay: 560
           }
         }"
-        v-if="currentViewMode === 'overview' || currentViewMode === 'environment'"
       >
         <el-card class="chart-card" shadow="never">
           <div class="flex justify-between items-center mb-4">
             <span class="text-lg font-semibold">环境湿度</span>
           </div>
-          <GaugeChart 
-            :value="humidityValue" 
+          <GaugeChart
+            :value="humidityValue"
             :title="'湿度'"
             :unit="'%'"
             :color="'#37A2DA'"
@@ -256,69 +260,73 @@ onMounted(() => {
 <style lang="scss" scoped>
 .dashboard-container {
   padding: 20px;
-  
+
   .view-mode-selector {
     margin-bottom: 24px;
     text-align: center;
-    
+
     :deep(.el-segmented) {
       justify-content: center;
     }
   }
-  
+
   .dashboard-card {
     min-height: 180px;
-    
+
     :deep(.el-card__body) {
       padding: 20px;
     }
   }
-  
+
   .chart-card {
     min-height: 400px;
-    
+
     :deep(.el-card__body) {
       padding: 20px;
       height: 100%;
     }
   }
-  
+
   .charts-row {
     margin-top: 20px;
   }
-  
+
   // 大屏适配样式
   @media (min-width: 1920px) {
     .dashboard-card {
       min-height: 200px;
-      
+
       :deep(.el-card__body) {
         padding: 24px;
       }
     }
-    
+
     .chart-card {
       min-height: 450px;
-      
+
       :deep(.el-card__body) {
         padding: 24px;
       }
     }
-    
+
     .text-lg {
       font-size: 1.25rem;
     }
-    
+
     .text-sm {
       font-size: 1rem;
     }
   }
-  
+
   // 高对比度模式
   .dashboard-card {
-    background: linear-gradient(135deg, var(--el-bg-color), var(--el-fill-color-light));
+    background: linear-gradient(
+      135deg,
+      var(--el-bg-color),
+      var(--el-fill-color-light)
+    );
     border: 1px solid var(--el-border-color);
-    
+
     &:hover {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       transform: translateY(-2px);
@@ -333,16 +341,16 @@ onMounted(() => {
     .text-lg {
       font-size: 1.125rem;
     }
-    
+
     .text-md {
       font-size: 1rem;
     }
-    
+
     .text-sm {
       font-size: 0.875rem;
     }
   }
-  
+
   // 图表容器适配
   .echarts-for-vue {
     width: 100% !important;
@@ -355,7 +363,7 @@ onMounted(() => {
   .dashboard-card,
   .chart-card {
     border: 2px solid transparent;
-    
+
     &:focus {
       border-color: var(--el-color-primary);
       outline: none;

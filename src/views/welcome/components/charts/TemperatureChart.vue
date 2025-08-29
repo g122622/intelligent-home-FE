@@ -30,17 +30,17 @@ watch(
     await nextTick();
     setOptions({
       tooltip: {
-        trigger: 'axis',
-        formatter: '{b}<br/>{a}: {c}°C'
+        trigger: "axis",
+        formatter: "{b}<br/>{a}: {c}°C"
       },
       grid: {
-        top: '20px',
-        left: '50px',
-        right: '20px',
-        bottom: '20px'
+        top: "30px",
+        left: "50px",
+        right: "20px",
+        bottom: "40px"
       },
       xAxis: {
-        type: 'category',
+        type: "category",
         data: props.data.timestamps,
         axisLabel: {
           fontSize: 12,
@@ -48,8 +48,8 @@ watch(
         }
       },
       yAxis: {
-        type: 'value',
-        name: '温度 (°C)',
+        type: "value",
+        name: "温度 (°C)",
         nameTextStyle: {
           fontSize: 12
         },
@@ -57,35 +57,40 @@ watch(
           fontSize: 12
         }
       },
-      series: [{
-        name: '温度',
-        type: 'line',
-        data: props.data.values,
-        smooth: true,
-        lineStyle: {
-          width: 3,
-          color: '#e85f33'
-        },
-        itemStyle: {
-          color: '#e85f33'
-        },
-        areaStyle: {
-          color: {
-            type: 'linear',
-            x: 0,
-            y: 0,
-            x2: 0,
-            y2: 1,
-            colorStops: [{
-              offset: 0,
-              color: 'rgba(232, 95, 51, 0.3)'
-            }, {
-              offset: 1,
-              color: 'rgba(232, 95, 51, 0.1)'
-            }]
+      series: [
+        {
+          name: "温度",
+          type: "line",
+          data: props.data.values,
+          smooth: true,
+          lineStyle: {
+            width: 3,
+            color: "#e85f33"
+          },
+          itemStyle: {
+            color: "#e85f33"
+          },
+          areaStyle: {
+            color: {
+              type: "linear",
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [
+                {
+                  offset: 0,
+                  color: "rgba(232, 95, 51, 0.3)"
+                },
+                {
+                  offset: 1,
+                  color: "rgba(232, 95, 51, 0.1)"
+                }
+              ]
+            }
           }
         }
-      }]
+      ]
     });
   },
   { deep: true, immediate: true }

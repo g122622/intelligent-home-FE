@@ -198,6 +198,7 @@
 .el-tooltip__trigger,
 .el-tooltip__trigger,
 .el-menu--vertical .el-menu-item.is-active.nest-menu::before,
+.is-active.submenu-title-noDropdown.outer-most::before,
 .el-drawer,
 .el-message-box,
 .el-notification,

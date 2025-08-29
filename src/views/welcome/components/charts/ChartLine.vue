@@ -27,7 +27,7 @@ setOptions({
   container: ".line-card",
   xAxis: {
     type: "category",
-    show: false,
+    show: true,
     data: props.data
   },
   grid: {
@@ -37,7 +37,7 @@ setOptions({
     right: 0
   },
   yAxis: {
-    show: false,
+    show: true,
     type: "value"
   },
   series: [

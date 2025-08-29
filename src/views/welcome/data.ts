@@ -1,4 +1,8 @@
 import { dayjs, cloneDeep, getRandomIntBetween } from "./utils";
+import Device from "~icons/ri/device-fill";
+import Earth from "~icons/ri/earth-fill";
+import Energy from "~icons/ri/battery-fill";
+import Security from "~icons/ri/alert-fill";
 
 export interface DeviceStatusData {
   online: number;
@@ -43,7 +47,7 @@ export interface EnergyDistribution {
 
 /** 设备状态卡片数据 */
 const deviceStatusData = {
-  icon: "ri:device-line",
+  icon: Device,
   bgColor: "#effaff",
   color: "#41b6ff",
   duration: 2200,
@@ -55,7 +59,7 @@ const deviceStatusData = {
 
 /** 环境数据卡片数据 */
 const environmentData = {
-  icon: "ri:temperature-line",
+  icon: Earth,
   bgColor: "#fff5f4",
   color: "#e85f33",
   duration: 1600,
@@ -67,7 +71,7 @@ const environmentData = {
 
 /** 能耗统计卡片数据 */
 const energyData = {
-  icon: "ri:flashlight-line",
+  icon: Energy,
   bgColor: "#eff8f4",
   color: "#26ce83",
   duration: 1500,
@@ -79,7 +83,7 @@ const energyData = {
 
 /** 安防状态卡片数据 */
 const securityData = {
-  icon: "ri:shield-check-line",
+  icon: Security,
   bgColor: "#f6f4fe",
   color: "#7846e5",
   duration: 100,
@@ -99,8 +103,10 @@ export const dashboardCards = [
 
 /** 温度趋势数据 */
 export const temperatureTrendData: TemperatureTrend = {
-  timestamps: Array.from({ length: 24 }, (_, i) => 
-    dayjs().subtract(23 - i, "hour").format("HH:mm")
+  timestamps: Array.from({ length: 24 }, (_, i) =>
+    dayjs()
+      .subtract(23 - i, "hour")
+      .format("HH:mm")
   ),
   values: Array.from({ length: 24 }, () => getRandomIntBetween(18, 28))
 };
@@ -132,14 +138,4 @@ export const viewModeOptions = [
   { label: "环境模式", value: "environment" }
 ];
 
-export {
-  deviceStatusData,
-  environmentData,
-  energyData,
-  securityData,
-  temperatureTrendData,
-  energyDistributionData,
-  humidityGaugeData,
-  securityStatusData,
-  viewModeOptions
-};
+export { deviceStatusData, environmentData, energyData, securityData };
