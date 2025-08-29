@@ -1,134 +1,145 @@
 import { dayjs, cloneDeep, getRandomIntBetween } from "./utils";
-import GroupLine from "~icons/ri/group-line";
-import Question from "~icons/ri/question-answer-line";
-import CheckLine from "~icons/ri/chat-check-line";
-import Smile from "~icons/ri/star-smile-line";
 
-const days = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+export interface DeviceStatusData {
+  online: number;
+  offline: number;
+  total: number;
+}
 
-/** 需求人数、提问数量、解决数量、用户满意度 */
-const chartData = [
-  {
-    icon: GroupLine,
-    bgColor: "#effaff",
-    color: "#41b6ff",
-    duration: 2200,
-    name: "需求人数",
-    value: 36000,
-    percent: "+88%",
-    data: [2101, 5288, 4239, 4962, 6752, 5208, 7450] // 平滑折线图数据
-  },
-  {
-    icon: Question,
-    bgColor: "#fff5f4",
-    color: "#e85f33",
-    duration: 1600,
-    name: "提问数量",
-    value: 16580,
-    percent: "+70%",
-    data: [2216, 1148, 1255, 788, 4821, 1973, 4379]
-  },
-  {
-    icon: CheckLine,
-    bgColor: "#eff8f4",
-    color: "#26ce83",
-    duration: 1500,
-    name: "解决数量",
-    value: 16499,
-    percent: "+99%",
-    data: [861, 1002, 3195, 1715, 3666, 2415, 3645]
-  },
-  {
-    icon: Smile,
-    bgColor: "#f6f4fe",
-    color: "#7846e5",
-    duration: 100,
-    name: "用户满意度",
-    value: 100,
-    percent: "+100%",
-    data: [100]
-  }
+export interface EnvironmentData {
+  temperature: number;
+  humidity: number;
+  pm25: number;
+  co2: number;
+  timestamp: string;
+}
+
+export interface EnergyConsumption {
+  total: number;
+  lighting: number;
+  appliances: number;
+  hvac: number;
+  other: number;
+  timestamp: string;
+}
+
+export interface SecurityStatus {
+  doorsLocked: number;
+  windowsClosed: number;
+  motionDetected: number;
+  alarmsActive: number;
+}
+
+export interface TemperatureTrend {
+  timestamps: string[];
+  values: number[];
+}
+
+export interface EnergyDistribution {
+  category: string;
+  value: number;
+  percentage: number;
+}
+
+/** 设备状态卡片数据 */
+const deviceStatusData = {
+  icon: "ri:device-line",
+  bgColor: "#effaff",
+  color: "#41b6ff",
+  duration: 2200,
+  name: "设备状态",
+  value: 25,
+  percent: "83%在线",
+  data: [18, 22, 20, 25, 23, 24, 25]
+};
+
+/** 环境数据卡片数据 */
+const environmentData = {
+  icon: "ri:temperature-line",
+  bgColor: "#fff5f4",
+  color: "#e85f33",
+  duration: 1600,
+  name: "环境数据",
+  value: 24.5,
+  percent: "舒适",
+  data: [22.1, 23.5, 24.2, 25.8, 24.5, 23.8, 24.5]
+};
+
+/** 能耗统计卡片数据 */
+const energyData = {
+  icon: "ri:flashlight-line",
+  bgColor: "#eff8f4",
+  color: "#26ce83",
+  duration: 1500,
+  name: "能耗统计",
+  value: 156.8,
+  percent: "-12%",
+  data: [180.2, 165.3, 158.7, 152.4, 148.9, 156.8, 142.3]
+};
+
+/** 安防状态卡片数据 */
+const securityData = {
+  icon: "ri:shield-check-line",
+  bgColor: "#f6f4fe",
+  color: "#7846e5",
+  duration: 100,
+  name: "安防状态",
+  value: 100,
+  percent: "正常",
+  data: [100]
+};
+
+/** 综合数据看板 */
+export const dashboardCards = [
+  deviceStatusData,
+  environmentData,
+  energyData,
+  securityData
 ];
 
-/** 分析概览 */
-const barChartData = [
-  {
-    requireData: [2101, 5288, 4239, 4962, 6752, 5208, 7450],
-    questionData: [2216, 1148, 1255, 1788, 4821, 1973, 4379]
-  },
-  {
-    requireData: [2101, 3280, 4400, 4962, 5752, 6889, 7600],
-    questionData: [2116, 3148, 3255, 3788, 4821, 4970, 5390]
-  }
+/** 温度趋势数据 */
+export const temperatureTrendData: TemperatureTrend = {
+  timestamps: Array.from({ length: 24 }, (_, i) => 
+    dayjs().subtract(23 - i, "hour").format("HH:mm")
+  ),
+  values: Array.from({ length: 24 }, () => getRandomIntBetween(18, 28))
+};
+
+/** 能耗分布数据 */
+export const energyDistributionData: EnergyDistribution[] = [
+  { category: "照明", value: 28.5, percentage: 18.2 },
+  { category: "家电", value: 65.3, percentage: 41.7 },
+  { category: "空调", value: 48.9, percentage: 31.2 },
+  { category: "其他", value: 14.1, percentage: 9.0 }
 ];
 
-/** 解决概率 */
-const progressData = [
-  {
-    week: "周一",
-    percentage: 85,
-    duration: 110,
-    color: "#41b6ff"
-  },
-  {
-    week: "周二",
-    percentage: 86,
-    duration: 105,
-    color: "#41b6ff"
-  },
-  {
-    week: "周三",
-    percentage: 88,
-    duration: 100,
-    color: "#41b6ff"
-  },
-  {
-    week: "周四",
-    percentage: 89,
-    duration: 95,
-    color: "#41b6ff"
-  },
-  {
-    week: "周五",
-    percentage: 94,
-    duration: 90,
-    color: "#26ce83"
-  },
-  {
-    week: "周六",
-    percentage: 96,
-    duration: 85,
-    color: "#26ce83"
-  },
-  {
-    week: "周日",
-    percentage: 100,
-    duration: 80,
-    color: "#26ce83"
-  }
-].reverse();
+/** 湿度仪表盘数据 */
+export const humidityGaugeData = getRandomIntBetween(40, 80);
 
-/** 数据统计 */
-const tableData = Array.from({ length: 30 }).map((_, index) => {
-  return {
-    id: index + 1,
-    requiredNumber: getRandomIntBetween(13500, 19999),
-    questionNumber: getRandomIntBetween(12600, 16999),
-    resolveNumber: getRandomIntBetween(13500, 17999),
-    satisfaction: getRandomIntBetween(95, 100),
-    date: dayjs().subtract(index, "day").format("YYYY-MM-DD")
-  };
-});
+/** 安防状态数据 */
+export const securityStatusData: SecurityStatus = {
+  doorsLocked: 4,
+  windowsClosed: 10,
+  motionDetected: 0,
+  alarmsActive: 0
+};
 
-/** 最新动态 */
-const latestNewsData = cloneDeep(tableData)
-  .slice(0, 14)
-  .map((item, index) => {
-    return Object.assign(item, {
-      date: `${dayjs().subtract(index, "day").format("YYYY-MM-DD")} ${
-        days[dayjs().subtract(index, "day").day()]
-      }`
-    });
-  });
+/** 视图模式选项 */
+export const viewModeOptions = [
+  { label: "概览模式", value: "overview" },
+  { label: "安防模式", value: "security" },
+  { label: "能耗模式", value: "energy" },
+  { label: "环境模式", value: "environment" }
+];
 
-export { chartData, barChartData, progressData, tableData, latestNewsData };
+export {
+  deviceStatusData,
+  environmentData,
+  energyData,
+  securityData,
+  temperatureTrendData,
+  energyDistributionData,
+  humidityGaugeData,
+  securityStatusData,
+  viewModeOptions
+};

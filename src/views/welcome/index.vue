@@ -1,36 +1,104 @@
 <script setup lang="ts">
-import { ref, markRaw } from "vue";
+import { ref, onMounted, computed } from "vue";
 import ReCol from "@/components/ReCol";
-import { useDark, randomGradient } from "./utils";
-import WelcomeTable from "./components/table/index.vue";
+import { useDark } from "./utils";
 import { ReNormalCountTo } from "@/components/ReCountTo";
-import { useRenderFlicker } from "@/components/ReFlicker";
-import { ChartBar, ChartLine, ChartRound } from "./components/charts";
 import Segmented, { type OptionsType } from "@/components/ReSegmented";
-import { chartData, barChartData, progressData, latestNewsData } from "./data";
+import { 
+  dashboardCards, 
+  temperatureTrendData, 
+  energyDistributionData, 
+  humidityGaugeData,
+  viewModeOptions,
+  type TemperatureTrend,
+  type EnergyDistribution
+} from "./data";
+import { 
+  ChartBar, 
+  ChartLine, 
+  ChartRound, 
+  GaugeChart, 
+  PieChart,
+  TemperatureChart 
+} from "./components/charts";
+import { 
+  getDashboardOverview, 
+  getTemperatureTrend, 
+  getEnergyDistribution,
+  type DashboardData
+} from "@/api/dashboard";
 
 defineOptions({
-  name: "Welcome"
+  name: "Dashboard"
 });
 
 const { isDark } = useDark();
 
-let curWeek = ref(1); // 0上周、1本周
-const optionsBasis: Array<OptionsType> = [
-  {
-    label: "上周"
-  },
-  {
-    label: "本周"
+// 视图模式
+const currentViewMode = ref("overview");
+// 温度趋势数据
+const temperatureTrend = ref<TemperatureTrend>(temperatureTrendData);
+// 能耗分布数据
+const energyDistribution = ref<EnergyDistribution[]>(energyDistributionData);
+// 湿度数据
+const humidityValue = ref(humidityGaugeData);
+// 大屏数据
+const dashboardData = ref<DashboardData | null>(null);
+
+// 根据视图模式过滤显示的卡片
+const filteredCards = computed(() => {
+  switch (currentViewMode.value) {
+    case "security":
+      return [dashboardCards[3]]; // 只显示安防状态
+    case "energy":
+      return [dashboardCards[2]]; // 只显示能耗统计
+    case "environment":
+      return [dashboardCards[1]]; // 只显示环境数据
+    default:
+      return dashboardCards; // 概览模式显示所有
   }
-];
+});
+
+// 加载数据
+const loadDashboardData = async () => {
+  try {
+    const response = await getDashboardOverview();
+    dashboardData.value = response.data;
+    
+    // 更新本地数据
+    if (response.data) {
+      temperatureTrend.value = response.data.temperatureTrend;
+      energyDistribution.value = response.data.energyDistribution;
+      humidityValue.value = response.data.humidityGauge;
+    }
+  } catch (error) {
+    console.error("加载大屏数据失败:", error);
+  }
+};
+
+// 初始化加载数据
+onMounted(() => {
+  loadDashboardData();
+  // 设置定时刷新数据
+  setInterval(loadDashboardData, 30000); // 每30秒刷新一次
+});
 </script>
 
 <template>
-  <div>
-    <el-row :gutter="24" justify="space-around">
+  <div class="dashboard-container">
+    <!-- 视图模式切换 -->
+    <div class="view-mode-selector">
+      <Segmented 
+        v-model="currentViewMode" 
+        :options="viewModeOptions" 
+        size="large"
+      />
+    </div>
+
+    <!-- 数据卡片区域 -->
+    <el-row :gutter="24" justify="space-around" class="mb-6">
       <re-col
-        v-for="(item, index) in chartData"
+        v-for="(item, index) in filteredCards"
         :key="index"
         v-motion
         class="mb-[18px]"
@@ -50,13 +118,13 @@ const optionsBasis: Array<OptionsType> = [
           }
         }"
       >
-        <el-card class="line-card" shadow="never">
-          <div class="flex justify-between">
-            <span class="text-md font-medium">
+        <el-card class="dashboard-card" shadow="never">
+          <div class="flex justify-between items-center">
+            <span class="text-lg font-semibold">
               {{ item.name }}
             </span>
             <div
-              class="w-8 h-8 flex justify-center items-center rounded-md"
+              class="w-10 h-10 flex justify-center items-center rounded-lg"
               :style="{
                 backgroundColor: isDark ? 'transparent' : item.bgColor
               }"
@@ -64,20 +132,22 @@ const optionsBasis: Array<OptionsType> = [
               <IconifyIconOffline
                 :icon="item.icon"
                 :color="item.color"
-                width="18"
-                height="18"
+                width="22"
+                height="22"
               />
             </div>
           </div>
-          <div class="flex justify-between items-start mt-3">
+          <div class="flex justify-between items-start mt-4">
             <div class="w-1/2">
               <ReNormalCountTo
                 :duration="item.duration"
-                :fontSize="'1.6em'"
-                :startVal="100"
+                :fontSize="'2em'"
+                :startVal="item.value * 0.8"
                 :endVal="item.value"
               />
-              <p class="font-medium text-green-500">{{ item.percent }}</p>
+              <p class="font-medium text-green-500 text-lg mt-1">
+                {{ item.percent }}
+              </p>
             </div>
             <ChartLine
               v-if="item.data.length > 1"
@@ -89,11 +159,15 @@ const optionsBasis: Array<OptionsType> = [
           </div>
         </el-card>
       </re-col>
+    </el-row>
 
+    <!-- 图表区域 -->
+    <el-row :gutter="24" class="charts-row">
+      <!-- 温度趋势图 -->
       <re-col
         v-motion
         class="mb-[18px]"
-        :value="18"
+        :value="12"
         :xs="24"
         :initial="{
           opacity: 0,
@@ -106,21 +180,18 @@ const optionsBasis: Array<OptionsType> = [
             delay: 400
           }
         }"
+        v-if="currentViewMode === 'overview' || currentViewMode === 'environment'"
       >
-        <el-card class="bar-card" shadow="never">
-          <div class="flex justify-between">
-            <span class="text-md font-medium">分析概览</span>
-            <Segmented v-model="curWeek" :options="optionsBasis" />
+        <el-card class="chart-card" shadow="never">
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-lg font-semibold">温度趋势</span>
+            <span class="text-sm text-text_color_secondary">最近24小时</span>
           </div>
-          <div class="flex justify-between items-start mt-3">
-            <ChartBar
-              :requireData="barChartData[curWeek].requireData"
-              :questionData="barChartData[curWeek].questionData"
-            />
-          </div>
+          <TemperatureChart :data="temperatureTrend" />
         </el-card>
       </re-col>
 
+      <!-- 能耗分布饼图 -->
       <re-col
         v-motion
         class="mb-[18px]"
@@ -137,62 +208,17 @@ const optionsBasis: Array<OptionsType> = [
             delay: 480
           }
         }"
+        v-if="currentViewMode === 'overview' || currentViewMode === 'energy'"
       >
-        <el-card shadow="never">
-          <div class="flex justify-between">
-            <span class="text-md font-medium">解决概率</span>
+        <el-card class="chart-card" shadow="never">
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-lg font-semibold">能耗分布</span>
           </div>
-          <div
-            v-for="(item, index) in progressData"
-            :key="index"
-            :class="[
-              'flex',
-              'justify-between',
-              'items-start',
-              index === 0 ? 'mt-8' : 'mt-[2.15rem]'
-            ]"
-          >
-            <el-progress
-              :text-inside="true"
-              :percentage="item.percentage"
-              :stroke-width="21"
-              :color="item.color"
-              striped
-              striped-flow
-              :duration="item.duration"
-            />
-            <span class="text-nowrap ml-2 text-text_color_regular text-sm">
-              {{ item.week }}
-            </span>
-          </div>
+          <PieChart :data="energyDistribution" />
         </el-card>
       </re-col>
 
-      <re-col
-        v-motion
-        class="mb-[18px]"
-        :value="18"
-        :xs="24"
-        :initial="{
-          opacity: 0,
-          y: 100
-        }"
-        :enter="{
-          opacity: 1,
-          y: 0,
-          transition: {
-            delay: 560
-          }
-        }"
-      >
-        <el-card shadow="never" class="h-[580px]">
-          <div class="flex justify-between">
-            <span class="text-md font-medium">数据统计</span>
-          </div>
-          <WelcomeTable class="mt-3" />
-        </el-card>
-      </re-col>
-
+      <!-- 湿度仪表盘 -->
       <re-col
         v-motion
         class="mb-[18px]"
@@ -206,40 +232,21 @@ const optionsBasis: Array<OptionsType> = [
           opacity: 1,
           y: 0,
           transition: {
-            delay: 640
+            delay: 560
           }
         }"
+        v-if="currentViewMode === 'overview' || currentViewMode === 'environment'"
       >
-        <el-card shadow="never">
-          <div class="flex justify-between">
-            <span class="text-md font-medium">最新动态</span>
+        <el-card class="chart-card" shadow="never">
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-lg font-semibold">环境湿度</span>
           </div>
-          <el-scrollbar max-height="504" class="mt-3">
-            <el-timeline>
-              <el-timeline-item
-                v-for="(item, index) in latestNewsData"
-                :key="index"
-                center
-                placement="top"
-                :icon="
-                  markRaw(
-                    useRenderFlicker({
-                      background: randomGradient({
-                        randomizeHue: true
-                      })
-                    })
-                  )
-                "
-                :timestamp="item.date"
-              >
-                <p class="text-text_color_regular text-sm">
-                  {{
-                    `新增 ${item.requiredNumber} 条问题，${item.resolveNumber} 条已解决`
-                  }}
-                </p>
-              </el-timeline-item>
-            </el-timeline>
-          </el-scrollbar>
+          <GaugeChart 
+            :value="humidityValue" 
+            :title="'湿度'"
+            :unit="'%'"
+            :color="'#37A2DA'"
+          />
         </el-card>
       </re-col>
     </el-row>
@@ -247,31 +254,112 @@ const optionsBasis: Array<OptionsType> = [
 </template>
 
 <style lang="scss" scoped>
-:deep(.el-card) {
-  --el-card-border-color: none;
-
-  /* 解决概率进度条宽度 */
-  .el-progress--line {
-    width: 85%;
+.dashboard-container {
+  padding: 20px;
+  
+  .view-mode-selector {
+    margin-bottom: 24px;
+    text-align: center;
+    
+    :deep(.el-segmented) {
+      justify-content: center;
+    }
   }
-
-  /* 解决概率进度条字体大小 */
-  .el-progress-bar__innerText {
-    font-size: 15px;
+  
+  .dashboard-card {
+    min-height: 180px;
+    
+    :deep(.el-card__body) {
+      padding: 20px;
+    }
   }
-
-  /* 隐藏 el-scrollbar 滚动条 */
-  .el-scrollbar__bar {
-    display: none;
+  
+  .chart-card {
+    min-height: 400px;
+    
+    :deep(.el-card__body) {
+      padding: 20px;
+      height: 100%;
+    }
   }
-
-  /* el-timeline 每一项上下、左右边距 */
-  .el-timeline-item {
-    margin: 0 6px;
+  
+  .charts-row {
+    margin-top: 20px;
+  }
+  
+  // 大屏适配样式
+  @media (min-width: 1920px) {
+    .dashboard-card {
+      min-height: 200px;
+      
+      :deep(.el-card__body) {
+        padding: 24px;
+      }
+    }
+    
+    .chart-card {
+      min-height: 450px;
+      
+      :deep(.el-card__body) {
+        padding: 24px;
+      }
+    }
+    
+    .text-lg {
+      font-size: 1.25rem;
+    }
+    
+    .text-sm {
+      font-size: 1rem;
+    }
+  }
+  
+  // 高对比度模式
+  .dashboard-card {
+    background: linear-gradient(135deg, var(--el-bg-color), var(--el-fill-color-light));
+    border: 1px solid var(--el-border-color);
+    
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+      transition: all 0.3s ease;
+    }
   }
 }
 
-.main-content {
-  margin: 20px 20px 0 !important;
+// 大字体优化
+:deep() {
+  .el-card {
+    .text-lg {
+      font-size: 1.125rem;
+    }
+    
+    .text-md {
+      font-size: 1rem;
+    }
+    
+    .text-sm {
+      font-size: 0.875rem;
+    }
+  }
+  
+  // 图表容器适配
+  .echarts-for-vue {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+// 遥控器操作支持
+@media (pointer: coarse) {
+  .dashboard-card,
+  .chart-card {
+    border: 2px solid transparent;
+    
+    &:focus {
+      border-color: var(--el-color-primary);
+      outline: none;
+    }
+  }
 }
 </style>
