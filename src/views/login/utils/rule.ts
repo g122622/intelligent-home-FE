@@ -5,8 +5,23 @@ import type { FormRules } from "element-plus";
 export const REGEXP_PWD =
   /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\u4E00-\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$/;
 
+/** 手机号正则 */
+export const REGEXP_PHONE = /^1[3-9]\d{9}$/;
+
 /** 登录校验 */
 const loginRules = reactive<FormRules>({
+  phone: [
+    {
+      required: true,
+      message: "请输入手机号",
+      trigger: "blur"
+    },
+    {
+      pattern: REGEXP_PHONE,
+      message: "请输入正确的手机号格式",
+      trigger: "blur"
+    }
+  ],
   password: [
     {
       validator: (rule, value, callback) => {

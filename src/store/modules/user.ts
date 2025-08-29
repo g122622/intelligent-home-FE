@@ -82,6 +82,9 @@ export const useUserStore = defineStore("pure-user", {
       this.roles = [];
       this.permissions = [];
       removeToken();
+      // 清除角色信息
+      localStorage.removeItem("userRole");
+      localStorage.removeItem("user-info");
       useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
       resetRouter();
       router.push("/login");

@@ -139,3 +139,15 @@ export const hasPerms = (value: string | Array<string>): boolean => {
     : isIncludeAllChildren(value, permissions);
   return isAuths ? true : false;
 };
+
+/** 检查用户角色权限 */
+export const hasRole = (role: string): boolean => {
+  if (!role) return false;
+  const { roles } = useUserStoreHook();
+  if (!roles || roles.length === 0) {
+    // 如果没有从store获取到角色，尝试从localStorage获取
+    const storedRole = localStorage.getItem("userRole");
+    return storedRole === role;
+  }
+  return roles.includes(role);
+};
