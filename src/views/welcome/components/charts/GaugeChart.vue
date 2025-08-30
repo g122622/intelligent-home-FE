@@ -38,7 +38,7 @@ watch(
     setOptions({
       series: [
         {
-          type: 'gauge',
+          type: "gauge",
           startAngle: 180,
           endAngle: 0,
           min: 0,
@@ -54,9 +54,9 @@ watch(
             lineStyle: {
               width: 18,
               color: [
-                [0.3, '#FF6E76'],
-                [0.7, '#FDDD60'],
-                [1, '#37A2DA']
+                [0.3, "#FF6E76"],
+                [0.7, "#FDDD60"],
+                [1, "#37A2DA"]
               ]
             }
           },
@@ -72,15 +72,15 @@ watch(
           detail: {
             valueAnimation: true,
             fontSize: 24,
-            fontWeight: 'bold',
+            fontWeight: "bold",
             formatter: `{value}${props.unit}`,
             color: props.color,
-            offsetCenter: [0, '30%']
+            offsetCenter: [0, "30%"]
           },
           title: {
             fontSize: 14,
-            offsetCenter: [0, '70%'],
-            color: isDark.value ? '#fff' : '#606266'
+            offsetCenter: [0, "70%"],
+            color: isDark.value ? "#fff" : "#606266"
           },
           data: [
             {

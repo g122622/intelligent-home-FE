@@ -13,6 +13,7 @@ import {
   DataZoomComponent,
   VisualMapComponent
 } from "echarts/components";
+import { GaugeChart } from "echarts/charts";
 
 const { use } = echarts;
 
@@ -38,6 +39,7 @@ use([
  * @see 温馨提示：必须将 `$echarts` 添加到全局 `globalProperties` ，具体看 https://pure-admin-utils.netlify.app/hooks/useECharts/useECharts#%E4%BD%BF%E7%94%A8%E5%89%8D%E6%8F%90
  */
 export function useEcharts(app: App) {
+  echarts.use([GaugeChart]);
   app.config.globalProperties.$echarts = echarts;
 }
 

@@ -27,6 +27,8 @@ import {
   getEnergyDistribution,
   type DashboardData
 } from "@/api/dashboard";
+import Pin from "~icons/ep/bell";
+import Close from "~icons/ep/close";
 
 defineOptions({
   name: "Dashboard"
@@ -44,6 +46,8 @@ const energyDistribution = ref<EnergyDistribution[]>(energyDistributionData);
 const humidityValue = ref(humidityGaugeData);
 // 大屏数据
 const dashboardData = ref<DashboardData | null>(null);
+// 置顶状态
+const pinnedCards = ref<number[]>([]);
 
 // 根据视图模式过滤显示的卡片
 const filteredCards = computed(() => {
@@ -82,6 +86,21 @@ onMounted(() => {
   // 设置定时刷新数据
   setInterval(loadDashboardData, 30000); // 每30秒刷新一次
 });
+
+// 置顶卡片
+const togglePin = (index: number) => {
+  const idx = pinnedCards.value.indexOf(index);
+  if (idx === -1) {
+    pinnedCards.value.push(index);
+  } else {
+    pinnedCards.value.splice(idx, 1);
+  }
+};
+
+// 关闭卡片
+const closeCard = (index: number) => {
+  dashboardCards.splice(index, 1);
+};
 </script>
 
 <template>
@@ -118,23 +137,47 @@ onMounted(() => {
           }
         }"
       >
-        <el-card class="dashboard-card" shadow="never">
+        <el-card class="dashboard-card">
           <div class="flex justify-between items-center">
             <span class="text-lg font-semibold">
               {{ item.name }}
             </span>
-            <div
-              class="w-10 h-10 flex justify-center items-center rounded-lg"
-              :style="{
-                backgroundColor: isDark ? 'transparent' : item.bgColor
-              }"
-            >
-              <IconifyIconOffline
-                :icon="item.icon"
-                :color="item.color"
-                width="22"
-                height="22"
-              />
+            <div class="flex items-center gap-2">
+              <div
+                class="w-6 h-6 flex justify-center items-center rounded-full hover:bg-gray-100"
+                @click="togglePin(index)"
+              >
+                <IconifyIconOffline
+                  :icon="Pin"
+                  :color="pinnedCards.includes(index) ? '#FF9900' : '#666'"
+                  width="16"
+                  height="16"
+                />
+              </div>
+              <div
+                class="w-6 h-6 flex justify-center items-center rounded-full hover:bg-gray-100"
+                @click="closeCard(index)"
+              >
+                <IconifyIconOffline
+                  :icon="Close"
+                  color="#666"
+                  width="16"
+                  height="16"
+                />
+              </div>
+              <div
+                class="w-10 h-10 flex justify-center items-center rounded-lg"
+                :style="{
+                  backgroundColor: isDark ? 'transparent' : item.bgColor
+                }"
+              >
+                <IconifyIconOffline
+                  :icon="item.icon"
+                  :color="item.color"
+                  width="22"
+                  height="22"
+                />
+              </div>
             </div>
           </div>
           <div class="flex justify-between items-start mt-4">
@@ -184,7 +227,7 @@ onMounted(() => {
           }
         }"
       >
-        <el-card class="chart-card" shadow="never">
+        <el-card class="chart-card">
           <div class="flex justify-between items-center mb-4">
             <span class="text-lg font-semibold">温度趋势</span>
             <span class="text-sm text-text_color_secondary">最近24小时</span>
@@ -212,7 +255,7 @@ onMounted(() => {
           }
         }"
       >
-        <el-card class="chart-card" shadow="never">
+        <el-card class="chart-card">
           <div class="flex justify-between items-center mb-4">
             <span class="text-lg font-semibold">能耗分布</span>
           </div>
@@ -241,7 +284,7 @@ onMounted(() => {
           }
         }"
       >
-        <el-card class="chart-card" shadow="never">
+        <el-card class="chart-card">
           <div class="flex justify-between items-center mb-4">
             <span class="text-lg font-semibold">环境湿度</span>
           </div>
@@ -279,8 +322,7 @@ onMounted(() => {
   }
 
   .chart-card {
-    min-height: 400px;
-
+    // min-height: 400px;
     :deep(.el-card__body) {
       padding: 20px;
       height: 100%;
