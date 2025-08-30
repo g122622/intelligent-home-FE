@@ -15,12 +15,16 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: "默认标题"
+    default: "能耗分布"
   }
 });
 
 const { isDark } = useDark();
-const theme = computed(() => (isDark.value ? "dark" : "light"));
+const theme = computed(/**
+ * 根据当前主题模式（暗色或亮色）返回对应的字符串标识。
+ * @returns {string} - 返回 "dark" 表示暗色模式，返回 "light" 表示亮色模式。
+ */
+() => (isDark.value ? "dark" : "light"));
 
 const chartRef = ref();
 const { setOptions } = useECharts(chartRef, { theme });
@@ -65,7 +69,7 @@ watch(
             borderColor: isDark.value ? "#1a1a1a" : "#fff",
             borderWidth: 2,
             color: function (params) {
-              const colorList = isDark.value
+              const colorList = false
                 ? ["#4992ff", "#7cffb2", "#fddd60", "#ff6e76", "#58d9f9"]
                 : ["#c23531", "#2f4554", "#61a0a8", "#d48265", "#91c7ae"];
               return colorList[params.dataIndex % colorList.length];
