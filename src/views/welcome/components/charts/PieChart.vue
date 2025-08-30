@@ -15,7 +15,7 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: "能耗分布"
+    default: "默认标题"
   }
 });
 
@@ -31,27 +31,27 @@ watch(
     await nextTick();
     setOptions({
       tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b}: {c} kWh ({d}%)'
+        trigger: "item",
+        formatter: "{a} <br/>{b}: {c} kWh ({d}%)"
       },
       legend: {
-        orient: 'vertical',
+        orient: "vertical",
         right: 10,
-        top: 'center',
+        top: "center",
         textStyle: {
-          color: isDark.value ? '#fff' : '#606266',
+          color: isDark.value ? "#fff" : "#606266",
           fontSize: 14
         }
       },
       series: [
         {
           name: props.title,
-          type: 'pie',
-          radius: ['40%', '70%'],
+          type: "pie",
+          radius: ["40%", "70%"],
           avoidLabelOverlap: false,
           itemStyle: {
             borderRadius: 10,
-            borderColor: isDark.value ? '#1a1a1a' : '#fff',
+            borderColor: isDark.value ? "#1a1a1a" : "#fff",
             borderWidth: 2
           },
           label: {
@@ -61,7 +61,7 @@ watch(
             label: {
               show: true,
               fontSize: 16,
-              fontWeight: 'bold'
+              fontWeight: "bold"
             }
           },
           labelLine: {
