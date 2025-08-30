@@ -43,19 +43,36 @@ watch(
           fontSize: 14
         }
       },
+      toolbox: {
+        feature: {
+          saveAsImage: {},
+          dataView: {},
+          restore: {}
+        }
+      },
+      animation: {
+        duration: 1000,
+        easing: "cubicOut"
+      },
       series: [
         {
           name: props.title,
           type: "pie",
           radius: ["40%", "70%"],
-          avoidLabelOverlap: false,
+          avoidLabelOverlap: true,
           itemStyle: {
             borderRadius: 10,
             borderColor: isDark.value ? "#1a1a1a" : "#fff",
-            borderWidth: 2
+            borderWidth: 2,
+            color: function (params) {
+              const colorList = isDark.value
+                ? ["#4992ff", "#7cffb2", "#fddd60", "#ff6e76", "#58d9f9"]
+                : ["#c23531", "#2f4554", "#61a0a8", "#d48265", "#91c7ae"];
+              return colorList[params.dataIndex % colorList.length];
+            }
           },
           label: {
-            show: false
+            show: true
           },
           emphasis: {
             label: {
@@ -65,7 +82,7 @@ watch(
             }
           },
           labelLine: {
-            show: false
+            show: true
           },
           data: props.data.map(item => ({
             value: item.value,
