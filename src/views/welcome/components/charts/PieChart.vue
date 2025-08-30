@@ -20,11 +20,13 @@ const props = defineProps({
 });
 
 const { isDark } = useDark();
-const theme = computed(/**
- * 根据当前主题模式（暗色或亮色）返回对应的字符串标识。
- * @returns {string} - 返回 "dark" 表示暗色模式，返回 "light" 表示亮色模式。
- */
-() => (isDark.value ? "dark" : "light"));
+const theme = computed(
+  /**
+   * 根据当前主题模式（暗色或亮色）返回对应的字符串标识。
+   * @returns {string} - 返回 "dark" 表示暗色模式，返回 "light" 表示亮色模式。
+   */
+  () => (isDark.value ? "dark" : "light")
+);
 
 const chartRef = ref();
 const { setOptions } = useECharts(chartRef, { theme });

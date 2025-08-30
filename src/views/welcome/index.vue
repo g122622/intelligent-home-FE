@@ -9,9 +9,13 @@ import {
   temperatureTrendData,
   energyDistributionData,
   humidityGaugeData,
+  humidityTrendData,
+  energyTrendData,
   viewModeOptions,
   type TemperatureTrend,
-  type EnergyDistribution
+  type EnergyDistribution,
+  type HumidityTrend,
+  type EnergyTrend
 } from "./data";
 import {
   ChartBar,
@@ -44,6 +48,10 @@ const temperatureTrend = ref<TemperatureTrend>(temperatureTrendData);
 const energyDistribution = ref<EnergyDistribution[]>(energyDistributionData);
 // 湿度数据
 const humidityValue = ref(humidityGaugeData);
+// 湿度趋势数据
+const humidityTrend = ref<HumidityTrend>(humidityTrendData);
+// 能耗趋势数据
+const energyTrend = ref<EnergyTrend>(energyTrendData);
 // 大屏数据
 const dashboardData = ref<DashboardData | null>(null);
 // 置顶状态
@@ -74,6 +82,8 @@ const loadDashboardData = async () => {
       temperatureTrend.value = response.data.temperatureTrend;
       energyDistribution.value = response.data.energyDistribution;
       humidityValue.value = response.data.humidityGauge;
+      humidityTrend.value = response.data.humidityTrend;
+      energyTrend.value = response.data.energyTrend;
     }
   } catch (error) {
     console.error("加载大屏数据失败:", error);
@@ -206,14 +216,14 @@ const closeCard = (index: number) => {
 
     <!-- 图表区域 -->
     <el-row :gutter="24" class="charts-row">
-      <!-- 温度趋势图 -->
+      <!-- 综合趋势图 -->
       <re-col
         v-if="
           currentViewMode === 'overview' || currentViewMode === 'environment'
         "
         v-motion
         class="mb-[18px]"
-        :value="12"
+        :value="24"
         :xs="24"
         :initial="{
           opacity: 0,
@@ -229,13 +239,29 @@ const closeCard = (index: number) => {
       >
         <el-card class="chart-card">
           <div class="flex justify-between items-center mb-4">
-            <span class="text-lg font-semibold">温度趋势</span>
+            <span class="text-lg font-semibold">综合趋势</span>
             <span class="text-sm text-text_color_secondary">最近24小时</span>
           </div>
-          <TemperatureChart :data="temperatureTrend" />
+          <div class="flex flex-col gap-6">
+            <ChartLine
+              :data="[
+                {
+                  name: '温度',
+                  values: temperatureTrend.values,
+                  color: '#41b6ff'
+                },
+                {
+                  name: '湿度',
+                  values: humidityTrend.values,
+                  color: '#37A2DA'
+                },
+                { name: '能耗', values: energyTrend.values, color: '#FF9900' }
+              ]"
+              :timestamps="temperatureTrend.timestamps"
+            />
+          </div>
         </el-card>
       </re-col>
-
       <!-- 能耗分布饼图 -->
       <re-col
         v-if="currentViewMode === 'overview' || currentViewMode === 'energy'"

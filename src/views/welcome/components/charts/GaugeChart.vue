@@ -36,6 +36,13 @@ watch(
   async () => {
     await nextTick();
     setOptions({
+      toolbox: {
+        feature: {
+          saveAsImage: {},
+          dataView: {},
+          restore: {}
+        }
+      },
       series: [
         {
           type: "gauge",

@@ -13,6 +13,13 @@ const { setOptions } = useECharts(chartRef, {
 });
 
 setOptions({
+  toolbox: {
+    feature: {
+      saveAsImage: {},
+      dataView: {},
+      restore: {}
+    }
+  },
   container: ".line-card",
   title: {
     text: "100%",
@@ -36,13 +43,13 @@ setOptions({
     type: "category",
     show: true,
     axisLabel: {
-      show: false
+      show: true
     },
     axisLine: {
-      show: false
+      show: true
     },
     axisTick: {
-      show: false
+      show: true
     }
   },
   series: [

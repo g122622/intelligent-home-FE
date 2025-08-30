@@ -45,6 +45,16 @@ export interface EnergyDistribution {
   percentage: number;
 }
 
+export interface HumidityTrend {
+  timestamps: string[];
+  values: number[];
+}
+
+export interface EnergyTrend {
+  timestamps: string[];
+  values: number[];
+}
+
 /** 设备状态卡片数据 */
 const deviceStatusData = {
   icon: Device,
@@ -121,6 +131,26 @@ export const energyDistributionData: EnergyDistribution[] = [
 
 /** 湿度仪表盘数据 */
 export const humidityGaugeData = getRandomIntBetween(40, 80);
+
+/** 湿度趋势数据 */
+export const humidityTrendData: HumidityTrend = {
+  timestamps: Array.from({ length: 24 }, (_, i) =>
+    dayjs()
+      .subtract(23 - i, "hour")
+      .format("HH:mm")
+  ),
+  values: Array.from({ length: 24 }, () => getRandomIntBetween(40, 80))
+};
+
+/** 能耗趋势数据 */
+export const energyTrendData: EnergyTrend = {
+  timestamps: Array.from({ length: 24 }, (_, i) =>
+    dayjs()
+      .subtract(23 - i, "hour")
+      .format("HH:mm")
+  ),
+  values: Array.from({ length: 24 }, () => getRandomIntBetween(50, 200))
+};
 
 /** 安防状态数据 */
 export const securityStatusData: SecurityStatus = {
