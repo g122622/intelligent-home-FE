@@ -203,9 +203,9 @@ const closeCard = (index: number) => {
               </p>
             </div>
             <ChartLine
-              v-if="item.data.length > 1"
+              v-if="item.data[0].values.length > 1"
               class="w-1/2!"
-              :color="item.color"
+              :color="item.data[0].color"
               :data="item.data"
             />
             <ChartRound v-else class="w-1/2!" />
