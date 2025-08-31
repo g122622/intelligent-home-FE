@@ -124,3 +124,180 @@ export const getRooms = () => {
 export const getWebSocketUrl = () => {
   return http.request<{ url: string }>("get", "/websocket-url");
 };
+
+// ==================== 设备管理接口 ====================
+
+/** 设备类型 */
+export interface DeviceType {
+  id: number;
+  name: string;
+  description: string;
+}
+
+/** 设备详情 */
+export interface DeviceDetail {
+  id: number;
+  name: string;
+  ipAddress: string;
+  homeId: number;
+  roomId: number;
+  typeId: number;
+  onlineStatus: number;
+  activeStatus: number;
+  lastActiveTime: string;
+}
+
+/** 设备列表响应 */
+export interface DeviceListResponse {
+  devices: DeviceDetail[];
+}
+
+/** 设备操作 */
+export interface DeviceOperation {
+  id: number;
+  name: string;
+  description: string;
+}
+
+/** 设备操作列表响应 */
+export interface DeviceOperationsResponse {
+  operations: DeviceOperation[];
+}
+
+/** 安防传感器状态 */
+export interface SecuritySensorStatus {
+  id: number;
+  name: string;
+  type: "flame" | "gas";
+  status: "normal" | "abnormal";
+  value: number;
+  threshold: number;
+  lastUpdate: string;
+}
+
+/** 报警记录 */
+export interface AlarmRecord {
+  id: number;
+  deviceId: number;
+  deviceName: string;
+  alarmType: string;
+  alarmTime: string;
+  status: "pending" | "confirmed" | "ignored";
+  description: string;
+}
+
+/** 获取设备类型列表 */
+export const getDeviceTypes = (homeId: number) => {
+  return http.request<DeviceType[]>("get", `/home/${homeId}/room/device/type/list`);
+};
+
+/** 添加设备 */
+export const addDevice = (homeId: number, data: {
+  ipAddress: string;
+  homeId: number;
+  roomId: number;
+  typeId: number;
+  name: string;
+  onlineStatus: number;
+  activeStatus: number;
+}) => {
+  return http.request<{ status: string; message: string; deviceId: number }>(
+    "post", 
+    `/home/${homeId}/room/device/add`, 
+    { data }
+  );
+};
+
+/** 获取设备列表 */
+export const getDeviceList = (homeId: number) => {
+  return http.request<DeviceListResponse>("get", `/home/${homeId}/room/device/list`);
+};
+
+/** 更新设备 */
+export const updateDeviceInfo = (homeId: number, data: {
+  id: number;
+  name?: string;
+  roomId?: number;
+}) => {
+  return http.request<{ status: string; message: string }>(
+    "post", 
+    `/home/${homeId}/room/device/update`, 
+    { data }
+  );
+};
+
+/** 删除设备 */
+export const deleteDevice = (homeId: number, deviceId: number) => {
+  return http.request<{ status: string; message: string }>(
+    "delete", 
+    `/home/${homeId}/room/device/delete?id=${deviceId}`
+  );
+};
+
+/** 移动设备 */
+export const moveDevice = (homeId: number, data: {
+  deviceId: number;
+  newRoomId: number;
+}) => {
+  return http.request<{ message: string }>(
+    "post", 
+    `/home/${homeId}/room/device/move`, 
+    { data }
+  );
+};
+
+// ==================== 设备交互接口 ====================
+
+/** 设备操作 */
+export const operateDevice = (homeId: number, data: {
+  deviceId: number;
+  operationId: number;
+  parameters?: Record<string, any>;
+}) => {
+  return http.request<{ message: string }>(
+    "post", 
+    `/home/${homeId}/device/operation`, 
+    { data }
+  );
+};
+
+/** 获取设备操作列表 */
+export const getDeviceOperations = (homeId: number, deviceId: number) => {
+  return http.request<DeviceOperationsResponse>(
+    "get", 
+    `/home/${homeId}/device/${deviceId}/operations`
+  );
+};
+
+// ==================== 安防监控接口 ====================
+
+/** 获取安防传感器状态 */
+export const getSecuritySensorStatus = (homeId: number) => {
+  return http.request<SecuritySensorStatus[]>("get", `/home/${homeId}/security/sensors`);
+};
+
+/** 获取报警记录 */
+export const getAlarmRecords = (homeId: number, params?: {
+  startTime?: string;
+  endTime?: string;
+  alarmType?: string;
+  status?: string;
+}) => {
+  return http.request<AlarmRecord[]>("get", `/home/${homeId}/security/alarms`, { params });
+};
+
+/** 确认报警 */
+export const confirmAlarm = (homeId: number, alarmId: number) => {
+  return http.request<{ message: string }>(
+    "post", 
+    `/home/${homeId}/security/alarms/${alarmId}/confirm`
+  );
+};
+
+/** 忽略报警 */
+export const ignoreAlarm = (homeId: number, alarmId: number) => {
+  return http.request<{ message: string }>(
+    "post", 
+    `/home/${homeId}/security/alarms/${alarmId}/ignore`
+  );
+};

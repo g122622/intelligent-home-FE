@@ -459,5 +459,346 @@ export default defineFakeRoute([
         }
       };
     }
+  },
+
+  // ==================== 设备管理接口 ====================
+
+  // 获取设备类型列表
+  {
+    url: "/home/:homeId/room/device/type/list",
+    method: "get",
+    response: () => {
+      return {
+        success: true,
+        data: [
+          {
+            id: 1,
+            name: "智能灯泡",
+            description: "可调节亮度和颜色的智能灯泡"
+          },
+          {
+            id: 2,
+            name: "智能插座",
+            description: "可远程控制的智能插座"
+          },
+          {
+            id: 3,
+            name: "火焰传感器",
+            description: "检测火焰的安防传感器"
+          },
+          {
+            id: 4,
+            name: "可燃气体传感器",
+            description: "检测可燃气体的安防传感器"
+          }
+        ]
+      };
+    }
+  },
+
+  // 添加设备
+  {
+    url: "/home/:homeId/room/device/add",
+    method: "post",
+    response: ({ body }) => {
+      return {
+        success: true,
+        data: {
+          status: "success",
+          message: "添加设备成功",
+          deviceId: Math.floor(Math.random() * 1000) + 1
+        }
+      };
+    }
+  },
+
+  // 获取设备列表
+  {
+    url: "/home/:homeId/room/device/list",
+    method: "get",
+    response: () => {
+      return {
+        success: true,
+        data: {
+          devices: [
+            {
+              id: 1,
+              name: "客厅灯",
+              ipAddress: "192.168.1.100",
+              homeId: 1,
+              roomId: 1,
+              typeId: 1,
+              onlineStatus: 1,
+              activeStatus: 1,
+              lastActiveTime: new Date().toISOString()
+            },
+            {
+              id: 2,
+              name: "厨房插座",
+              ipAddress: "192.168.1.101",
+              homeId: 1,
+              roomId: 2,
+              typeId: 2,
+              onlineStatus: 1,
+              activeStatus: 0,
+              lastActiveTime: new Date().toISOString()
+            },
+            {
+              id: 3,
+              name: "火焰传感器",
+              ipAddress: "192.168.1.102",
+              homeId: 1,
+              roomId: 3,
+              typeId: 3,
+              onlineStatus: 1,
+              activeStatus: 1,
+              lastActiveTime: new Date().toISOString()
+            },
+            {
+              id: 4,
+              name: "燃气传感器",
+              ipAddress: "192.168.1.103",
+              homeId: 1,
+              roomId: 3,
+              typeId: 4,
+              onlineStatus: 1,
+              activeStatus: 1,
+              lastActiveTime: new Date().toISOString()
+            }
+          ]
+        }
+      };
+    }
+  },
+
+  // 更新设备
+  {
+    url: "/home/:homeId/room/device/update",
+    method: "post",
+    response: ({ body }) => {
+      return {
+        success: true,
+        data: {
+          status: "success",
+          message: "更新成功"
+        }
+      };
+    }
+  },
+
+  // 删除设备
+  {
+    url: "/home/:homeId/room/device/delete",
+    method: "delete",
+    response: ({ query }) => {
+      return {
+        success: true,
+        data: {
+          status: "success",
+          message: "删除成功"
+        }
+      };
+    }
+  },
+
+  // 移动设备
+  {
+    url: "/home/:homeId/room/device/move",
+    method: "post",
+    response: ({ body }) => {
+      return {
+        success: true,
+        data: {
+          message: "移动成功"
+        }
+      };
+    }
+  },
+
+  // ==================== 设备交互接口 ====================
+
+  // 设备操作
+  {
+    url: "/home/:homeId/device/operation",
+    method: "post",
+    response: ({ body }) => {
+      return {
+        success: true,
+        data: {
+          message: "操作成功"
+        }
+      };
+    }
+  },
+
+  // 获取设备操作列表
+  {
+    url: "/home/:homeId/device/:deviceId/operations",
+    method: "get",
+    response: () => {
+      return {
+        success: true,
+        data: {
+          operations: [
+            {
+              id: 1,
+              name: "开关",
+              description: "设备的开关操作"
+            },
+            {
+              id: 2,
+              name: "调节亮度",
+              description: "调节设备亮度"
+            },
+            {
+              id: 3,
+              name: "报警确认",
+              description: "确认报警信息"
+            },
+            {
+              id: 4,
+              name: "报警忽略",
+              description: "忽略报警信息"
+            }
+          ]
+        }
+      };
+    }
+  },
+
+  // ==================== 安防监控接口 ====================
+
+  // 获取安防传感器状态
+  {
+    url: "/home/:homeId/security/sensors",
+    method: "get",
+    response: () => {
+      const mockSecuritySensors = [
+        {
+          id: 1,
+          name: "厨房火焰传感器",
+          type: "flame" as const,
+          status: "normal" as const,
+          value: 0.2,
+          threshold: 1.0,
+          lastUpdate: new Date().toISOString()
+        },
+        {
+          id: 2,
+          name: "厨房燃气传感器",
+          type: "gas" as const,
+          status: "normal" as const,
+          value: 50,
+          threshold: 1000,
+          lastUpdate: new Date().toISOString()
+        },
+        {
+          id: 3,
+          name: "客厅火焰传感器",
+          type: "flame" as const,
+          status: "normal" as const,
+          value: 0.1,
+          threshold: 1.0,
+          lastUpdate: new Date().toISOString()
+        }
+      ];
+      
+      return mockSecuritySensors;
+    }
+  },
+
+  // 获取报警记录
+  {
+    url: "/home/:homeId/security/alarms",
+    method: "get",
+    response: ({ query }) => {
+      const mockAlarmRecords = [
+        {
+          id: 1,
+          deviceId: 1,
+          deviceName: "厨房火焰传感器",
+          alarmType: "flame",
+          alarmTime: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+          status: "confirmed" as const,
+          description: "检测到火焰异常"
+        },
+        {
+          id: 2,
+          deviceId: 2,
+          deviceName: "厨房燃气传感器",
+          alarmType: "gas",
+          alarmTime: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+          status: "ignored" as const,
+          description: "检测到燃气浓度异常"
+        },
+        {
+          id: 3,
+          deviceId: 1,
+          deviceName: "厨房火焰传感器",
+          alarmType: "flame",
+          alarmTime: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+          status: "pending" as const,
+          description: "检测到火焰异常"
+        }
+      ];
+      
+      let filteredRecords = [...mockAlarmRecords];
+      
+      // 根据查询参数过滤
+      if (query.startTime) {
+        filteredRecords = filteredRecords.filter(record => 
+          new Date(record.alarmTime) >= new Date(query.startTime as string)
+        );
+      }
+      if (query.endTime) {
+        filteredRecords = filteredRecords.filter(record => 
+          new Date(record.alarmTime) <= new Date(query.endTime as string)
+        );
+      }
+      if (query.alarmType) {
+        filteredRecords = filteredRecords.filter(record => 
+          record.alarmType === query.alarmType
+        );
+      }
+      if (query.status) {
+        filteredRecords = filteredRecords.filter(record => 
+          record.status === query.status
+        );
+      }
+
+      return filteredRecords;
+    }
+  },
+
+  // 确认报警
+  {
+    url: "/home/:homeId/security/alarms/:alarmId/confirm",
+    method: "post",
+    response: ({ query }) => {
+      const alarmId = parseInt(query.alarmId as string);
+      // 在实际应用中，这里应该更新数据库中的报警状态
+      return {
+        success: true,
+        data: {
+          message: "报警确认成功"
+        }
+      };
+    }
+  },
+
+  // 忽略报警
+  {
+    url: "/home/:homeId/security/alarms/:alarmId/ignore",
+    method: "post",
+    response: ({ query }) => {
+      const alarmId = parseInt(query.alarmId as string);
+      // 在实际应用中，这里应该更新数据库中的报警状态
+      return {
+        success: true,
+        data: {
+          message: "报警忽略成功"
+        }
+      };
+    }
   }
 ]);
