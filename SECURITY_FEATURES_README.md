@@ -25,7 +25,6 @@
 - `GET /home/{homeId}/room/device/list` - 获取设备列表
 - `POST /home/{homeId}/room/device/update` - 更新设备
 - `DELETE /home/{homeId}/room/device/delete?id={deviceId}` - 删除设备
-- `POST /home/{homeId}/room/device/move` - 移动设备
 
 ### 设备交互接口
 - `POST /home/{homeId}/device/operation` - 设备操作

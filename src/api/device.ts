@@ -234,18 +234,6 @@ export const deleteDevice = (homeId: number, deviceId: number) => {
   );
 };
 
-/** 移动设备 */
-export const moveDevice = (homeId: number, data: {
-  deviceId: number;
-  newRoomId: number;
-}) => {
-  return http.request<{ message: string }>(
-    "post", 
-    `/home/${homeId}/room/device/move`, 
-    { data }
-  );
-};
-
 // ==================== 设备交互接口 ====================
 
 /** 设备操作 */

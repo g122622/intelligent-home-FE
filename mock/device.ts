@@ -601,20 +601,6 @@ export default defineFakeRoute([
     }
   },
 
-  // 移动设备
-  {
-    url: "/home/:homeId/room/device/move",
-    method: "post",
-    response: ({ body }) => {
-      return {
-        success: true,
-        data: {
-          message: "移动成功"
-        }
-      };
-    }
-  },
-
   // ==================== 设备交互接口 ====================
 
   // 设备操作
