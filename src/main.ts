@@ -7,6 +7,7 @@ import { MotionPlugin } from "@vueuse/motion";
 import { createApp, type Directive } from "vue";
 import { useElementPlus } from "@/plugins/elementPlus";
 import { injectResponsiveStorage } from "@/utils/responsive";
+import { loadOml2d } from "oh-my-live2d";
 
 import Table from "@pureadmin/table";
 // import PureDescriptions from "@pureadmin/descriptions";
@@ -62,4 +63,16 @@ getPlatformConfig(app).then(async config => {
   // .use(PureDescriptions)
   // .use(useEcharts);
   app.mount("#app");
+  loadOml2d({
+    models: [
+      {
+        path: "https://model.hacxy.cn/HK416-1-normal/model.json",
+        position: [0, 60],
+        scale: 0.08,
+        stageStyle: {
+          height: 450
+        }
+      }
+    ]
+  });
 });

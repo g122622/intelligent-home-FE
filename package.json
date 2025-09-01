@@ -59,6 +59,7 @@
     "localforage": "^1.10.0",
     "mitt": "^3.0.1",
     "nprogress": "^0.2.0",
+    "oh-my-live2d": "^0.19.3",
     "path-browserify": "^1.0.1",
     "pinia": "^3.0.3",
     "pinyin-pro": "^3.26.0",
