@@ -16,7 +16,6 @@ const props = defineProps({
 });
 
 const { isDark } = useDark();
-
 const theme = computed(() => (isDark.value ? "dark" : "light"));
 
 const chartRef = ref();
@@ -26,48 +25,21 @@ const { setOptions, resize } = useECharts(chartRef, {
 });
 
 setOptions({
-  toolbox: {
-    feature: {
-      saveAsImage: {},
-      dataView: {},
-      restore: {}
-    }
-  },
-  container: ".line-card",
+  // 不显示工具箱
   xAxis: {
     type: "category",
-    show: true,
+    show: false,
     data: props.timestamps,
-    axisLabel: {
-      show: true,
-      formatter: function (value) {
-        return value;
-      }
-    }
   },
   grid: {
-    top: "15px",
-    bottom: "25px",
-    left: "45px",
-    right: "15px"
+    top: "5px",
+    bottom: "5px",
+    left: "10px",
+    right: "10px"
   },
   yAxis: {
-    show: true,
+    show: false,
     type: "value",
-    splitNumber: 8, // 增加分割线数量
-    axisLabel: {
-      show: true,
-      formatter: function (value) {
-        return (
-          value +
-          (props.data[0].name === "温度"
-            ? "°C"
-            : props.data[0].name === "湿度"
-              ? "%"
-              : "kWh")
-        );
-      }
-    },
     min: function (value) {
       return Math.floor(value.min * 0.9);
     },
@@ -93,9 +65,9 @@ setOptions({
     smooth: true,
     color: item.color,
     lineStyle: {
-      shadowOffsetY: 3,
-      shadowBlur: 7,
-      shadowColor: item.color
+      width: 2,
+      shadowBlur: 0,
+      shadowColor: "transparent"
     }
   }))
 });
@@ -113,16 +85,17 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="chartRef" class="chart-line-container" />
+  <div ref="chartRef" class="mini-line-chart-container" />
 </template>
+
 <style scoped>
-.chart-line-container {
+.mini-line-chart-container {
   width: 100%;
-  height: 250px;
+  height: 60px;
 }
 @media (max-width: 600px) {
-  .chart-line-container {
-    height: 180px;
+  .mini-line-chart-container {
+    height: 40px;
   }
 }
 </style>
