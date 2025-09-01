@@ -23,8 +23,9 @@ import {
   ChartRound,
   GaugeChart,
   PieChart,
-  TemperatureChart
+  TemperatureChart,
 } from "./components/charts";
+import MiniLineChart from "./components/charts/MiniLineChart.vue";
 import {
   getDashboardOverview,
   getTemperatureTrend,
@@ -202,10 +203,9 @@ const closeCard = (index: number) => {
                 {{ item.percent }}
               </p>
             </div>
-            <ChartLine
+            <MiniLineChart
               v-if="item.data[0].values.length > 1"
               class="w-1/2!"
-              :color="item.data[0].color"
               :data="item.data"
             />
             <ChartRound v-else class="w-1/2!" />
