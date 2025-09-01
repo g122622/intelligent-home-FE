@@ -25,7 +25,6 @@ const { setOptions, resize } = useECharts(chartRef, {
   renderer: "svg"
 });
 
-
 setOptions({
   toolbox: {
     feature: {
@@ -119,7 +118,7 @@ onUnmounted(() => {
 <style scoped>
 .chart-line-container {
   width: 100%;
-  height: 320px;
+  height: 250px;
 }
 @media (max-width: 600px) {
   .chart-line-container {
