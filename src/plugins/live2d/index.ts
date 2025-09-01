@@ -37,7 +37,8 @@ export const loadLive2D = () => {
       },
       style: {
         width: "100%",
-        height: "100px"
+        height: "100px",
+        backgroundColor: "#ef8959"
       }
     }
   });
