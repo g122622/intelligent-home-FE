@@ -1,5 +1,4 @@
 const Layout = () => import("@/layout/index.vue");
-import security from "./security";
 
 export default [
   {
@@ -27,6 +26,5 @@ export default [
         component: () => import("@/layout/redirect.vue")
       }
     ]
-  },
-  ...security
+  }
 ] satisfies Array<RouteConfigsTable>;
