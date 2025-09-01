@@ -51,6 +51,7 @@ import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 import VueTippy from "vue-tippy";
 import { useEcharts } from "./plugins/echarts";
+import { loadLive2D } from "./plugins/live2d";
 app.use(VueTippy);
 
 getPlatformConfig(app).then(async config => {
@@ -62,4 +63,5 @@ getPlatformConfig(app).then(async config => {
   // .use(PureDescriptions)
   // .use(useEcharts);
   app.mount("#app");
+  loadLive2D();
 });

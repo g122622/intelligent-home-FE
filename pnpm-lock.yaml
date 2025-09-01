@@ -50,6 +50,9 @@ importers:
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
+      oh-my-live2d:
+        specifier: ^0.19.3
+        version: 0.19.3
       path-browserify:
         specifier: ^1.0.1
         version: 1.0.1
@@ -2763,6 +2766,9 @@ packages:
   object-inspect@1.13.4:
     resolution: {integrity: sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==}
     engines: {node: '>= 0.4'}
+
+  oh-my-live2d@0.19.3:
+    resolution: {integrity: sha512-EWva8OUmcExIFIhqGkeiVPQt44RvYYFg+nmpkrZgQVQ+xofVFq4SDYAg5NcdK40HxyV4vORBJEg4OHIHP96MrA==}
 
   ohash@2.0.11:
     resolution: {integrity: sha512-RdR9FQrFwNBNXAr4GixM8YaRZRJ5PUWbKYbE5eOsrwAjJW0q2REGcf79oYPsLyskQCZG1PLN+S/K1V00joZAoQ==}
@@ -6304,6 +6310,8 @@ snapshots:
     optional: true
 
   object-inspect@1.13.4: {}
+
+  oh-my-live2d@0.19.3: {}
 
   ohash@2.0.11:
     optional: true
