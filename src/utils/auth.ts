@@ -1,24 +1,14 @@
 import Cookies from "js-cookie";
 import { useUserStoreHook } from "@/store/modules/user";
-import { storageLocal, isString, isIncludeAllChildren } from "@pureadmin/utils";
+import { storageLocal } from "@pureadmin/utils";
 
-export interface DataInfo<T> {
+export interface DataInfo {
   /** token */
-  accessToken: string;
-  /** `accessToken`的过期时间（时间戳） */
-  expires: T;
-  /** 用于调用刷新accessToken的接口时所需的token */
-  refreshToken: string;
-  /** 头像 */
-  avatar?: string;
+  token: string;
   /** 用户名 */
   username?: string;
-  /** 昵称 */
-  nickname?: string;
   /** 当前登录用户的角色 */
-  roles?: Array<string>;
-  /** 当前登录用户的按钮级别权限 */
-  permissions?: Array<string>;
+  role?: "host" | "member" | "guest";
 }
 
 export const userKey = "user-info";
@@ -32,7 +22,7 @@ export const TokenKey = "authorized-token";
 export const multipleTabsKey = "multiple-tabs";
 
 /** 获取`token` */
-export function getToken(): DataInfo<number> {
+export function getToken(): DataInfo {
   // 此处与`TokenKey`相同，此写法解决初始化时`Cookies`中不存在`TokenKey`报错
   return Cookies.get(TokenKey)
     ? JSON.parse(Cookies.get(TokenKey))
@@ -40,77 +30,47 @@ export function getToken(): DataInfo<number> {
 }
 
 /**
- * @description 设置`token`以及一些必要信息并采用无感刷新`token`方案
- * 无感刷新：后端返回`accessToken`（访问接口使用的`token`）、`refreshToken`（用于调用刷新`accessToken`的接口时所需的`token`，`refreshToken`的过期时间（比如30天）应大于`accessToken`的过期时间（比如2小时））、`expires`（`accessToken`的过期时间）
- * 将`accessToken`、`expires`、`refreshToken`这三条信息放在key值为authorized-token的cookie里（过期自动销毁）
- * 将`avatar`、`username`、`nickname`、`roles`、`permissions`、`refreshToken`、`expires`这七条信息放在key值为`user-info`的localStorage里（利用`multipleTabsKey`当浏览器完全关闭后自动销毁）
+ * @description 设置`token`
  */
-export function setToken(data: DataInfo<Date>) {
-  let expires = 0;
-  const { accessToken, refreshToken } = data;
-  const { isRemembered, loginDay } = useUserStoreHook();
-  expires = new Date(data.expires).getTime(); // 如果后端直接设置时间戳，将此处代码改为expires = data.expires，然后把上面的DataInfo<Date>改成DataInfo<number>即可
-  const cookieString = JSON.stringify({ accessToken, expires, refreshToken });
+export function setToken(data: DataInfo) {
+  const { token } = data;
+  const { isRemembered } = useUserStoreHook();
+  const cookieString = JSON.stringify({ token });
 
-  expires > 0
-    ? Cookies.set(TokenKey, cookieString, {
-        expires: (expires - Date.now()) / 86400000
-      })
-    : Cookies.set(TokenKey, cookieString);
-
+  // TODO 验证记住密码功能是否有效
+  Cookies.set(TokenKey, cookieString);
   Cookies.set(
     multipleTabsKey,
     "true",
     isRemembered
       ? {
-          expires: loginDay
+          // 7天后过期
+          expires: 7
         }
       : {}
   );
 
-  function setUserKey({ avatar, username, nickname, roles, permissions }) {
-    useUserStoreHook().SET_AVATAR(avatar);
+  function setUserKey({ username, role }) {
     useUserStoreHook().SET_USERNAME(username);
-    useUserStoreHook().SET_NICKNAME(nickname);
-    useUserStoreHook().SET_ROLES(roles);
-    useUserStoreHook().SET_PERMS(permissions);
+    useUserStoreHook().SET_ROLE(role);
+    // 设置用户信息到localStorage
     storageLocal().setItem(userKey, {
-      refreshToken,
-      expires,
-      avatar,
-      username,
-      nickname,
-      roles,
-      permissions
+      username
     });
   }
 
-  if (data.username && data.roles) {
-    const { username, roles } = data;
+  if (data.username && data.role) {
+    const { username, role } = data;
     setUserKey({
-      avatar: data?.avatar ?? "",
       username,
-      nickname: data?.nickname ?? "",
-      roles,
-      permissions: data?.permissions ?? []
+      role
     });
   } else {
-    const avatar =
-      storageLocal().getItem<DataInfo<number>>(userKey)?.avatar ?? "";
-    const username =
-      storageLocal().getItem<DataInfo<number>>(userKey)?.username ?? "";
-    const nickname =
-      storageLocal().getItem<DataInfo<number>>(userKey)?.nickname ?? "";
-    const roles =
-      storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? [];
-    const permissions =
-      storageLocal().getItem<DataInfo<number>>(userKey)?.permissions ?? [];
+    const username = storageLocal().getItem<DataInfo>(userKey)?.username ?? "";
+    const role = storageLocal().getItem<DataInfo>(userKey)?.role ?? "guest";
     setUserKey({
-      avatar,
       username,
-      nickname,
-      roles,
-      permissions
+      role
     });
   }
 }
@@ -128,26 +88,13 @@ export const formatToken = (token: string): string => {
 };
 
 /** 是否有按钮级别的权限（根据登录接口返回的`permissions`字段进行判断）*/
-export const hasPerms = (value: string | Array<string>): boolean => {
-  if (!value) return false;
-  const allPerms = "*:*:*";
-  const { permissions } = useUserStoreHook();
-  if (!permissions) return false;
-  if (permissions.length === 1 && permissions[0] === allPerms) return true;
-  const isAuths = isString(value)
-    ? permissions.includes(value)
-    : isIncludeAllChildren(value, permissions);
-  return isAuths ? true : false;
+export const hasPerms = (_value: string | Array<string>): boolean => {
+  // TODO
+  return true;
 };
 
 /** 检查用户角色权限 */
-export const hasRole = (role: string): boolean => {
-  if (!role) return false;
-  const { roles } = useUserStoreHook();
-  if (!roles || roles.length === 0) {
-    // 如果没有从store获取到角色，尝试从localStorage获取
-    const storedRole = localStorage.getItem("userRole");
-    return storedRole === role;
-  }
-  return roles.includes(role);
+export const hasRole = (_role: string): boolean => {
+  // TODO
+  return true;
 };

@@ -38,5 +38,8 @@ export const register = (data: RegisterParams) => {
 
 /** 搜索用户 */
 export const searchUserByPhone = (phone: string) => {
-  return http.request<SearchUserResult>("get", `/auth/search-user-by-phone?phone=${phone}`);
+  return http.request<SearchUserResult>(
+    "get",
+    `/auth/search-user-by-phone?phone=${phone}`
+  );
 };

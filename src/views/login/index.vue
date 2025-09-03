@@ -48,35 +48,14 @@ const onLogin = async (formEl: FormInstance | undefined) => {
   await formEl.validate(async valid => {
     if (valid) {
       loading.value = true;
-      await useUserStoreHook().loginByUsername({
-        username: ruleForm.phone,
-        password: ruleForm.password
-      });
-      login({
-        phone: ruleForm.phone,
-        password: ruleForm.password
-      })
+      useUserStoreHook()
+        .loginByUsername({
+          phone: ruleForm.phone,
+          password: ruleForm.password
+        })
         .then(res => {
           console.log(res);
           if (res.token) {
-            // 存储token和角色信息
-            localStorage.setItem("token", res.token);
-            localStorage.setItem("userRole", activeRole.value);
-
-            // 设置用户信息到store
-            useUserStoreHook().SET_USERNAME(ruleForm.phone);
-            useUserStoreHook().SET_ROLES([activeRole.value]);
-
-            // 手动设置角色信息到userKey存储中，用于菜单权限过滤
-            const userInfo = {
-              username: ruleForm.phone,
-              roles: [activeRole.value],
-              permissions: [],
-              refreshToken: "",
-              expires: Date.now() + 7 * 24 * 60 * 60 * 1000 // 7天后过期
-            };
-            localStorage.setItem("user-info", JSON.stringify(userInfo));
-
             // 获取后端路由
             return initRouter().then(() => {
               disabled.value = true;
@@ -88,7 +67,9 @@ const onLogin = async (formEl: FormInstance | undefined) => {
                 .finally(() => (disabled.value = false));
             });
           } else {
-            message("登录失败", { type: "error" });
+            message("登录失败，读取到的 token 无效，token为：" + res.token, {
+              type: "error"
+            });
           }
         })
         .catch(error => {

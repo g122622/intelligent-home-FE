@@ -9,8 +9,7 @@ export default {
     icon: "ep:operation",
     title: "设备控制",
     rank: 10,
-    showLink: true,
-    roles: ["admin", "homeowner"]
+    showLink: true
   },
   children: [
     {

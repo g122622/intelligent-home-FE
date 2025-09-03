@@ -195,7 +195,7 @@ export default defineFakeRoute([
     response: ({ body }) => {
       const updates = body as Array<{ id: string; updates: Partial<Device> }>;
       const updatedDevices: Device[] = [];
-      
+
       updates.forEach(({ id, updates: deviceUpdates }) => {
         const deviceIndex = mockDevices.findIndex(d => d.id === id);
         if (deviceIndex !== -1) {
@@ -296,7 +296,7 @@ export default defineFakeRoute([
       const group = mockDeviceGroups.find(g => g.id === query.id);
       if (group) {
         const updatedDevices: Device[] = [];
-        
+
         Object.entries(group.actions).forEach(([deviceId, actions]) => {
           const deviceIndex = mockDevices.findIndex(d => d.id === deviceId);
           if (deviceIndex !== -1) {
@@ -403,9 +403,9 @@ export default defineFakeRoute([
       const scene = mockScenes.find(s => s.id === query.id);
       if (scene) {
         scene.isActive = true;
-        
+
         const updatedDevices: Device[] = [];
-        
+
         Object.entries(scene.actions).forEach(([deviceId, actions]) => {
           const deviceIndex = mockDevices.findIndex(d => d.id === deviceId);
           if (deviceIndex !== -1) {
@@ -688,7 +688,7 @@ export default defineFakeRoute([
           lastUpdate: new Date().toISOString()
         }
       ];
-      
+
       return mockSecuritySensors;
     }
   },
@@ -722,33 +722,37 @@ export default defineFakeRoute([
           deviceId: 1,
           deviceName: "厨房火焰传感器",
           alarmType: "flame",
-          alarmTime: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+          alarmTime: new Date(
+            Date.now() - 3 * 24 * 60 * 60 * 1000
+          ).toISOString(),
           status: "pending" as const,
           description: "检测到火焰异常"
         }
       ];
-      
+
       let filteredRecords = [...mockAlarmRecords];
-      
+
       // 根据查询参数过滤
       if (query.startTime) {
-        filteredRecords = filteredRecords.filter(record => 
-          new Date(record.alarmTime) >= new Date(query.startTime as string)
+        filteredRecords = filteredRecords.filter(
+          record =>
+            new Date(record.alarmTime) >= new Date(query.startTime as string)
         );
       }
       if (query.endTime) {
-        filteredRecords = filteredRecords.filter(record => 
-          new Date(record.alarmTime) <= new Date(query.endTime as string)
+        filteredRecords = filteredRecords.filter(
+          record =>
+            new Date(record.alarmTime) <= new Date(query.endTime as string)
         );
       }
       if (query.alarmType) {
-        filteredRecords = filteredRecords.filter(record => 
-          record.alarmType === query.alarmType
+        filteredRecords = filteredRecords.filter(
+          record => record.alarmType === query.alarmType
         );
       }
       if (query.status) {
-        filteredRecords = filteredRecords.filter(record => 
-          record.status === query.status
+        filteredRecords = filteredRecords.filter(
+          record => record.status === query.status
         );
       }
 
