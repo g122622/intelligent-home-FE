@@ -19,10 +19,10 @@ export interface RoomInfo {
 
 /** 家庭成员信息 */
 export interface MemberInfo {
-  userId: number;
+  id: number;
   username: string;
   role: number; // 0: 房主, 1: 家庭成员, 2: 访客
-  roleName: string;
+  phone: string;
 }
 
 /** 设备简要信息 */
@@ -38,7 +38,7 @@ export interface DeviceSummary {
 export interface HomeDetailResponse {
   home: HomeInfo;
   rooms: RoomInfo[];
-  members: MemberInfo[];
+  users: MemberInfo[];
   devices: DeviceSummary[];
 }
 

@@ -101,11 +101,14 @@ watch(homeId, newId => {
         </el-tab-pane>
 
         <el-tab-pane label="房间管理" name="rooms">
-          <RoomList :rooms="homeStore.currentHomeRooms" />
+          <RoomList :rooms="homeStore.currentHomeRooms" :homeId="homeId" />
         </el-tab-pane>
 
         <el-tab-pane label="成员管理" name="members">
-          <MemberList :members="homeStore.currentHomeMembers" />
+          <MemberList
+            :members="homeStore.currentHomeMembers"
+            :homeId="homeId"
+          />
         </el-tab-pane>
 
         <el-tab-pane label="设备概览" name="devices">

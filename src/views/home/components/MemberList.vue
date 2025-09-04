@@ -7,11 +7,17 @@ import { User, Plus } from "@element-plus/icons-vue";
 
 const props = defineProps<{
   members: MemberInfo[];
+  homeId: number;
 }>();
 
 const homeStore = useHomeStore();
 const showMemberForm = ref(false);
-const editingMember = ref<MemberInfo | null>(null);
+const editingMember = ref<MemberInfo>({
+  id: 0,
+  role: 1,
+  username: "",
+  phone: ""
+});
 
 // 角色标签类型映射
 const roleTagType = (role: number) => {
@@ -27,9 +33,28 @@ const roleTagType = (role: number) => {
   }
 };
 
+// 角色名称映射
+const roleText = (role: number) => {
+  switch (role) {
+    case 0:
+      return "房主";
+    case 1:
+      return "成员";
+    case 2:
+      return "访客";
+    default:
+      return "未知";
+  }
+};
+
 // 添加成员
 const addMember = () => {
-  editingMember.value = null;
+  editingMember.value = {
+    id: 0,
+    role: 1,
+    username: "",
+    phone: ""
+  };
   showMemberForm.value = true;
 };
 
@@ -100,20 +125,20 @@ const changeRole = async (member: MemberInfo) => {
       </div>
 
       <el-table v-else :data="members" style="width: 100%">
-        <el-table-column label="用户ID" prop="userId" width="100" />
-        <el-table-column label="用户名" prop="username" min-width="120" />
+        <el-table-column label="用户ID" prop="id" width="100" />
+        <el-table-column label="用户名" prop="username" width="200" />
         <el-table-column label="角色" width="120">
           <template #default="{ row }">
             <el-tag :type="roleTagType(row.role)" size="small">
-              {{ row.roleName }}
+              {{ roleText(row.role) }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="200" align="right">
+        <el-table-column label="操作" align="center" min-width="120">
           <template #default="{ row }">
             <el-button
-              v-if="
-                homeStore.ownedHomes.some(
+              :disabled="
+                !homeStore.ownedHomes.some(
                   h => h.homeId === homeStore.selectedHomeId
                 )
               "
@@ -179,13 +204,13 @@ const changeRole = async (member: MemberInfo) => {
       <el-form label-width="80px">
         <el-form-item label="用户ID">
           <el-input
-            v-model="editingMember?.userId"
+            v-model="editingMember.id"
             type="number"
             placeholder="请输入用户ID"
           />
         </el-form-item>
         <el-form-item label="角色">
-          <el-select v-model="editingMember?.role" placeholder="请选择角色">
+          <el-select v-model="editingMember.role" placeholder="请选择角色">
             <el-option label="房主" :value="0" />
             <el-option label="成员" :value="1" />
             <el-option label="访客" :value="2" />
@@ -195,7 +220,21 @@ const changeRole = async (member: MemberInfo) => {
 
       <template #footer>
         <el-button @click="showMemberForm = false">取消</el-button>
-        <el-button type="primary">确定</el-button>
+        <el-button
+          type="primary"
+          @click="
+            async () => {
+              await homeStore.addMember({
+                userId: editingMember.id,
+                role: editingMember.role,
+                homeId: props.homeId
+              });
+              showMemberForm = false;
+              await homeStore.fetchHomeDetail(props.homeId);
+            }
+          "
+          >确定</el-button
+        >
       </template>
     </el-dialog>
   </el-card>

@@ -168,21 +168,21 @@ onMounted(() => {
       <el-form :model="editingPermission" label-width="100px">
         <el-form-item label="用户ID">
           <el-input
-            v-model="editingPermission?.userId"
+            v-model="editingPermission.userId"
             type="number"
             placeholder="请输入用户ID"
           />
         </el-form-item>
         <el-form-item label="设备ID">
           <el-input
-            v-model="editingPermission?.deviceId"
+            v-model="editingPermission.deviceId"
             type="number"
             placeholder="请输入设备ID"
           />
         </el-form-item>
         <el-form-item label="操作权限">
           <el-select
-            v-model="editingPermission?.operationId"
+            v-model="editingPermission.operationId"
             placeholder="请选择操作权限"
           >
             <el-option label="查看" :value="1" />
@@ -192,7 +192,7 @@ onMounted(() => {
         </el-form-item>
         <el-form-item label="有效期">
           <el-date-picker
-            v-model="editingPermission?.endTime"
+            v-model="editingPermission.endTime"
             type="datetime"
             placeholder="选择有效期"
             value-format="YYYY-MM-DDTHH:mm:ss"
@@ -200,7 +200,7 @@ onMounted(() => {
         </el-form-item>
         <el-form-item label="权限状态">
           <el-switch
-            v-model="editingPermission?.hasPermission"
+            v-model="editingPermission.hasPermission"
             active-text="有效"
             inactive-text="无效"
           />

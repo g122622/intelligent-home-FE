@@ -3,17 +3,30 @@ import { ref } from "vue";
 import { RoomInfo } from "@/api/home";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
+import { createRoom, deleteRoom } from "@/api/room";
+import { useHomeStore } from "@/store/modules/home";
+
+const homeStore = useHomeStore();
 
 const props = defineProps<{
   rooms: RoomInfo[];
+  homeId: number;
 }>();
 
 const showRoomForm = ref(false);
-const editingRoom = ref<RoomInfo | null>(null);
+const editingRoom = ref<RoomInfo | null>({
+  id: 0,
+  name: "",
+  homeId: props.homeId
+});
 
 // 添加房间
 const addRoom = () => {
-  editingRoom.value = null;
+  editingRoom.value = {
+    id: 0,
+    name: "",
+    homeId: props.homeId
+  };
   showRoomForm.value = true;
 };
 
@@ -24,7 +37,7 @@ const editRoom = (room: RoomInfo) => {
 };
 
 // 删除房间
-const deleteRoom = async (room: RoomInfo) => {
+const deleteRoom_ = async (room: RoomInfo) => {
   try {
     await ElMessageBox.confirm(
       `确定要删除房间 "${room.name}" 吗？`,
@@ -35,6 +48,8 @@ const deleteRoom = async (room: RoomInfo) => {
         type: "warning"
       }
     );
+    await deleteRoom(props.homeId, room.id);
+    await homeStore.fetchHomeDetail(props.homeId);
     ElMessage.success("房间删除成功");
   } catch (error) {
     if (error !== "cancel") {
@@ -84,7 +99,7 @@ const deleteRoom = async (room: RoomInfo) => {
                   type="danger"
                   link
                   size="small"
-                  @click="deleteRoom(room)"
+                  @click="deleteRoom_(room)"
                 >
                   删除
                 </el-button>
@@ -111,18 +126,29 @@ const deleteRoom = async (room: RoomInfo) => {
     <!-- 房间表单对话框 -->
     <el-dialog
       v-model="showRoomForm"
-      :title="editingRoom ? '编辑房间' : '添加房间'"
+      :title="editingRoom.name ? '编辑房间' : '添加房间'"
       width="400px"
     >
       <el-form label-width="80px">
         <el-form-item label="房间名称">
-          <el-input v-model="editingRoom?.name" placeholder="请输入房间名称" />
+          <el-input v-model="editingRoom.name" placeholder="请输入房间名称" />
         </el-form-item>
       </el-form>
 
       <template #footer>
         <el-button @click="showRoomForm = false">取消</el-button>
-        <el-button type="primary">确定</el-button>
+        <el-button
+          type="primary"
+          @click="
+            async () => {
+              await createRoom(editingRoom.homeId, editingRoom.name);
+              showRoomForm = false;
+              await homeStore.fetchHomeDetail(props.homeId);
+            }
+          "
+        >
+          确定
+        </el-button>
       </template>
     </el-dialog>
   </el-card>

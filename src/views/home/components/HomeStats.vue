@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { useHomeStore } from "@/store/modules/home";
 import { ReNormalCountTo } from "@/components/ReCountTo";
+import { HomeFilled, Key, User, Guide } from "@element-plus/icons-vue";
 
 const homeStore = useHomeStore();
 
@@ -9,28 +10,28 @@ const stats = computed(() => [
   {
     title: "总家庭数",
     value: homeStore.homes.length,
-    icon: "ep:home-filled",
+    icon: HomeFilled,
     color: "#409EFF",
     bgColor: "rgba(64, 158, 255, 0.1)"
   },
   {
     title: "拥有的家庭",
     value: homeStore.ownedHomes.length,
-    icon: "ep:key",
+    icon: Key,
     color: "#67C23A",
     bgColor: "rgba(103, 194, 58, 0.1)"
   },
   {
     title: "成员身份",
     value: homeStore.memberHomes.length,
-    icon: "ep:user",
+    icon: User,
     color: "#E6A23C",
     bgColor: "rgba(230, 162, 60, 0.1)"
   },
   {
     title: "访客身份",
     value: homeStore.guestHomes.length,
-    icon: "ep:guide",
+    icon: Guide,
     color: "#909399",
     bgColor: "rgba(144, 147, 153, 0.1)"
   }

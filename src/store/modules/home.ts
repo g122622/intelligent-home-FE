@@ -39,7 +39,7 @@ export const useHomeStore = defineStore("home", () => {
 
   // 计算属性
   const currentHomeRooms = computed(() => homeDetail.value?.rooms || []);
-  const currentHomeMembers = computed(() => homeDetail.value?.members || []);
+  const currentHomeMembers = computed(() => homeDetail.value?.users || []);
   const currentHomeDevices = computed(() => homeDetail.value?.devices || []);
   const ownedHomes = computed(() =>
     myHomes.value.filter(home => home.role === 0)
