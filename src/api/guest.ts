@@ -168,6 +168,7 @@ export interface JoinRequest {
   status: number; // 0: 等待处理, 1: 已同意, 2: 已拒绝
   statusName: string;
   recordTime: string;
+  homeId?: number; // 家庭ID，可选属性
 }
 
 /** 进入请求列表响应 */
