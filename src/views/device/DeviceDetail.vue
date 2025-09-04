@@ -22,7 +22,7 @@ const fetchDeviceDetail = async () => {
     // 从设备列表中查找设备
     await deviceStore.fetchDeviceList();
     const foundDevice = deviceStore.devices.find(d => d.id === deviceId.value);
-    
+
     if (foundDevice) {
       device.value = foundDevice;
       // 获取设备数据
@@ -42,7 +42,7 @@ const fetchDeviceDetail = async () => {
 // 设备状态标签
 const statusTag = computed(() => {
   if (!device.value) return { type: "info" as const, text: "未知" };
-  
+
   if (device.value.onlineStatus === 0) {
     return { type: "danger" as const, text: "离线" };
   } else if (device.value.activeStatus === 0) {
@@ -125,11 +125,15 @@ onMounted(() => {
           </div>
           <div class="info-item">
             <span class="label">在线状态:</span>
-            <span class="value">{{ device.onlineStatus === 1 ? '在线' : '离线' }}</span>
+            <span class="value">{{
+              device.onlineStatus === 1 ? "在线" : "离线"
+            }}</span>
           </div>
           <div class="info-item">
             <span class="label">激活状态:</span>
-            <span class="value">{{ device.activeStatus === 1 ? '已激活' : '未激活' }}</span>
+            <span class="value">{{
+              device.activeStatus === 1 ? "已激活" : "未激活"
+            }}</span>
           </div>
           <div class="info-item">
             <span class="label">最后活跃:</span>
@@ -143,15 +147,18 @@ onMounted(() => {
         <el-tab-pane label="数据监控" name="overview">
           <DeviceDataChart :device="device" />
         </el-tab-pane>
-        
+
         <el-tab-pane label="设备操作" name="operations">
           <DeviceOperations />
         </el-tab-pane>
-        
+
         <el-tab-pane label="操作历史" name="history">
           <div class="history-content">
             <h4>最近操作记录</h4>
-            <div v-if="deviceStore.deviceData.length === 0" class="empty-history">
+            <div
+              v-if="deviceStore.deviceData.length === 0"
+              class="empty-history"
+            >
               <el-empty description="暂无操作记录" />
             </div>
             <div v-else class="history-list">
@@ -340,7 +347,7 @@ onMounted(() => {
 :deep() {
   .device-info-card {
     background: var(--el-bg-color);
-    
+
     .el-card__header {
       background: var(--el-fill-color-dark);
     }

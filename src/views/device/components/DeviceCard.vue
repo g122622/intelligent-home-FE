@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import type { DeviceDetail } from "@/api/device";
 import { ElTag, ElMessage } from "element-plus";
-import { Edit, Delete, Connection, More } from "@element-plus/icons-vue";
+import { Edit, Delete, Connection, More, View } from "@element-plus/icons-vue";
 
 interface Props {
   device: DeviceDetail;
@@ -31,17 +31,17 @@ const statusTag = computed(() => {
 
 // 设备类型图标映射
 const deviceIcons = {
-  1: "ep:light", // 智能灯泡
-  2: "ep:plug", // 智能插座
-  3: "ep:monitor", // 传感器
-  4: "ep:lock", // 智能锁
-  5: "ep:camera", // 摄像头
-  6: "ep:thermometer" // 温控器
+  1: "ep/light", // 智能灯泡
+  2: "ep/plug", // 智能插座
+  3: "ep/monitor", // 传感器
+  4: "ep/lock", // 智能锁
+  5: "ep/camera", // 摄像头
+  6: "ep/thermometer" // 温控器
 };
 
 // 获取设备图标
 const getDeviceIcon = (typeId: number) => {
-  return deviceIcons[typeId as keyof typeof deviceIcons] || "ep:question";
+  return deviceIcons[typeId as keyof typeof deviceIcons] || "ep/question";
 };
 
 // 格式化最后活跃时间
@@ -78,6 +78,7 @@ const handleQuickAction = () => {
       <div class="card-header">
         <div class="device-info">
           <el-icon class="device-icon">
+            <!-- TODO 图标 -->
             <IconifyIconOffline :icon="getDeviceIcon(device.typeId)" />
           </el-icon>
           <div class="device-title">
@@ -107,7 +108,9 @@ const handleQuickAction = () => {
       </div>
       <div class="detail-item">
         <span class="label">最后活跃:</span>
-        <span class="value">{{ formatLastActiveTime(device.lastActiveTime) }}</span>
+        <span class="value">{{
+          formatLastActiveTime(device.lastActiveTime)
+        }}</span>
       </div>
     </div>
 
@@ -115,42 +118,30 @@ const handleQuickAction = () => {
     <template #footer>
       <div class="card-footer">
         <div class="footer-actions">
-          <el-button 
-            size="small" 
-            :icon="View" 
-            @click="handleView"
-          >
+          <el-button size="small" :icon="View" @click="handleView">
             详情
           </el-button>
-          <el-button 
-            size="small" 
-            :icon="Edit" 
-            @click="handleEdit"
-          >
+          <el-button size="small" :icon="Edit" @click="handleEdit">
             编辑
           </el-button>
-          
-          <el-button 
+
+          <el-button
             v-if="device.onlineStatus === 1 && device.activeStatus === 0"
-            size="small" 
-            type="primary" 
+            size="small"
+            type="primary"
             :icon="Connection"
             @click="handleActivate"
           >
             激活
           </el-button>
-          
-          <el-button 
-            size="small" 
-            :icon="More"
-            @click="handleQuickAction"
-          >
+
+          <el-button size="small" :icon="More" @click="handleQuickAction">
             操作
           </el-button>
-          
-          <el-button 
-            size="small" 
-            type="danger" 
+
+          <el-button
+            size="small"
+            type="danger"
             :icon="Delete"
             @click="handleDelete"
           >
@@ -166,7 +157,7 @@ const handleQuickAction = () => {
 .device-card {
   height: 100%;
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: var(--el-box-shadow-light);
@@ -282,7 +273,7 @@ const handleQuickAction = () => {
 
   .footer-actions {
     flex-direction: column;
-    
+
     .el-button {
       width: 100%;
     }
@@ -297,7 +288,7 @@ const handleQuickAction = () => {
       var(--el-bg-color),
       var(--el-fill-color-light)
     );
-    
+
     .el-card__header,
     .el-card__footer {
       background: var(--el-fill-color-lighter);
@@ -308,7 +299,7 @@ const handleQuickAction = () => {
 // 动画效果
 .device-card {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  
+
   &:hover {
     transform: translateY(-4px) scale(1.02);
   }

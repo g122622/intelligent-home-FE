@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useDeviceStore } from "@/store/modules/device";
 import { ElRow, ElCol, ElCard, ElStatistic } from "element-plus";
-import { Connection, Disconnect, Check, Clock } from "@element-plus/icons-vue";
+import { Connection, Close, Check, Clock } from "@element-plus/icons-vue";
 
 const deviceStore = useDeviceStore();
 
@@ -12,10 +12,10 @@ const stats = computed(() => {
   const online = deviceStore.onlineDevices.length;
   const offline = deviceStore.offlineDevices.length;
   const active = deviceStore.activeDevices.length;
-  
+
   const onlineRate = total > 0 ? ((online / total) * 100).toFixed(1) : "0";
   const activeRate = total > 0 ? ((active / total) * 100).toFixed(1) : "0";
-  
+
   return {
     total,
     online,
@@ -48,7 +48,7 @@ const statCards = computed(() => [
   {
     title: "离线设备",
     value: stats.value.offline,
-    icon: Disconnect,
+    icon: Close,
     color: "var(--el-color-danger)",
     suffix: "台",
     loading: deviceStore.isLoading
@@ -83,7 +83,7 @@ const statCards = computed(() => [
               <component :is="card.icon" />
             </ElIcon>
           </div>
-          
+
           <!-- 统计数字 -->
           <div class="stat-main">
             <ElStatistic
@@ -96,16 +96,19 @@ const statCards = computed(() => [
                 <span class="stat-suffix">{{ card.suffix }}</span>
               </template>
             </ElStatistic>
-            
+
             <!-- 额外信息 -->
             <div v-if="card.extra" class="stat-extra">
               {{ card.extra }}
             </div>
           </div>
         </div>
-        
+
         <!-- 卡片底部装饰 -->
-        <div class="stat-decoration" :style="{ backgroundColor: card.color }"></div>
+        <div
+          class="stat-decoration"
+          :style="{ backgroundColor: card.color }"
+        ></div>
       </ElCard>
     </ElCol>
   </ElRow>
@@ -130,11 +133,11 @@ const statCards = computed(() => [
     var(--el-fill-color-light)
   );
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: var(--el-box-shadow-light);
-    
+
     .stat-decoration {
       width: 100%;
     }
@@ -163,7 +166,7 @@ const statCards = computed(() => [
   background: var(--el-fill-color-lighter);
   border-radius: 12px;
   transition: all 0.3s ease;
-  
+
   .stat-card:hover & {
     transform: scale(1.1);
     background: var(--el-fill-color);
@@ -178,7 +181,7 @@ const statCards = computed(() => [
 :deep(.el-statistic) {
   .el-statistic__head {
     margin-bottom: 4px;
-    
+
     .el-statistic__title {
       font-size: 12px;
       font-weight: 500;
@@ -187,7 +190,7 @@ const statCards = computed(() => [
       letter-spacing: 0.5px;
     }
   }
-  
+
   .el-statistic__content {
     .el-statistic__number {
       font-size: 24px;
@@ -231,16 +234,16 @@ const statCards = computed(() => [
     text-align: center;
     gap: 12px;
   }
-  
+
   .stat-icon {
     width: 40px;
     height: 40px;
-    
+
     .el-icon {
       font-size: 20px;
     }
   }
-  
+
   :deep(.el-statistic) {
     .el-statistic__content {
       .el-statistic__number {
@@ -258,7 +261,7 @@ const statCards = computed(() => [
       var(--el-bg-color),
       var(--el-fill-color-dark)
     );
-    
+
     .stat-icon {
       background: var(--el-fill-color-darker);
     }
@@ -280,7 +283,7 @@ const statCards = computed(() => [
 
 .stat-card {
   animation: pulse 2s ease-in-out infinite;
-  
+
   &:nth-child(1) {
     animation-delay: 0s;
   }
@@ -293,7 +296,7 @@ const statCards = computed(() => [
   &:nth-child(4) {
     animation-delay: 1.5s;
   }
-  
+
   &:hover {
     animation: none;
   }

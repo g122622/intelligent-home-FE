@@ -1,8 +1,23 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useDeviceStore } from "@/store/modules/device";
-import { ElCard, ElButton, ElSelect, ElOption, ElMessage, ElDialog, ElForm, ElFormItem } from "element-plus";
-import { Operation, Connection, Disconnect, Move, DataAnalysis } from "@element-plus/icons-vue";
+import {
+  ElCard,
+  ElButton,
+  ElSelect,
+  ElOption,
+  ElMessage,
+  ElDialog,
+  ElForm,
+  ElFormItem
+} from "element-plus";
+import {
+  Operation,
+  Connection,
+  Close,
+  AddLocation,
+  DataAnalysis
+} from "@element-plus/icons-vue";
 
 const deviceStore = useDeviceStore();
 const showOperationDialog = ref(false);
@@ -21,7 +36,7 @@ const operationOptions = [
 ];
 
 // 可操作的设备列表
-const operableDevices = computed(() => 
+const operableDevices = computed(() =>
   deviceStore.devices.filter(device => device.onlineStatus === 1)
 );
 
@@ -166,7 +181,7 @@ const openMoveDialog = (device: any) => {
       </ElButton>
 
       <ElButton
-        :icon="Move"
+        :icon="AddLocation"
         type="warning"
         :disabled="!selectedDevice"
         @click="openMoveDialog(selectedDevice)"
@@ -184,7 +199,7 @@ const openMoveDialog = (device: any) => {
       </ElButton>
 
       <ElButton
-        :icon="Disconnect"
+        :icon="Close"
         type="danger"
         :disabled="!selectedDevice"
         @click="disconnectFromDevice"
@@ -211,18 +226,16 @@ const openMoveDialog = (device: any) => {
           :key="index"
           class="data-item"
         >
-          <span class="data-time">{{ new Date(data.timestamp).toLocaleString() }}</span>
+          <span class="data-time">{{
+            new Date(data.timestamp).toLocaleString()
+          }}</span>
           <span class="data-content">{{ data.data }}</span>
         </div>
       </div>
     </div>
 
     <!-- 执行操作对话框 -->
-    <ElDialog
-      v-model="showOperationDialog"
-      title="执行设备操作"
-      width="400px"
-    >
+    <ElDialog v-model="showOperationDialog" title="执行设备操作" width="400px">
       <ElForm label-width="80px">
         <ElFormItem label="选择操作">
           <ElSelect v-model="operationId" placeholder="请选择操作">
@@ -235,7 +248,7 @@ const openMoveDialog = (device: any) => {
           </ElSelect>
         </ElFormItem>
       </ElForm>
-      
+
       <template #footer>
         <ElButton @click="showOperationDialog = false">取消</ElButton>
         <ElButton type="primary" @click="performDeviceOperation">执行</ElButton>
@@ -243,11 +256,7 @@ const openMoveDialog = (device: any) => {
     </ElDialog>
 
     <!-- 移动设备对话框 -->
-    <ElDialog
-      v-model="showMoveDialog"
-      title="移动设备到房间"
-      width="400px"
-    >
+    <ElDialog v-model="showMoveDialog" title="移动设备到房间" width="400px">
       <ElForm label-width="80px">
         <ElFormItem label="目标房间">
           <ElInputNumber
@@ -258,7 +267,7 @@ const openMoveDialog = (device: any) => {
           />
         </ElFormItem>
       </ElForm>
-      
+
       <template #footer>
         <ElButton @click="showMoveDialog = false">取消</ElButton>
         <ElButton type="primary" @click="moveDeviceToRoom">移动</ElButton>
@@ -367,7 +376,7 @@ const openMoveDialog = (device: any) => {
 :deep() {
   .operations-panel {
     background: var(--el-bg-color);
-    
+
     .el-card__header {
       background: var(--el-fill-color-dark);
     }
@@ -382,11 +391,11 @@ const openMoveDialog = (device: any) => {
 .operation-buttons {
   .el-button {
     transition: all 0.3s ease;
-    
+
     &:hover {
       transform: translateY(-1px);
     }
-    
+
     &:active {
       transform: translateY(0);
     }

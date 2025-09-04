@@ -1,15 +1,15 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import type { 
-  DeviceDetail, 
-  DeviceType, 
-  DeviceOperation, 
-  SecuritySensorStatus, 
+import type {
+  DeviceDetail,
+  DeviceType,
+  DeviceOperation,
+  SecuritySensorStatus,
   AlarmRecord,
   AccessibleDevicesResponse,
   DeviceData
 } from "@/api/device";
-import { 
+import {
   getDeviceTypes,
   addDevice,
   getDeviceList,
@@ -37,15 +37,15 @@ export const useDeviceStore = defineStore("device", () => {
   const currentHomeId = ref<number>(1); // 默认家庭ID
 
   // 计算属性
-  const onlineDevices = computed(() => 
+  const onlineDevices = computed(() =>
     devices.value.filter(device => device.onlineStatus === 1)
   );
 
-  const offlineDevices = computed(() => 
+  const offlineDevices = computed(() =>
     devices.value.filter(device => device.onlineStatus === 0)
   );
 
-  const activeDevices = computed(() => 
+  const activeDevices = computed(() =>
     devices.value.filter(device => device.activeStatus === 1)
   );
 
@@ -85,7 +85,7 @@ export const useDeviceStore = defineStore("device", () => {
     isLoading.value = true;
     try {
       const response = await getDeviceList(homeId);
-      devices.value = response.data.devices;
+      devices.value = response.devices;
     } catch (error) {
       console.error("获取设备列表失败:", error);
     } finally {
@@ -93,7 +93,9 @@ export const useDeviceStore = defineStore("device", () => {
     }
   };
 
-  const addNewDevice = async (deviceData: Omit<DeviceDetail, "id" | "lastActiveTime">) => {
+  const addNewDevice = async (
+    deviceData: Omit<DeviceDetail, "id" | "lastActiveTime">
+  ) => {
     try {
       const response = await addDevice(deviceData);
       await fetchDeviceList(deviceData.homeId);
@@ -104,9 +106,16 @@ export const useDeviceStore = defineStore("device", () => {
     }
   };
 
-  const updateDevice = async (homeId: number, deviceId: number, updates: { name: string; roomId: number }) => {
+  const updateDevice = async (
+    homeId: number,
+    deviceId: number,
+    updates: { name: string; roomId: number }
+  ) => {
     try {
-      const response = await updateDeviceInfo(homeId, { id: deviceId, ...updates });
+      const response = await updateDeviceInfo(homeId, {
+        id: deviceId,
+        ...updates
+      });
       await fetchDeviceList(homeId);
       return response;
     } catch (error) {
@@ -137,7 +146,9 @@ export const useDeviceStore = defineStore("device", () => {
     }
   };
 
-  const fetchAccessibleDevices = async (homeId: number = currentHomeId.value) => {
+  const fetchAccessibleDevices = async (
+    homeId: number = currentHomeId.value
+  ) => {
     try {
       const response = await getAccessibleDevices(homeId);
       accessibleDevices.value = response.data;
@@ -146,7 +157,11 @@ export const useDeviceStore = defineStore("device", () => {
     }
   };
 
-  const performDeviceOperation = async (homeId: number, deviceId: number, operationId: number) => {
+  const performDeviceOperation = async (
+    homeId: number,
+    deviceId: number,
+    operationId: number
+  ) => {
     try {
       const response = await operateDevice(homeId, deviceId, operationId);
       return response;
@@ -156,7 +171,11 @@ export const useDeviceStore = defineStore("device", () => {
     }
   };
 
-  const moveDeviceToRoom = async (homeId: number, deviceId: number, roomId: number) => {
+  const moveDeviceToRoom = async (
+    homeId: number,
+    deviceId: number,
+    roomId: number
+  ) => {
     try {
       const response = await moveDevice(homeId, { deviceId, roomId });
       await fetchDeviceList(homeId);
@@ -224,13 +243,13 @@ export const useDeviceStore = defineStore("device", () => {
     deviceData,
     isLoading,
     currentHomeId,
-    
+
     onlineDevices,
     offlineDevices,
     activeDevices,
     devicesByRoom,
     devicesByType,
-    
+
     fetchDeviceTypes,
     fetchDeviceList,
     addNewDevice,

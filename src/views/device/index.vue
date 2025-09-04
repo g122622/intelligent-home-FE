@@ -7,8 +7,18 @@ import DeviceForm from "./components/DeviceForm.vue";
 import DeviceFilter from "./components/DeviceFilter.vue";
 import DeviceStats from "./components/DeviceStats.vue";
 import DeviceOperations from "./components/DeviceOperations.vue";
-import { Search, Plus, Refresh, Setting, Operation, View } from "@element-plus/icons-vue";
+import {
+  Search,
+  Plus,
+  Refresh,
+  Setting,
+  Operation,
+  View
+} from "@element-plus/icons-vue";
+import { useRouter } from "vue-router";
+import { DeviceDetail } from "@/api/device";
 
+const router = useRouter();
 const deviceStore = useDeviceStore();
 const searchKeyword = ref("");
 const selectedRoom = ref<number | "all">("all");
@@ -21,11 +31,17 @@ const loading = ref(false);
 // 过滤后的设备列表
 const filteredDevices = computed(() => {
   return deviceStore.devices.filter(device => {
-    const nameMatch = device.name.toLowerCase().includes(searchKeyword.value.toLowerCase());
-    const roomMatch = selectedRoom.value === "all" || device.roomId === selectedRoom.value;
-    const typeMatch = selectedType.value === "all" || device.typeId === selectedType.value;
-    const statusMatch = onlineStatus.value === "all" || device.onlineStatus === onlineStatus.value;
-    
+    const nameMatch = device.name
+      .toLowerCase()
+      .includes(searchKeyword.value.toLowerCase());
+    const roomMatch =
+      selectedRoom.value === "all" || device.roomId === selectedRoom.value;
+    const typeMatch =
+      selectedType.value === "all" || device.typeId === selectedType.value;
+    const statusMatch =
+      onlineStatus.value === "all" ||
+      device.onlineStatus === onlineStatus.value;
+
     return nameMatch && roomMatch && typeMatch && statusMatch;
   });
 });
@@ -79,7 +95,7 @@ const handleDeleteDevice = async (device: DeviceDetail) => {
         type: "warning"
       }
     );
-    
+
     await deviceStore.removeDevice(device.homeId, device.id);
     ElMessage.success("设备删除成功");
   } catch (error) {
