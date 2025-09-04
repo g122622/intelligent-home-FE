@@ -86,7 +86,7 @@ const handleEdit = () => {
 };
 
 const goBack = () => {
-  router.push({ name: "SceneIndex" });
+  router.push({ name: "ScenManagement" });
 };
 
 onMounted(() => {
