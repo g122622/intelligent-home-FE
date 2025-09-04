@@ -4,7 +4,13 @@ import { useGuestStore } from "@/store/modules/guest";
 import { useUserStore } from "@/store/modules/user";
 import { useHomeStore } from "@/store/modules/home";
 import { ElMessage } from "element-plus";
-import { Monitor, Refresh, Search, User, Home } from "@element-plus/icons-vue";
+import {
+  Monitor,
+  Refresh,
+  Search,
+  User,
+  HomeFilled
+} from "@element-plus/icons-vue";
 
 const guestStore = useGuestStore();
 const userStore = useUserStore();
@@ -15,9 +21,10 @@ const selectedHomeId = ref<number | null>(null);
 
 // 过滤后的设备列表
 const filteredDevices = computed(() => {
-  return guestStore.accessibleDevices.filter(device =>
-    device.name.toLowerCase().includes(searchKeyword.value.toLowerCase()) ||
-    device.ipAddress.includes(searchKeyword.value)
+  return guestStore.accessibleDevices.filter(
+    device =>
+      device.name.toLowerCase().includes(searchKeyword.value.toLowerCase()) ||
+      device.ipAddress.includes(searchKeyword.value)
   );
 });
 
@@ -161,9 +168,11 @@ onMounted(() => {
           </div>
         </div>
         <div class="info-item">
-          <el-icon><Home /></el-icon>
+          <el-icon><HomeFilled /></el-icon>
           <span>设备数量：</span>
-          <el-tag type="primary">{{ guestStore.accessibleDevices.length }}</el-tag>
+          <el-tag type="primary">{{
+            guestStore.accessibleDevices.length
+          }}</el-tag>
         </div>
       </div>
     </el-card>
@@ -173,9 +182,7 @@ onMounted(() => {
       <template #header>
         <div class="card-header">
           <h2>设备列表</h2>
-          <el-tag type="primary">
-            {{ filteredDevices.length }} 个设备
-          </el-tag>
+          <el-tag type="primary"> {{ filteredDevices.length }} 个设备 </el-tag>
         </div>
       </template>
 
@@ -192,10 +199,16 @@ onMounted(() => {
           <div class="device-header">
             <h3 class="device-name">{{ device.name }}</h3>
             <div class="device-status">
-              <el-tag :type="getStatusTag(device.onlineStatus).type" size="small">
+              <el-tag
+                :type="getStatusTag(device.onlineStatus).type"
+                size="small"
+              >
                 {{ getStatusTag(device.onlineStatus).text }}
               </el-tag>
-              <el-tag :type="getActiveTag(device.activeStatus).type" size="small">
+              <el-tag
+                :type="getActiveTag(device.activeStatus).type"
+                size="small"
+              >
                 {{ getActiveTag(device.activeStatus).text }}
               </el-tag>
             </div>
@@ -213,7 +226,7 @@ onMounted(() => {
               <code>{{ device.ipAddress }}</code>
             </div>
             <div class="info-row">
-              <el-icon><Home /></el-icon>
+              <el-icon><HomeFilled /></el-icon>
               <span>家庭ID：</span>
               <span>{{ device.homeId }}</span>
             </div>
@@ -230,17 +243,15 @@ onMounted(() => {
             <div class="info-row">
               <el-icon><Clock /></el-icon>
               <span>最后活动：</span>
-              <span>{{ new Date(device.lastActiveTime).toLocaleString() }}</span>
+              <span>{{
+                new Date(device.lastActiveTime).toLocaleString()
+              }}</span>
             </div>
           </div>
 
           <div class="device-actions">
-            <el-button type="primary" size="small" plain>
-              查看详情
-            </el-button>
-            <el-button type="info" size="small" plain>
-              操作日志
-            </el-button>
+            <el-button type="primary" size="small" plain> 查看详情 </el-button>
+            <el-button type="info" size="small" plain> 操作日志 </el-button>
           </div>
         </div>
       </div>

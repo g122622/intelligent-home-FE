@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, markRaw } from "vue";
 import { useGuestStore } from "@/store/modules/guest";
 import { useUserStore } from "@/store/modules/user";
 import { useHomeStore } from "@/store/modules/home";
@@ -27,21 +27,21 @@ const stats = ref([
   {
     title: "可访问设备",
     value: 0,
-    icon: Monitor,
+    icon: markRaw(Monitor),
     color: "primary",
     path: "/guest/accessible-devices"
   },
   {
     title: "待处理请求",
     value: 0,
-    icon: Bell,
+    icon: markRaw(Bell),
     color: "warning",
     path: "/guest/join-requests"
   },
   {
     title: "权限说明",
     value: "",
-    icon: Lock,
+    icon: markRaw(Lock),
     color: "success",
     path: "/guest/permission-info"
   }
@@ -55,7 +55,7 @@ const initializeData = async () => {
       guestStore.fetchPermissionInfo(),
       homeStore.fetchMyHomes()
     ]);
-    
+
     // 如果有当前家庭，加载相关数据
     if (homeStore.selectedHomeId) {
       await guestStore.fetchJoinRequests(homeStore.selectedHomeId);
@@ -73,7 +73,6 @@ const initializeData = async () => {
       req => req.status === 0
     ).length;
     stats.value[2].value = guestStore.permissionInfo?.role || "";
-
   } catch (error) {
     ElMessage.error("初始化访客数据失败");
   } finally {
@@ -194,15 +193,9 @@ onMounted(() => {
       </template>
 
       <div class="quick-actions">
-        <el-button type="primary" :icon="Plus">
-          邀请访客
-        </el-button>
-        <el-button type="info" :icon="Setting">
-          权限设置
-        </el-button>
-        <el-button type="warning" :icon="User">
-          访客列表
-        </el-button>
+        <el-button type="primary" :icon="Plus"> 邀请访客 </el-button>
+        <el-button type="info" :icon="Setting"> 权限设置 </el-button>
+        <el-button type="warning" :icon="User"> 访客列表 </el-button>
       </div>
     </el-card>
   </div>
@@ -286,7 +279,11 @@ onMounted(() => {
       width: 60px;
       height: 60px;
       border-radius: 12px;
-      background: linear-gradient(135deg, var(--el-color-primary-light-9), var(--el-color-primary-light-7));
+      background: linear-gradient(
+        135deg,
+        var(--el-color-primary-light-9),
+        var(--el-color-primary-light-7)
+      );
 
       .el-icon {
         color: var(--el-color-primary);
