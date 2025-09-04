@@ -1,10 +1,22 @@
 <template>
   <div class="scene-container">
-    <RePureTableBar title="场景管理" :showSearch="true" @search="handleSearch">
-      <template #buttons>
-        <el-button type="primary" @click="handleCreate">创建场景</el-button>
-      </template>
-    </RePureTableBar>
+    <div class="table-container">
+      <div class="table-header">
+        <h3>场景管理</h3>
+        <el-form :inline="true" @submit.prevent="handleSearch">
+          <el-form-item>
+            <el-input
+              v-model="searchQuery"
+              placeholder="请输入搜索内容"
+              @keyup.enter="handleSearch"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleCreate">创建场景</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </div>
 
     <el-table :data="sceneList" border style="width: 100%">
       <el-table-column prop="name" label="场景名称" />
@@ -47,9 +59,10 @@ const sceneList = ref([]);
 const dialogVisible = ref(false);
 const currentScene = ref(null);
 const router = useRouter();
+const searchQuery = ref("");
 
 const fetchSceneList = async (searchParams: string) => {
-  const res = await getSceneList(1); // 假设homeId为1
+  const res = await getSceneList(1); // TODO 假设homeId为1
   sceneList.value = res.scenes;
 };
 
@@ -64,13 +77,13 @@ const handleEdit = scene => {
 };
 
 const handleDelete = async scene => {
-  await deleteScene(1, scene.id); // 假设homeId为1
-  fetchSceneList('');
+  await deleteScene(1, scene.id); // TODO 假设homeId为1
+  fetchSceneList("");
 };
 
 const handleSubmit = () => {
   dialogVisible.value = false;
-  fetchSceneList('');
+  fetchSceneList("");
 };
 
 const handleDetail = scene => {
@@ -78,11 +91,11 @@ const handleDetail = scene => {
 };
 
 const handleSearch = (searchParams: string) => {
-  fetchSceneList(searchParams);
+  fetchSceneList(searchQuery.value);
 };
 
 onMounted(() => {
-  fetchSceneList('');
+  fetchSceneList("");
 });
 </script>
 

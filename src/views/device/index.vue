@@ -140,7 +140,7 @@ onMounted(() => {
         <p class="page-subtitle">管理您的智能家居设备</p>
       </div>
       <div class="header-actions">
-        <el-button :icon="Refresh" @click="refreshData" :loading="loading">
+        <el-button :icon="Refresh" :loading="loading" @click="refreshData">
           刷新
         </el-button>
         <el-button type="primary" :icon="Plus" @click="openAddForm">

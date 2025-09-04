@@ -1,8 +1,9 @@
 <template>
   <el-dialog
+    :model-value="modelValue"
     :title="scene ? '编辑场景' : '创建场景'"
-    v-model="modelValue"
     width="50%"
+    @update:model-value="$emit('update:modelValue', $event)"
   >
     <el-form :model="form" label-width="120px">
       <el-form-item label="场景名称">

@@ -34,7 +34,7 @@ export const useDeviceStore = defineStore("device", () => {
   const accessibleDevices = ref<AccessibleDevicesResponse | null>(null);
   const deviceData = ref<DeviceData[]>([]);
   const isLoading = ref(false);
-  const currentHomeId = ref<number>(1); // 默认家庭ID
+  const currentHomeId = ref<number>(1); // TODO 默认家庭ID
 
   // 计算属性
   const onlineDevices = computed(() =>
@@ -75,7 +75,7 @@ export const useDeviceStore = defineStore("device", () => {
   const fetchDeviceTypes = async (homeId: number = currentHomeId.value) => {
     try {
       const response = await getDeviceTypes(homeId);
-      deviceTypes.value = response.data;
+      deviceTypes.value = response;
     } catch (error) {
       console.error("获取设备类型失败:", error);
     }
@@ -151,7 +151,7 @@ export const useDeviceStore = defineStore("device", () => {
   ) => {
     try {
       const response = await getAccessibleDevices(homeId);
-      accessibleDevices.value = response.data;
+      accessibleDevices.value = response;
     } catch (error) {
       console.error("获取可访问设备失败:", error);
     }
@@ -209,7 +209,7 @@ export const useDeviceStore = defineStore("device", () => {
   const fetchDeviceData = async (homeId: number, deviceId: number) => {
     try {
       const response = await getDeviceData(homeId, deviceId);
-      deviceData.value = response.data.data;
+      deviceData.value = response.data;
       return response;
     } catch (error) {
       console.error("获取设备数据失败:", error);
