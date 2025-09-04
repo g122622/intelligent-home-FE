@@ -23,6 +23,8 @@ import "./assets/iconfont/iconfont.js";
 import "./assets/iconfont/iconfont.css";
 
 const app = createApp(App);
+// 告诉 Vue：deep-chat 是原生自定义元素，不要解析
+app.config.compilerOptions.isCustomElement = tag => tag === "deep-chat";
 
 // 自定义指令
 import * as directives from "@/directives";
