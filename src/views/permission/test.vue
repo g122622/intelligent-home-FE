@@ -8,8 +8,12 @@
         </div>
       </template>
 
-      <el-alert :title="`当前用户角色: ${currentRole}`" type="info" class="mb-4" />
-      
+      <el-alert
+        :title="`当前用户角色: ${currentRole}`"
+        type="info"
+        class="mb-4"
+      />
+
       <div class="test-section">
         <h3>权限指令测试</h3>
         <div class="test-buttons">
@@ -54,29 +58,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { hasRole } from '@/utils/auth'
+import { ref, computed, onMounted } from "vue";
+import { hasRole } from "@/utils/auth";
 
-const currentRole = ref('')
-const testRole = ref('')
+const currentRole = ref("");
+const testRole = ref("");
 
-const hasOwnerPermission = computed(() => hasRole('owner'))
-const hasMemberPermission = computed(() => hasRole('member'))
-const hasGuestPermission = computed(() => hasRole('guest'))
+const hasOwnerPermission = computed(() => hasRole("owner"));
+const hasMemberPermission = computed(() => hasRole("member"));
+const hasGuestPermission = computed(() => hasRole("guest"));
 
 const refresh = () => {
-  currentRole.value = localStorage.getItem('userRole') || '未登录'
-}
+  currentRole.value = localStorage.getItem("userRole") || "未登录";
+};
 
 const changeTestRole = (role: string) => {
-  localStorage.setItem('userRole', role)
-  currentRole.value = role
-  location.reload() // 重新加载页面使权限生效
-}
+  localStorage.setItem("userRole", role);
+  currentRole.value = role;
+  location.reload(); // 重新加载页面使权限生效
+};
 
 onMounted(() => {
-  refresh()
-})
+  refresh();
+});
 </script>
 
 <style scoped>

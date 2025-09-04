@@ -105,10 +105,7 @@ const statCards = computed(() => [
         </div>
 
         <!-- 卡片底部装饰 -->
-        <div
-          class="stat-decoration"
-          :style="{ backgroundColor: card.color }"
-        ></div>
+        <div class="stat-decoration" :style="{ backgroundColor: card.color }" />
       </ElCard>
     </ElCol>
   </ElRow>

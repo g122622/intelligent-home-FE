@@ -24,10 +24,10 @@ const handleChange = (value: string) => {
 <template>
   <el-select
     :model-value="props.modelValue"
-    @update:model-value="handleChange"
     placeholder="选择类型"
     style="width: 200px"
     clearable
+    @update:model-value="handleChange"
   >
     <el-option
       v-for="option in typeOptions"

@@ -213,11 +213,7 @@ onUnmounted(() => {
     </div>
 
     <div v-else class="chart-container">
-      <div
-        ref="chartRef"
-        class="chart"
-        style="width: 100%; height: 400px"
-      ></div>
+      <div ref="chartRef" class="chart" style="width: 100%; height: 400px" />
 
       <!-- 数据统计 -->
       <div class="chart-stats">

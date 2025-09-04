@@ -29,28 +29,32 @@ const deviceOptions = computed(() => {
 });
 
 // 初始化表单
-watch(() => props.scene, (newScene) => {
-  if (newScene) {
-    form.value = {
-      name: newScene.name,
-      description: newScene.description || "",
-      deviceIds: Object.keys(newScene.actions),
-      actions: { ...newScene.actions }
-    };
-  } else {
-    form.value = {
-      name: "",
-      description: "",
-      deviceIds: [],
-      actions: {}
-    };
-  }
-}, { immediate: true });
+watch(
+  () => props.scene,
+  newScene => {
+    if (newScene) {
+      form.value = {
+        name: newScene.name,
+        description: newScene.description || "",
+        deviceIds: Object.keys(newScene.actions),
+        actions: { ...newScene.actions }
+      };
+    } else {
+      form.value = {
+        name: "",
+        description: "",
+        deviceIds: [],
+        actions: {}
+      };
+    }
+  },
+  { immediate: true }
+);
 
 // 处理设备选择变化
 const handleDeviceChange = (deviceIds: string[]) => {
   form.value.deviceIds = deviceIds;
-  
+
   // 为新选择的设备设置默认动作
   deviceIds.forEach(deviceId => {
     if (!form.value.actions[deviceId]) {
@@ -99,9 +103,9 @@ const handleClose = () => {
 <template>
   <el-dialog
     :model-value="props.modelValue"
-    @update:model-value="handleClose"
     :title="props.scene ? '编辑场景' : '创建场景'"
     width="700px"
+    @update:model-value="handleClose"
   >
     <el-form :model="form" label-width="80px">
       <el-form-item label="场景名称" required>
@@ -137,43 +141,62 @@ const handleClose = () => {
       <!-- 设备动作配置 -->
       <div v-if="form.deviceIds.length > 0" class="actions-section">
         <h4>设备动作配置</h4>
-        <div v-for="deviceId in form.deviceIds" :key="deviceId" class="device-action">
+        <div
+          v-for="deviceId in form.deviceIds"
+          :key="deviceId"
+          class="device-action"
+        >
           <h5>{{ props.devices.find(d => d.id === deviceId)?.name }}</h5>
-          
+
           <!-- 开关状态 -->
           <el-form-item label="开关状态">
             <el-switch
               :model-value="form.actions[deviceId]?.status"
-              @change="(val: boolean) => handleActionChange(deviceId, { status: val })"
+              @change="
+                (val: boolean) => handleActionChange(deviceId, { status: val })
+              "
             />
           </el-form-item>
 
           <!-- 灯光亮度 -->
-          <el-form-item v-if="props.devices.find(d => d.id === deviceId)?.type === 'light'" label="亮度">
+          <el-form-item
+            v-if="props.devices.find(d => d.id === deviceId)?.type === 'light'"
+            label="亮度"
+          >
             <el-slider
               :model-value="form.actions[deviceId]?.brightness || 50"
               :min="0"
               :max="100"
-              @change="(val: number) => handleActionChange(deviceId, { brightness: val })"
               show-input
+              @change="
+                (val: number) =>
+                  handleActionChange(deviceId, { brightness: val })
+              "
             />
           </el-form-item>
 
           <!-- 空调设置 -->
-          <template v-if="props.devices.find(d => d.id === deviceId)?.type === 'ac'">
+          <template
+            v-if="props.devices.find(d => d.id === deviceId)?.type === 'ac'"
+          >
             <el-form-item label="温度">
               <el-slider
                 :model-value="form.actions[deviceId]?.temperature || 24"
                 :min="16"
                 :max="30"
-                @change="(val: number) => handleActionChange(deviceId, { temperature: val })"
                 show-input
+                @change="
+                  (val: number) =>
+                    handleActionChange(deviceId, { temperature: val })
+                "
               />
             </el-form-item>
             <el-form-item label="模式">
               <el-select
                 :model-value="form.actions[deviceId]?.mode || 'cool'"
-                @change="(val: string) => handleActionChange(deviceId, { mode: val })"
+                @change="
+                  (val: string) => handleActionChange(deviceId, { mode: val })
+                "
               >
                 <el-option label="制冷" value="cool" />
                 <el-option label="制热" value="heat" />
@@ -184,13 +207,20 @@ const handleClose = () => {
           </template>
 
           <!-- 窗帘位置 -->
-          <el-form-item v-if="props.devices.find(d => d.id === deviceId)?.type === 'curtain'" label="位置">
+          <el-form-item
+            v-if="
+              props.devices.find(d => d.id === deviceId)?.type === 'curtain'
+            "
+            label="位置"
+          >
             <el-slider
               :model-value="form.actions[deviceId]?.position || 0"
               :min="0"
               :max="100"
-              @change="(val: number) => handleActionChange(deviceId, { position: val })"
               show-input
+              @change="
+                (val: number) => handleActionChange(deviceId, { position: val })
+              "
             />
           </el-form-item>
         </div>
@@ -199,8 +229,12 @@ const handleClose = () => {
 
     <template #footer>
       <el-button @click="handleClose">取消</el-button>
-      <el-button type="primary" @click="handleSubmit" :disabled="!form.name.trim()">
-        {{ props.scene ? '保存' : '创建' }}
+      <el-button
+        type="primary"
+        :disabled="!form.name.trim()"
+        @click="handleSubmit"
+      >
+        {{ props.scene ? "保存" : "创建" }}
       </el-button>
     </template>
   </el-dialog>

@@ -24,14 +24,16 @@ const checkNotificationPermission = async () => {
 };
 
 // 处理异常传感器变化
-const abnormalSensorsCount = computed(() => securityStore.abnormalSensors.length);
+const abnormalSensorsCount = computed(
+  () => securityStore.abnormalSensors.length
+);
 
 // 闪烁效果
 let flashInterval: number;
 
 onMounted(async () => {
   await checkNotificationPermission();
-  
+
   // 启动闪烁效果（如果有异常）
   if (securityStore.hasAlarm) {
     startFlashing();
@@ -89,10 +91,10 @@ const playAlarmSound = () => {
 // 显示报警通知
 const showAlarmNotification = () => {
   const abnormalSensors = securityStore.abnormalSensors;
-  const sensorNames = Array.isArray(abnormalSensors) 
+  const sensorNames = Array.isArray(abnormalSensors)
     ? abnormalSensors.map(s => s?.name || "未知传感器").join("、")
     : "未知传感器";
-  
+
   ElNotification({
     title: "安全警报",
     message: `检测到异常: ${sensorNames}`,
@@ -129,15 +131,18 @@ const getStatusText = (status: string) => {
   <div class="security-status-panel">
     <div class="panel-header">
       <h2>实时安防状态</h2>
-      <div class="status-indicator" :class="{ 'has-alarm': securityStore.hasAlarm }">
-        <span class="indicator-dot" :class="{ flashing: isFlashing }"></span>
-        {{ securityStore.hasAlarm ? '异常报警' : '一切正常' }}
+      <div
+        class="status-indicator"
+        :class="{ 'has-alarm': securityStore.hasAlarm }"
+      >
+        <span class="indicator-dot" :class="{ flashing: isFlashing }" />
+        {{ securityStore.hasAlarm ? "异常报警" : "一切正常" }}
       </div>
     </div>
 
     <div class="sensors-grid">
-      <div 
-        v-for="sensor in securityStore.sensors" 
+      <div
+        v-for="sensor in securityStore.sensors"
         :key="sensor.id"
         class="sensor-card"
         :class="{ abnormal: sensor.status === 'abnormal' }"
@@ -147,14 +152,16 @@ const getStatusText = (status: string) => {
         </div>
         <div class="sensor-info">
           <h3 class="sensor-name">{{ sensor.name }}</h3>
-          <p class="sensor-type">{{ sensor.type === 'flame' ? '火焰传感器' : '燃气传感器' }}</p>
+          <p class="sensor-type">
+            {{ sensor.type === "flame" ? "火焰传感器" : "燃气传感器" }}
+          </p>
           <div class="sensor-details">
             <span class="value">当前值: {{ sensor.value }}</span>
             <span class="threshold">阈值: {{ sensor.threshold }}</span>
           </div>
         </div>
         <div class="sensor-status">
-          <span 
+          <span
             class="status-badge"
             :style="{ backgroundColor: getStatusColor(sensor.status) }"
           >
@@ -227,8 +234,13 @@ const getStatusText = (status: string) => {
 }
 
 @keyframes flash {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
 }
 
 .sensors-grid {
@@ -281,7 +293,8 @@ const getStatusText = (status: string) => {
   gap: 2px;
 }
 
-.value, .threshold {
+.value,
+.threshold {
   font-size: 12px;
   color: #606266;
 }
@@ -313,7 +326,7 @@ const getStatusText = (status: string) => {
   .sensors-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .panel-header {
     flex-direction: column;
     align-items: flex-start;

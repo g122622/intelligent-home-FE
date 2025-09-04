@@ -76,7 +76,7 @@ onMounted(() => {
         <h1 class="page-title">设备详情</h1>
       </div>
       <div class="header-actions">
-        <el-button icon="refresh" @click="fetchDeviceDetail" :loading="loading">
+        <el-button icon="refresh" :loading="loading" @click="fetchDeviceDetail">
           刷新
         </el-button>
       </div>

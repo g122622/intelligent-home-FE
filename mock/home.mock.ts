@@ -15,7 +15,7 @@ export default defineFakeRoute([
             createTime: "2024-01-01T10:00:00"
           },
           {
-            id: 2, 
+            id: 2,
             name: "度假别墅",
             address: "上海市浦东新区xxx路",
             createTime: "2024-02-15T14:30:00"
@@ -47,7 +47,7 @@ export default defineFakeRoute([
     method: "get",
     response: ({ params }) => {
       const homeId = parseInt(params.homeId);
-      
+
       if (homeId === 1) {
         return {
           home: {
@@ -138,7 +138,7 @@ export default defineFakeRoute([
     method: "get",
     response: ({ params }) => {
       const homeId = parseInt(params.homeId);
-      
+
       return {
         rooms: [
           {

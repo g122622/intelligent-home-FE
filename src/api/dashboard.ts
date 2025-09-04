@@ -62,12 +62,18 @@ export const getDashboardOverview = () => {
 
 /** 获取温度趋势数据 */
 export const getTemperatureTrend = (hours: number = 24) => {
-  return http.request<TemperatureTrend>("get", `/dashboard/temperature-trend?hours=${hours}`);
+  return http.request<TemperatureTrend>(
+    "get",
+    `/dashboard/temperature-trend?hours=${hours}`
+  );
 };
 
 /** 获取能耗分布数据 */
 export const getEnergyDistribution = () => {
-  return http.request<EnergyDistribution[]>("get", "/dashboard/energy-distribution");
+  return http.request<EnergyDistribution[]>(
+    "get",
+    "/dashboard/energy-distribution"
+  );
 };
 
 /** 获取安防状态数据 */

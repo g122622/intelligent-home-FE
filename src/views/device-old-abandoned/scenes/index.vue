@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useDeviceStore } from "@/store/modules/device";
-import { createScene, updateScene, deleteScene, executeScene } from "@/api/device";
+import {
+  createScene,
+  updateScene,
+  deleteScene,
+  executeScene
+} from "@/api/device";
 import SceneDialog from "./components/SceneDialog.vue";
 import SceneCard from "./components/SceneCard.vue";
 
@@ -74,11 +79,18 @@ onMounted(async () => {
     </div>
 
     <!-- 预设场景 -->
-    <div v-if="deviceStore.scenes.filter(s => !s.id.startsWith('custom')).length > 0" class="preset-scenes">
+    <div
+      v-if="
+        deviceStore.scenes.filter(s => !s.id.startsWith('custom')).length > 0
+      "
+      class="preset-scenes"
+    >
       <h3>预设场景</h3>
       <div class="scenes-grid">
         <SceneCard
-          v-for="scene in deviceStore.scenes.filter(s => !s.id.startsWith('custom'))"
+          v-for="scene in deviceStore.scenes.filter(
+            s => !s.id.startsWith('custom')
+          )"
           :key="scene.id"
           :scene="scene"
           :devices="deviceStore.devices"
@@ -88,11 +100,18 @@ onMounted(async () => {
     </div>
 
     <!-- 自定义场景 -->
-    <div v-if="deviceStore.scenes.filter(s => s.id.startsWith('custom')).length > 0" class="custom-scenes">
+    <div
+      v-if="
+        deviceStore.scenes.filter(s => s.id.startsWith('custom')).length > 0
+      "
+      class="custom-scenes"
+    >
       <h3>自定义场景</h3>
       <div class="scenes-grid">
         <SceneCard
-          v-for="scene in deviceStore.scenes.filter(s => s.id.startsWith('custom'))"
+          v-for="scene in deviceStore.scenes.filter(s =>
+            s.id.startsWith('custom')
+          )"
           :key="scene.id"
           :scene="scene"
           :devices="deviceStore.devices"
@@ -104,10 +123,7 @@ onMounted(async () => {
     </div>
 
     <!-- 空状态 -->
-    <el-empty
-      v-if="deviceStore.scenes.length === 0"
-      description="暂无场景模式"
-    >
+    <el-empty v-if="deviceStore.scenes.length === 0" description="暂无场景模式">
       <el-button type="primary" @click="handleCreate">创建第一个场景</el-button>
     </el-empty>
 
@@ -162,7 +178,7 @@ onMounted(async () => {
     gap: 16px;
     align-items: stretch;
   }
-  
+
   .scenes-grid {
     grid-template-columns: 1fr;
   }

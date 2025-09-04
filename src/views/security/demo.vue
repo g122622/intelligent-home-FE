@@ -1,12 +1,12 @@
 <template>
   <div class="security-demo">
     <h2>安防监控系统演示</h2>
-    
+
     <div class="demo-section">
       <h3>实时安防状态面板</h3>
       <SecurityStatusPanel />
     </div>
-    
+
     <div class="demo-section">
       <h3>历史报警记录</h3>
       <AlarmRecords />
@@ -15,8 +15,8 @@
 </template>
 
 <script setup lang="ts">
-import SecurityStatusPanel from '../components/SecurityStatusPanel.vue';
-import AlarmRecords from '../components/AlarmRecords.vue';
+import SecurityStatusPanel from "../components/SecurityStatusPanel.vue";
+import AlarmRecords from "../components/AlarmRecords.vue";
 </script>
 
 <style scoped>

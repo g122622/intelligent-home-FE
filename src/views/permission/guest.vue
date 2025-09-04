@@ -37,10 +37,10 @@
         <el-table-column label="操作">
           <template #default="{ row }">
             <el-button
+              v-if="row.status === 'active'"
               size="small"
               type="danger"
               @click="revokePermission(row.id)"
-              v-if="row.status === 'active'"
             >
               回收权限
             </el-button>

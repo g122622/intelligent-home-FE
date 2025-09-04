@@ -17,29 +17,29 @@
       <div class="demo-section">
         <h3>1. 按钮权限控制</h3>
         <div class="button-group">
-          <el-button type="primary" v-perms="{ role: 'owner' }">
+          <el-button v-perms="{ role: 'owner' }" type="primary">
             房主专属按钮
           </el-button>
-          <el-button type="success" v-perms="{ role: 'member' }">
+          <el-button v-perms="{ role: 'member' }" type="success">
             家庭成员按钮
           </el-button>
-          <el-button type="warning" v-perms="{ role: 'guest' }">
+          <el-button v-perms="{ role: 'guest' }" type="warning">
             访客按钮
           </el-button>
-          <el-button type="info" v-perms="'btn.edit'"> 编辑权限按钮 </el-button>
+          <el-button v-perms="'btn.edit'" type="info"> 编辑权限按钮 </el-button>
         </div>
       </div>
 
       <div class="demo-section">
         <h3>2. 菜单权限控制</h3>
         <el-menu class="demo-menu">
-          <el-menu-item index="1" v-perms="{ role: 'owner' }">
+          <el-menu-item v-perms="{ role: 'owner' }" index="1">
             <template #title>房主专属菜单</template>
           </el-menu-item>
-          <el-menu-item index="2" v-perms="{ role: 'member' }">
+          <el-menu-item v-perms="{ role: 'member' }" index="2">
             <template #title>家庭成员菜单</template>
           </el-menu-item>
-          <el-menu-item index="3" v-perms="{ role: 'guest' }">
+          <el-menu-item v-perms="{ role: 'guest' }" index="3">
             <template #title>访客菜单</template>
           </el-menu-item>
         </el-menu>

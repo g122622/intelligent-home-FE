@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import type { SecuritySensorStatus, AlarmRecord } from "@/api/device";
-import { 
-  getSecuritySensorStatus, 
-  getAlarmRecords, 
-  confirmAlarm, 
-  ignoreAlarm 
+import {
+  getSecuritySensorStatus,
+  getAlarmRecords,
+  confirmAlarm,
+  ignoreAlarm
 } from "@/api/device";
 
 export const useSecurityStore = defineStore("security", () => {
@@ -17,7 +17,7 @@ export const useSecurityStore = defineStore("security", () => {
 
   // 计算属性 - 添加安全检查
   const abnormalSensors = computed(() => {
-    return Array.isArray(sensors.value) 
+    return Array.isArray(sensors.value)
       ? sensors.value.filter(sensor => sensor?.status === "abnormal")
       : [];
   });
@@ -34,9 +34,11 @@ export const useSecurityStore = defineStore("security", () => {
       const response = await getSecuritySensorStatus(homeId);
       // 确保response是数组
       sensors.value = Array.isArray(response) ? response : [];
-      
+
       // 检查是否有异常传感器
-      hasAlarm.value = sensors.value.some(sensor => sensor.status === "abnormal");
+      hasAlarm.value = sensors.value.some(
+        sensor => sensor.status === "abnormal"
+      );
     } catch (error) {
       console.error("获取安防传感器状态失败:", error);
       // 开发阶段提供假数据
@@ -52,7 +54,7 @@ export const useSecurityStore = defineStore("security", () => {
         },
         {
           id: 2,
-          name: "厨房燃气传感器", 
+          name: "厨房燃气传感器",
           type: "gas",
           status: "normal",
           value: 50,
@@ -65,12 +67,15 @@ export const useSecurityStore = defineStore("security", () => {
   };
 
   // 获取报警记录
-  const fetchAlarmRecords = async (homeId: number = 1, params?: {
-    startTime?: string;
-    endTime?: string;
-    alarmType?: string;
-    status?: string;
-  }) => {
+  const fetchAlarmRecords = async (
+    homeId: number = 1,
+    params?: {
+      startTime?: string;
+      endTime?: string;
+      alarmType?: string;
+      status?: string;
+    }
+  ) => {
     isLoading.value = true;
     try {
       const response = await getAlarmRecords(homeId, params);
@@ -93,7 +98,7 @@ export const useSecurityStore = defineStore("security", () => {
           id: 2,
           deviceId: 2,
           deviceName: "厨房燃气传感器",
-          alarmType: "gas", 
+          alarmType: "gas",
           alarmTime: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
           status: "ignored",
           description: "检测到燃气浓度异常"
@@ -153,10 +158,10 @@ export const useSecurityStore = defineStore("security", () => {
       status: "pending",
       description: alarmData.description || "检测到异常"
     };
-    
+
     alarmRecords.value.unshift(newAlarm);
     hasAlarm.value = true;
-    
+
     // 触发浏览器通知
     if (Notification.permission === "granted") {
       new Notification("安全警报", {
@@ -173,7 +178,7 @@ export const useSecurityStore = defineStore("security", () => {
     hasAlarm,
     abnormalSensors,
     pendingAlarms,
-    
+
     fetchSecuritySensors,
     fetchAlarmRecords,
     confirmAlarmRecord,

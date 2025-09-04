@@ -1,24 +1,51 @@
-const { VITE_HIDE_HOME } = import.meta.env;
 const Layout = () => import("@/layout/index.vue");
 
 export default {
-  path: "/",
-  name: "Home",
+  path: "/home",
+  redirect: "/home/management",
+  name: "HomeManagement",
   component: Layout,
-  redirect: "/welcome",
   meta: {
-    icon: "ep/home-filled",
-    title: "首页-数据大屏",
-    rank: 0
+    icon: "ep:home-filled",
+    title: "家庭管理",
+    rank: 5,
+    showLink: true
   },
   children: [
     {
-      path: "/welcome",
-      name: "Welcome",
-      component: () => import("@/views/welcome/index.vue"),
+      path: "/home/management",
+      name: "HomeManagement",
+      component: () => import("@/views/home/index.vue"),
       meta: {
-        title: "首页-数据大屏",
-        showLink: VITE_HIDE_HOME === "true" ? false : true
+        title: "家庭管理",
+        showLink: true
+      }
+    },
+    {
+      path: "/home/detail/:id",
+      name: "HomeDetail",
+      component: () => import("@/views/home/HomeDetail.vue"),
+      meta: {
+        title: "家庭详情",
+        showLink: false
+      }
+    },
+    {
+      path: "/home/create",
+      name: "HomeCreate",
+      component: () => import("@/views/home/HomeCreate.vue"),
+      meta: {
+        title: "创建家庭",
+        showLink: false
+      }
+    },
+    {
+      path: "/home/edit/:id",
+      name: "HomeEdit",
+      component: () => import("@/views/home/HomeEdit.vue"),
+      meta: {
+        title: "编辑家庭",
+        showLink: false
       }
     }
   ]

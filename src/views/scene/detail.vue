@@ -38,10 +38,10 @@
     </el-card>
 
     <div class="action-buttons">
-      <el-button type="primary" @click="handleStart" v-if="scene.status"
+      <el-button v-if="scene.status" type="primary" @click="handleStart"
         >启动场景</el-button
       >
-      <el-button type="danger" @click="handleStop" v-if="scene.status"
+      <el-button v-if="scene.status" type="danger" @click="handleStop"
         >停止场景</el-button
       >
       <el-button @click="handleEdit">编辑</el-button>

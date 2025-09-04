@@ -29,7 +29,7 @@ setOptions({
   xAxis: {
     type: "category",
     show: false,
-    data: props.timestamps,
+    data: props.timestamps
   },
   grid: {
     top: "5px",

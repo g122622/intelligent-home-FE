@@ -43,10 +43,22 @@ watch([localSearch, localRoom, localType, localStatus], () => {
 });
 
 // 监听props变化更新本地值
-watch(() => props.searchKeyword, (val) => localSearch.value = val);
-watch(() => props.selectedRoom, (val) => localRoom.value = val);
-watch(() => props.selectedType, (val) => localType.value = val);
-watch(() => props.onlineStatus, (val) => localStatus.value = val);
+watch(
+  () => props.searchKeyword,
+  val => (localSearch.value = val)
+);
+watch(
+  () => props.selectedRoom,
+  val => (localRoom.value = val)
+);
+watch(
+  () => props.selectedType,
+  val => (localType.value = val)
+);
+watch(
+  () => props.onlineStatus,
+  val => (localStatus.value = val)
+);
 
 // 重置筛选条件
 const resetFilters = () => {
@@ -143,11 +155,7 @@ const uniqueTypes = computed(() => {
 
       <!-- 操作按钮 -->
       <div class="filter-actions">
-        <el-button
-          :icon="Filter"
-          size="large"
-          @click="resetFilters"
-        >
+        <el-button :icon="Filter" size="large" @click="resetFilters">
           重置
         </el-button>
       </div>
@@ -157,17 +165,11 @@ const uniqueTypes = computed(() => {
     <div v-if="deviceStore.devices.length > 0" class="filter-stats">
       <span class="stats-text">
         共找到 {{ deviceStore.devices.length }} 个设备
-        <template v-if="localSearch">
-          ，包含"{{ localSearch }}"
-        </template>
-        <template v-if="localRoom !== 'all'">
-          ，房间 {{ localRoom }}
-        </template>
-        <template v-if="localType !== 'all'">
-          ，类型 {{ localType }}
-        </template>
+        <template v-if="localSearch"> ，包含"{{ localSearch }}" </template>
+        <template v-if="localRoom !== 'all'"> ，房间 {{ localRoom }} </template>
+        <template v-if="localType !== 'all'"> ，类型 {{ localType }} </template>
         <template v-if="localStatus !== 'all'">
-          ，状态 {{ localStatus === 1 ? '在线' : '离线' }}
+          ，状态 {{ localStatus === 1 ? "在线" : "离线" }}
         </template>
       </span>
     </div>
@@ -227,7 +229,7 @@ const uniqueTypes = computed(() => {
 
     .filter-actions {
       width: 100%;
-      
+
       .el-button {
         width: 100%;
       }
@@ -241,11 +243,11 @@ const uniqueTypes = computed(() => {
   .el-select__wrapper {
     background: var(--el-fill-color-light);
     border: 1px solid var(--el-border-color);
-    
+
     &:hover {
       border-color: var(--el-color-primary);
     }
-    
+
     &.is-focus {
       border-color: var(--el-color-primary);
       box-shadow: 0 0 0 2px var(--el-color-primary-light-5);
@@ -256,7 +258,7 @@ const uniqueTypes = computed(() => {
 // 动画效果
 .filter-item {
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-1px);
   }

@@ -80,8 +80,8 @@ const handlePositionChange = (position: number) => {
       </div>
       <el-switch
         :model-value="device.status"
-        @change="handleSwitchChange"
         :disabled="device.type === 'sensor'"
+        @change="handleSwitchChange"
       />
     </div>
 
@@ -95,8 +95,8 @@ const handlePositionChange = (position: number) => {
           :min="0"
           :max="100"
           :step="5"
-          @change="handleBrightnessChange"
           show-input
+          @change="handleBrightnessChange"
         />
       </div>
 
@@ -107,15 +107,15 @@ const handlePositionChange = (position: number) => {
           :model-value="device.temperature || 24"
           :min="16"
           :max="30"
-          @change="handleTemperatureChange"
           show-input
+          @change="handleTemperatureChange"
         />
 
         <span>模式</span>
         <el-select
           :model-value="device.mode || 'cool'"
-          @change="handleModeChange"
           size="small"
+          @change="handleModeChange"
         >
           <el-option label="制冷" value="cool" />
           <el-option label="制热" value="heat" />
@@ -130,8 +130,8 @@ const handlePositionChange = (position: number) => {
           :min="1"
           :max="5"
           :step="1"
-          @change="handleFanSpeedChange"
           show-input
+          @change="handleFanSpeedChange"
         />
       </div>
 
@@ -146,8 +146,8 @@ const handlePositionChange = (position: number) => {
           :min="0"
           :max="100"
           :step="10"
-          @change="handlePositionChange"
           show-input
+          @change="handlePositionChange"
         />
       </div>
 

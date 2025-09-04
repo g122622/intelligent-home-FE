@@ -23,7 +23,7 @@ import {
   ChartRound,
   GaugeChart,
   PieChart,
-  TemperatureChart,
+  TemperatureChart
 } from "./components/charts";
 import MiniLineChart from "./components/charts/MiniLineChart.vue";
 import {

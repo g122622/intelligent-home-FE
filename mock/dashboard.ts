@@ -1,4 +1,4 @@
-import { MockMethod } from "vite-plugin-mock";
+import type { MockMethod } from "vite-plugin-mock";
 import { Random } from "mockjs";
 
 export default [
@@ -39,16 +39,32 @@ export default [
             }
           },
           temperatureTrend: {
-            timestamps: Array.from({ length: 24 }, (_, i) => 
+            timestamps: Array.from({ length: 24 }, (_, i) =>
               new Date(Date.now() - (23 - i) * 3600000).toISOString()
             ),
             values: Array.from({ length: 24 }, () => Random.float(18, 28, 1, 1))
           },
           energyDistribution: [
-            { category: "照明", value: Random.float(10, 30, 1, 1), percentage: Random.float(5, 15, 1, 1) },
-            { category: "家电", value: Random.float(20, 80, 1, 1), percentage: Random.float(20, 40, 1, 1) },
-            { category: "空调", value: Random.float(30, 100, 1, 1), percentage: Random.float(30, 50, 1, 1) },
-            { category: "其他", value: Random.float(5, 20, 1, 1), percentage: Random.float(5, 15, 1, 1) }
+            {
+              category: "照明",
+              value: Random.float(10, 30, 1, 1),
+              percentage: Random.float(5, 15, 1, 1)
+            },
+            {
+              category: "家电",
+              value: Random.float(20, 80, 1, 1),
+              percentage: Random.float(20, 40, 1, 1)
+            },
+            {
+              category: "空调",
+              value: Random.float(30, 100, 1, 1),
+              percentage: Random.float(30, 50, 1, 1)
+            },
+            {
+              category: "其他",
+              value: Random.float(5, 20, 1, 1),
+              percentage: Random.float(5, 15, 1, 1)
+            }
           ],
           humidityGauge: Random.integer(40, 80)
         }
@@ -64,10 +80,12 @@ export default [
         code: 200,
         message: "success",
         data: {
-          timestamps: Array.from({ length: hours }, (_, i) => 
+          timestamps: Array.from({ length: hours }, (_, i) =>
             new Date(Date.now() - (hours - 1 - i) * 3600000).toISOString()
           ),
-          values: Array.from({ length: hours }, () => Random.float(18, 28, 1, 1))
+          values: Array.from({ length: hours }, () =>
+            Random.float(18, 28, 1, 1)
+          )
         }
       };
     }
@@ -80,10 +98,26 @@ export default [
         code: 200,
         message: "success",
         data: [
-          { category: "照明", value: Random.float(10, 30, 1, 1), percentage: Random.float(5, 15, 1, 1) },
-          { category: "家电", value: Random.float(20, 80, 1, 1), percentage: Random.float(20, 40, 1, 1) },
-          { category: "空调", value: Random.float(30, 100, 1, 1), percentage: Random.float(30, 50, 1, 1) },
-          { category: "其他", value: Random.float(5, 20, 1, 1), percentage: Random.float(5, 15, 1, 1) }
+          {
+            category: "照明",
+            value: Random.float(10, 30, 1, 1),
+            percentage: Random.float(5, 15, 1, 1)
+          },
+          {
+            category: "家电",
+            value: Random.float(20, 80, 1, 1),
+            percentage: Random.float(20, 40, 1, 1)
+          },
+          {
+            category: "空调",
+            value: Random.float(30, 100, 1, 1),
+            percentage: Random.float(30, 50, 1, 1)
+          },
+          {
+            category: "其他",
+            value: Random.float(5, 20, 1, 1),
+            percentage: Random.float(5, 15, 1, 1)
+          }
         ]
       };
     }

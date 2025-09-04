@@ -46,7 +46,10 @@ const totalPages = computed(() => {
 });
 
 // 处理报警
-const handleAlarmAction = async (alarm: AlarmRecord, action: "confirm" | "ignore") => {
+const handleAlarmAction = async (
+  alarm: AlarmRecord,
+  action: "confirm" | "ignore"
+) => {
   try {
     if (action === "confirm") {
       await securityStore.confirmAlarmRecord(1, alarm.id);
@@ -97,7 +100,7 @@ const exportAlarms = () => {
   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = `报警记录_${new Date().toISOString().split('T')[0]}.csv`;
+  link.download = `报警记录_${new Date().toISOString().split("T")[0]}.csv`;
   link.click();
 };
 
@@ -135,7 +138,11 @@ onMounted(() => {
   <div class="alarm-records">
     <div class="panel-header">
       <h2>历史报警记录</h2>
-      <el-button type="primary" @click="exportAlarms" :loading="securityStore.isLoading">
+      <el-button
+        type="primary"
+        :loading="securityStore.isLoading"
+        @click="exportAlarms"
+      >
         <el-icon><Download /></el-icon>
         导出记录
       </el-button>
@@ -152,7 +159,7 @@ onMounted(() => {
             value-format="YYYY-MM-DDTHH:mm:ss"
           />
         </el-form-item>
-        
+
         <el-form-item label="结束时间">
           <el-date-picker
             v-model="filterForm.endTime"
@@ -161,7 +168,7 @@ onMounted(() => {
             value-format="YYYY-MM-DDTHH:mm:ss"
           />
         </el-form-item>
-        
+
         <el-form-item label="报警类型">
           <el-select v-model="filterForm.alarmType" placeholder="选择报警类型">
             <el-option
@@ -172,7 +179,7 @@ onMounted(() => {
             />
           </el-select>
         </el-form-item>
-        
+
         <el-form-item label="处理状态">
           <el-select v-model="filterForm.status" placeholder="选择处理状态">
             <el-option
@@ -183,9 +190,13 @@ onMounted(() => {
             />
           </el-select>
         </el-form-item>
-        
+
         <el-form-item>
-          <el-button type="primary" @click="handleFilter" :loading="securityStore.isLoading">
+          <el-button
+            type="primary"
+            :loading="securityStore.isLoading"
+            @click="handleFilter"
+          >
             筛选
           </el-button>
           <el-button @click="handleReset">重置</el-button>
@@ -196,8 +207,8 @@ onMounted(() => {
     <!-- 报警记录表格 -->
     <div class="alarm-table">
       <el-table
-        :data="paginatedAlarms"
         v-loading="securityStore.isLoading"
+        :data="paginatedAlarms"
         empty-text="暂无报警记录"
       >
         <el-table-column prop="alarmTime" label="报警时间" width="180">
@@ -205,9 +216,9 @@ onMounted(() => {
             {{ new Date(row.alarmTime).toLocaleString() }}
           </template>
         </el-table-column>
-        
+
         <el-table-column prop="deviceName" label="设备名称" width="150" />
-        
+
         <el-table-column prop="alarmType" label="报警类型" width="100">
           <template #default="{ row }">
             <el-tag :type="row.alarmType === 'flame' ? 'danger' : 'warning'">
@@ -215,7 +226,7 @@ onMounted(() => {
             </el-tag>
           </template>
         </el-table-column>
-        
+
         <el-table-column prop="status" label="处理状态" width="100">
           <template #default="{ row }">
             <el-tag :type="getStatusType(row.status)">
@@ -223,9 +234,9 @@ onMounted(() => {
             </el-tag>
           </template>
         </el-table-column>
-        
+
         <el-table-column prop="description" label="报警描述" min-width="200" />
-        
+
         <el-table-column label="操作" width="180" fixed="right">
           <template #default="{ row }">
             <div class="action-buttons">
@@ -253,7 +264,7 @@ onMounted(() => {
     </div>
 
     <!-- 分页控件 -->
-    <div class="pagination" v-if="securityStore.alarmRecords.length > 0">
+    <div v-if="securityStore.alarmRecords.length > 0" class="pagination">
       <el-pagination
         v-model:current-page="currentPage"
         v-model:page-size="pageSize"
@@ -328,7 +339,7 @@ onMounted(() => {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .panel-header {
     flex-direction: column;
     align-items: flex-start;
