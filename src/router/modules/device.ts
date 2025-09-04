@@ -2,12 +2,12 @@ const Layout = () => import("@/layout/index.vue");
 
 export default {
   path: "/device",
+  redirect: "/device/management",
   name: "DeviceControl",
   component: Layout,
-  redirect: "/device/management",
   meta: {
     icon: "ep:operation",
-    title: "设备管理",
+    title: "设备控制",
     rank: 10,
     showLink: true
   },
