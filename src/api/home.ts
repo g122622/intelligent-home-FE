@@ -283,3 +283,126 @@ export const searchHomes = (keyword: string) => {
     `/home/search?keyword=${encodeURIComponent(keyword)}`
   );
 };
+
+// ==================== 成员管理接口 ====================
+
+/** 添加家庭成员 */
+// **接口地址**: `POST /home/member/add`
+//
+// **请求参数**:
+// ```json
+// {
+//   "userId": 1,
+//   "homeId": 1,
+//   "role": 1
+// }
+// ```
+//
+// **响应示例**:
+// ```json
+// {
+//   "message": "添加成功"
+// }
+// ```
+//
+// **说明**: 家庭成员信息通过查看家庭详情接口获取，该接口返回家庭的所有成员信息。
+export const addHomeMember = (data: {
+  userId: number;
+  homeId: number;
+  role: number;
+}) => {
+  return http.request<{ message: string }>("post", "/home/member/add", {
+    data
+  });
+};
+
+// ==================== 权限管理接口 ====================
+
+/** 用户权限信息 */
+export interface PermissionInfo {
+  id: number;
+  userId: number;
+  homeId: number;
+  deviceId: number;
+  operationId: number;
+  hasPermission: boolean;
+  endTime: string; // ISO 8601 时间格式
+}
+
+/** 添加用户权限 */
+// **接口地址**: `POST /permission/{homeId}/add`
+//
+// **请求头**: 需要JWT Token
+//
+// **请求参数**:
+// ```json
+// {
+//   "id": 1,
+//   "userId": 1,
+//   "homeId": 1,
+//   "deviceId": 1,
+//   "operationId": 1,
+//   "hasPermission": true,
+//   "endTime": "2024-12-31T23:59:59"
+// }
+// ```
+//
+// **响应示例**:
+// ```json
+// {
+//   "message": "添加权限成功"
+// }
+// ```
+//
+// **状态码**:
+// - `201`: 添加权限成功
+// - `409`: 该用户已拥有此权限
+// - `500`: 添加权限失败
+//
+// **说明**:
+// - 只有房主可以添加用户权限
+// - 权限ID必须唯一
+// - 可以设置权限的有效期
+export const addUserPermission = (
+  homeId: number,
+  data: Omit<PermissionInfo, "homeId">
+) => {
+  return http.request<{ message: string }>(
+    "post",
+    `/permission/${homeId}/add`,
+    { data }
+  );
+};
+
+/** 取消用户权限 */
+// **接口地址**: `DELETE /permission/cancel`
+//
+// **请求头**: 需要JWT Token
+//
+// **请求参数**:
+// ```json
+// {
+//   "id": 1
+// }
+// ```
+//
+// **响应示例**:
+// ```json
+// {
+//   "message": "取消权限成功"
+// }
+// ```
+//
+// **状态码**:
+// - `200`: 取消权限成功
+// - `409`: 该用户未拥有此权限
+// - `500`: 取消权限失败
+//
+// **说明**:
+// - 只有房主可以取消用户权限
+// - 通过权限ID来取消特定权限
+export const cancelUserPermission = (permissionId: number) => {
+  return http.request<{ message: string }>("delete", "/permission/cancel", {
+    data: { id: permissionId }
+  });
+};
