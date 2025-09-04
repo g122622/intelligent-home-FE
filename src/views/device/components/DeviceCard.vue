@@ -3,6 +3,12 @@ import { computed } from "vue";
 import type { DeviceDetail } from "@/api/device";
 import { ElTag, ElMessage } from "element-plus";
 import { Edit, Delete, Connection, More, View } from "@element-plus/icons-vue";
+import lightPic from "@/assets/devices/light.webp";
+import sensorPic from "@/assets/devices/sensor.png";
+import cameraPic from "@/assets/devices/camera.png";
+import acPic from "@/assets/devices/ac.webp";
+import doorPic from "@/assets/devices/door.png";
+import socketPic from "@/assets/devices/socket.webp";
 
 interface Props {
   device: DeviceDetail;
@@ -29,14 +35,14 @@ const statusTag = computed(() => {
   }
 });
 
-// 设备类型图标映射
+// 设备类型图标映射 TODO 找到更符合实物的图标
 const deviceIcons = {
-  1: "ep/light", // 智能灯泡
-  2: "ep/plug", // 智能插座
-  3: "ep/monitor", // 传感器
-  4: "ep/lock", // 智能锁
-  5: "ep/camera", // 摄像头
-  6: "ep/thermometer" // 温控器
+  1: lightPic, // 智能灯泡
+  2: socketPic, // 智能插座
+  3: sensorPic, // 传感器
+  4: doorPic, // 智能锁
+  5: cameraPic, // 摄像头
+  6: acPic // 温控器
 };
 
 // 获取设备图标
@@ -79,7 +85,7 @@ const handleQuickAction = () => {
         <div class="device-info">
           <el-icon class="device-icon">
             <!-- TODO 图标 -->
-            <IconifyIconOffline :icon="getDeviceIcon(device.typeId)" />
+            <img :src="getDeviceIcon(device.typeId)" style="max-width: 50px" />
           </el-icon>
           <div class="device-title">
             <h3 class="device-name">{{ device.name }}</h3>
