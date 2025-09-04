@@ -119,6 +119,7 @@ onMounted(() => {
             v-model="selectedHomeId"
             placeholder="请选择家庭"
             @change="initializeData"
+            style="width: 200px"
           >
             <el-option
               v-for="home in homeStore.homes"

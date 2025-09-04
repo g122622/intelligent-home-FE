@@ -12,8 +12,9 @@ const selectedHomeId = ref<number | null>(null);
 
 // 过滤后的请求列表
 const filteredRequests = computed(() => {
-  return guestStore.joinRequests.filter(request => 
-    selectedHomeId.value === null || request.homeId === selectedHomeId.value
+  return guestStore.joinRequests.filter(
+    request =>
+      selectedHomeId.value === null || request.homeId === selectedHomeId.value
   );
 });
 

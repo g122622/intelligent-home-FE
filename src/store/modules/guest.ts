@@ -3,11 +3,8 @@ import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import type {
   AccessibleDevice,
-  GuestAccessibleDevicesResponse,
-  CheckGuestPermissionResponse,
   GuestPermissionInfoResponse,
-  JoinRequest,
-  JoinRequestListResponse
+  JoinRequest
 } from "@/api/guest";
 import {
   getGuestAccessibleDevices,
