@@ -11,7 +11,7 @@ const props = defineProps<{
 const homeStore = useHomeStore();
 const loading = ref(false);
 const showPermissionForm = ref(false);
-const editingPermission = ref<any>(null);
+const editingPermission = ref<any>({});
 
 // 加载权限数据
 const loadPermissions = async () => {
@@ -26,19 +26,19 @@ const loadPermissions = async () => {
   }
 };
 
-// 添加权限
+// TODO 添加权限
 const addPermission = () => {
-  editingPermission.value = null;
+  editingPermission.value = {};
   showPermissionForm.value = true;
 };
 
-// 编辑权限
+// TODO 编辑权限
 const editPermission = (permission: any) => {
   editingPermission.value = { ...permission };
   showPermissionForm.value = true;
 };
 
-// 删除权限
+// TODO 删除权限
 const deletePermission = async (permission: any) => {
   try {
     await ElMessageBox.confirm(
