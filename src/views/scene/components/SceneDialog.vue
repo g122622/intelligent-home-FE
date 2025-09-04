@@ -34,7 +34,7 @@
     </el-form>
 
     <template #footer>
-      <el-button @click="modelValue = false">取消</el-button>
+      <el-button @click="$emit('update:modelValue', false)">取消</el-button>
       <el-button type="primary" @click="handleSubmit">确定</el-button>
     </template>
   </el-dialog>
@@ -45,10 +45,20 @@ import { ref, watch } from "vue";
 import { createScene, updateScene } from "@/api/scene";
 import SceneDeviceSelector from "./SceneDeviceSelector.vue";
 
-const props = defineProps({
-  modelValue: Boolean,
-  scene: Object
-});
+interface Scene {
+  id?: number;
+  name: string;
+  description: string;
+  status: boolean;
+  startTime: string;
+  endTime: string;
+  deviceOperation: any[];
+}
+
+const props = defineProps<{
+  modelValue: boolean;
+  scene?: Scene;
+}>();
 
 const emit = defineEmits(["update:modelValue", "submit"]);
 
@@ -65,7 +75,14 @@ watch(
   () => props.scene,
   val => {
     if (val) {
-      form.value = { ...val };
+      form.value = {
+        name: val.name,
+        description: val.description,
+        status: val.status,
+        startTime: val.startTime,
+        endTime: val.endTime,
+        deviceOperation: [...val.deviceOperation]
+      };
     }
   },
   { immediate: true }
@@ -73,9 +90,15 @@ watch(
 
 const handleSubmit = async () => {
   if (props.scene) {
-    await updateScene(1, props.scene.id, form.value); // 假设homeId为1
+    await updateScene(1, props.scene.id, {
+      ...form.value,
+      status: form.value.status ? 1 : 0
+    }); // 假设homeId为1
   } else {
-    await createScene(1, form.value); // 假设homeId为1
+    await createScene(1, {
+      ...form.value,
+      status: form.value.status ? 1 : 0
+    }); // 假设homeId为1
   }
   emit("submit");
   emit("update:modelValue", false);

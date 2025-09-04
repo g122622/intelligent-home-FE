@@ -41,12 +41,14 @@
 import { ref, onMounted } from "vue";
 import { getSceneList, deleteScene } from "@/api/scene";
 import SceneDialog from "./components/SceneDialog.vue";
+import { useRouter } from "vue-router";
 
 const sceneList = ref([]);
 const dialogVisible = ref(false);
 const currentScene = ref(null);
+const router = useRouter();
 
-const fetchSceneList = async () => {
+const fetchSceneList = async (searchParams: string) => {
   const res = await getSceneList(1); // 假设homeId为1
   sceneList.value = res.scenes;
 };
@@ -63,20 +65,24 @@ const handleEdit = scene => {
 
 const handleDelete = async scene => {
   await deleteScene(1, scene.id); // 假设homeId为1
-  fetchSceneList();
+  fetchSceneList('');
 };
 
 const handleSubmit = () => {
   dialogVisible.value = false;
-  fetchSceneList();
+  fetchSceneList('');
 };
 
 const handleDetail = scene => {
   router.push({ name: "SceneDetail", params: { id: scene.id } });
 };
 
+const handleSearch = (searchParams: string) => {
+  fetchSceneList(searchParams);
+};
+
 onMounted(() => {
-  fetchSceneList();
+  fetchSceneList('');
 });
 </script>
 
