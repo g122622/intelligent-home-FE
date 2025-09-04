@@ -1,33 +1,36 @@
-import type { AppRouteModule } from '@/router/types'
-import { LAYOUT } from '@/router/constant'
+const Layout = () => import("@/layout/index.vue");
 
-const scene: AppRouteModule = {
-  path: '/scene',
-  name: 'Scene',
-  component: LAYOUT,
+const scene: RouteConfigsTable = {
+  path: "/scene",
+  redirect: "/scene/management",
+  name: "Scene",
+  component: Layout,
   meta: {
-    title: '场景管理',
-    icon: 'scene'
+    title: "场景管理",
+    icon: "ep:operation",
+    rank: 11,
+    showLink: true
   },
   children: [
     {
-      path: 'index',
-      name: 'SceneIndex',
-      component: () => import('@/views/scene/index.vue'),
+      path: "/scene/management",
+      name: "ScenManagement",
+      component: () => import("@/views/scene/index.vue"),
       meta: {
-        title: '场景列表'
+        title: "场景列表",
+        showLink: true
       }
     },
     {
-      path: 'detail/:id',
-      name: 'SceneDetail',
-      component: () => import('@/views/scene/detail.vue'),
+      path: "detail/:id",
+      name: "SceneDetail",
+      component: () => import("@/views/scene/detail.vue"),
       meta: {
-        title: '场景详情',
+        title: "场景详情",
         showLink: false
       }
     }
   ]
-}
+};
 
-export default scene
+export default scene;
