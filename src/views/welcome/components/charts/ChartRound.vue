@@ -14,11 +14,7 @@ const { setOptions } = useECharts(chartRef, {
 
 setOptions({
   toolbox: {
-    feature: {
-      saveAsImage: {},
-      dataView: {},
-      restore: {}
-    }
+    show: false
   },
   container: ".line-card",
   title: {
