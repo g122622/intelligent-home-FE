@@ -1,20 +1,19 @@
 <template>
-  <div class="scene-container">
-    <div class="table-container">
-      <div class="table-header">
-        <h3>场景管理</h3>
-        <el-form :inline="true" @submit.prevent="handleSearch">
-          <el-form-item>
-            <el-input
-              v-model="searchQuery"
-              placeholder="请输入搜索内容"
-              @keyup.enter="handleSearch"
-            />
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="handleCreate">创建场景</el-button>
-          </el-form-item>
-        </el-form>
+  <div class="scene-management">
+    <!-- 页面头部 -->
+    <div class="page-header">
+      <div class="header-left">
+        <h1 class="page-title">场景管理</h1>
+        <p class="page-subtitle">管理和配置智能家居场景模式</p>
+      </div>
+      <div class="header-actions">
+        <el-input
+          v-model="searchQuery"
+          placeholder="搜索场景..."
+          style="width: 200px; margin-right: 12px"
+          @keyup.enter="handleSearch"
+        />
+        <el-button type="primary" @click="handleCreate">创建场景</el-button>
       </div>
     </div>
 
@@ -99,8 +98,66 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.scene-container {
-  padding: 20px;
+<style lang="scss" scoped>
+.scene-management {
+  padding: var(--space-lg);
+  min-height: 100%;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid rgb(0 0 0 / 0.08);
+
+  .header-left {
+    .page-title {
+       margin: 0;
+       font-size: 24px;
+       font-weight: 600;
+       color: var(--el-text-color-primary);
+     }
+
+    .page-subtitle {
+      margin: var(--space-xs) 0 0;
+      font-size: 14px;
+      color: var(--el-text-color-secondary);
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+}
+
+// 表格容器样式
+:deep(.el-table) {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgb(0 0 0 / 0.05);
+  
+  .el-table__header-wrapper {
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+  
+  .el-table__body-wrapper {
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    gap: var(--space-md);
+
+    .header-actions {
+      width: 100%;
+      justify-content: flex-end;
+    }
+  }
 }
 </style>

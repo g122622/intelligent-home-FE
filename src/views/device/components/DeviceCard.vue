@@ -162,25 +162,34 @@ const handleQuickAction = () => {
 <style lang="scss" scoped>
 .device-card {
   height: 100%;
-  transition: all 0.3s ease;
+  background: var(--gradient-card-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgb(0 0 0 / 0.05);
+  transition: all var(--duration-normal) var(--ease-out);
 
   &:hover {
+    background: var(--gradient-card-hover);
+    box-shadow: var(--shadow-md);
     transform: translateY(-2px);
-    box-shadow: var(--el-box-shadow-light);
   }
 
   :deep(.el-card__header) {
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--el-border-color-light);
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid rgb(0 0 0 / 0.08);
+    background: var(--gradient-card-subtle);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   }
 
   :deep(.el-card__body) {
-    padding: 20px;
+    padding: var(--space-lg);
   }
 
   :deep(.el-card__footer) {
-    padding: 16px 20px;
-    border-top: 1px solid var(--el-border-color-light);
+    padding: var(--space-md) var(--space-lg);
+    border-top: 1px solid rgb(0 0 0 / 0.08);
+    background: var(--gradient-card-subtle);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   }
 }
 

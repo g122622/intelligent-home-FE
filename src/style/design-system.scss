@@ -1,0 +1,210 @@
+/* 设计系统 - Design System */
+
+/* ===== 间距系统 - Spacing System ===== */
+:root {
+  /* 8px基础网格系统 */
+  --space-xs: 4px;   /* 0.5x */
+  --space-sm: 8px;   /* 1x 基础单位 */
+  --space-md: 16px;  /* 2x */
+  --space-lg: 24px;  /* 3x */
+  --space-xl: 32px;  /* 4x */
+  --space-2xl: 40px; /* 5x */
+  --space-3xl: 48px; /* 6x */
+  
+  /* 圆角系统 */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-full: 9999px;
+  
+  /* 阴影层级系统 */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  
+  /* 渐变背景系统 */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --gradient-warning: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  --gradient-danger: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  --gradient-info: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  
+  /* 智能家居主题渐变 */
+  --gradient-smart-blue: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-smart-green: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  --gradient-smart-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-smart-orange: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  
+  /* 卡片背景渐变 */
+  --gradient-card-light: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  --gradient-card-subtle: linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%);
+  --gradient-card-hover: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
+  
+  /* 动画时长 */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  
+  /* 缓动函数 */
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0.0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* ===== 暗色模式渐变 ===== */
+html.dark {
+  --gradient-card-light: linear-gradient(145deg, #1f2937 0%, #111827 100%);
+  --gradient-card-subtle: linear-gradient(145deg, #374151 0%, #1f2937 100%);
+  --gradient-card-hover: linear-gradient(145deg, #4b5563 0%, #374151 100%);
+  
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.6);
+}
+
+/* ===== 工具类 ===== */
+
+/* 间距工具类 */
+.p-xs { padding: var(--space-xs); }
+.p-sm { padding: var(--space-sm); }
+.p-md { padding: var(--space-md); }
+.p-lg { padding: var(--space-lg); }
+.p-xl { padding: var(--space-xl); }
+
+.m-xs { margin: var(--space-xs); }
+.m-sm { margin: var(--space-sm); }
+.m-md { margin: var(--space-md); }
+.m-lg { margin: var(--space-lg); }
+.m-xl { margin: var(--space-xl); }
+
+/* 阴影工具类 */
+.shadow-xs { box-shadow: var(--shadow-xs); }
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+.shadow-2xl { box-shadow: var(--shadow-2xl); }
+
+/* 渐变背景工具类 */
+.bg-gradient-primary { background: var(--gradient-primary); }
+.bg-gradient-secondary { background: var(--gradient-secondary); }
+.bg-gradient-success { background: var(--gradient-success); }
+.bg-gradient-warning { background: var(--gradient-warning); }
+.bg-gradient-danger { background: var(--gradient-danger); }
+.bg-gradient-info { background: var(--gradient-info); }
+
+.bg-gradient-card { background: var(--gradient-card-light); }
+.bg-gradient-card-subtle { background: var(--gradient-card-subtle); }
+
+/* 圆角工具类 */
+.rounded-xs { border-radius: var(--radius-xs); }
+.rounded-sm { border-radius: var(--radius-sm); }
+.rounded-md { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-xl { border-radius: var(--radius-xl); }
+.rounded-2xl { border-radius: var(--radius-2xl); }
+.rounded-full { border-radius: var(--radius-full); }
+
+/* ===== 卡片组件样式 ===== */
+.smart-card {
+  background: var(--gradient-card-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-lg);
+  transition: all var(--duration-normal) var(--ease-out);
+  border: 1px solid rgb(0 0 0 / 0.05);
+  
+  &:hover {
+    background: var(--gradient-card-hover);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  
+  &.elevated {
+    box-shadow: var(--shadow-lg);
+    
+    &:hover {
+      box-shadow: var(--shadow-xl);
+    }
+  }
+  
+  &.interactive {
+    cursor: pointer;
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: var(--shadow-sm);
+    }
+  }
+}
+
+/* 设备卡片特殊样式 */
+.device-card {
+  @extend .smart-card;
+  
+  .device-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-md);
+  }
+  
+  .device-icon {
+    width: var(--space-xl);
+    height: var(--space-xl);
+    border-radius: var(--radius-md);
+    background: var(--gradient-smart-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  
+  .device-status {
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    font-weight: 500;
+    
+    &.online {
+      background: var(--gradient-success);
+      color: white;
+    }
+    
+    &.offline {
+      background: var(--gradient-danger);
+      color: white;
+    }
+  }
+}
+
+/* 数据卡片样式 */
+.data-card {
+  @extend .smart-card;
+  text-align: center;
+  
+  .data-value {
+    font-size: 2rem;
+    font-weight: 700;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--space-sm);
+  }
+  
+  .data-label {
+    color: var(--el-text-color-secondary);
+    font-size: 0.875rem;
+  }
+}

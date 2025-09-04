@@ -328,10 +328,10 @@ const closeCard = (index: number) => {
 
 <style lang="scss" scoped>
 .dashboard-container {
-  padding: 20px;
+  padding: var(--space-lg);
 
   .view-mode-selector {
-    margin-bottom: 24px;
+    margin-bottom: var(--space-lg);
     text-align: center;
 
     :deep(.el-segmented) {
@@ -341,39 +341,71 @@ const closeCard = (index: number) => {
 
   .dashboard-card {
     min-height: 180px;
+    background: var(--gradient-card-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgb(0 0 0 / 0.05);
+    transition: all var(--duration-normal) var(--ease-out);
 
     :deep(.el-card__body) {
-      padding: 20px;
+      padding: var(--space-lg);
+    }
+
+    &:hover {
+      background: var(--gradient-card-hover);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
     }
   }
 
   .chart-card {
-    // min-height: 400px;
+    background: var(--gradient-card-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgb(0 0 0 / 0.05);
+    transition: all var(--duration-normal) var(--ease-out);
+    
     :deep(.el-card__body) {
-      padding: 20px;
+      padding: var(--space-lg);
       height: 100%;
+    }
+
+    &:hover {
+      background: var(--gradient-card-hover);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
     }
   }
 
   .charts-row {
-    margin-top: 20px;
+    margin-top: var(--space-lg);
   }
 
   // 大屏适配样式
   @media (min-width: 1920px) {
     .dashboard-card {
       min-height: 200px;
+      box-shadow: var(--shadow-md);
 
       :deep(.el-card__body) {
-        padding: 24px;
+        padding: var(--space-xl);
+      }
+
+      &:hover {
+        box-shadow: var(--shadow-lg);
       }
     }
 
     .chart-card {
       min-height: 450px;
+      box-shadow: var(--shadow-md);
 
       :deep(.el-card__body) {
-        padding: 24px;
+        padding: var(--space-xl);
+      }
+
+      &:hover {
+        box-shadow: var(--shadow-lg);
       }
     }
 
@@ -383,22 +415,6 @@ const closeCard = (index: number) => {
 
     .text-sm {
       font-size: 1rem;
-    }
-  }
-
-  // 高对比度模式
-  .dashboard-card {
-    background: linear-gradient(
-      135deg,
-      var(--el-bg-color),
-      var(--el-fill-color-light)
-    );
-    border: 1px solid var(--el-border-color);
-
-    &:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      transform: translateY(-2px);
-      transition: all 0.3s ease;
     }
   }
 }

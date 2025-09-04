@@ -199,7 +199,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .device-management {
-  padding: 24px;
+  padding: var(--space-lg);
   min-height: 100%;
 }
 
@@ -207,9 +207,9 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--el-border-color-light);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid rgb(0 0 0 / 0.08);
 
   .header-left {
     .page-title {
@@ -220,7 +220,7 @@ onMounted(() => {
     }
 
     .page-subtitle {
-      margin: 4px 0 0;
+      margin: var(--space-xs) 0 0;
       font-size: 14px;
       color: var(--el-text-color-secondary);
     }
@@ -228,27 +228,27 @@ onMounted(() => {
 
   .header-actions {
     display: flex;
-    gap: 12px;
+    gap: var(--space-sm);
   }
 }
 
 .device-grid-container {
-  margin-top: 24px;
+  margin-top: var(--space-lg);
 }
 
 .loading-container {
-  padding: 40px 0;
+  padding: var(--space-2xl) 0;
 }
 
 .empty-state {
-  padding: 60px 0;
+  padding: var(--space-3xl) 0;
 }
 
 .device-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 20px;
-  margin-top: 16px;
+  gap: var(--space-lg);
+  margin-top: var(--space-md);
 }
 
 @media (max-width: 768px) {
