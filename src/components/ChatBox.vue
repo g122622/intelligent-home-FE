@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import "deep-chat";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 const chatRef = ref();
+const isVisible = ref(false);
+const hideTimeout = ref<NodeJS.Timeout | null>(null);
+const edgeTriggerArea = ref<HTMLElement | null>(null);
 
-const prompt = 
+const prompt =
   `
 接下来的对话中，你将要扮演如下人物：
 姓名：小埋
@@ -45,28 +48,75 @@ const prompt =
 
 onMounted(() => {
   console.log("AIChat.vue");
+  edgeTriggerArea.value = document.createElement("div");
+  edgeTriggerArea.value.style.position = "fixed";
+  edgeTriggerArea.value.style.left = "0";
+  edgeTriggerArea.value.style.top = "0";
+  edgeTriggerArea.value.style.width = "20px";
+  edgeTriggerArea.value.style.height = "100vh";
+  edgeTriggerArea.value.style.zIndex = "99998";
+  edgeTriggerArea.value.style.cursor = "pointer";
+  document.body.appendChild(edgeTriggerArea.value);
 
-  // chatRef.value.demo = {
-  //   response: message => {
-  //     console.log(message);
-  //     return {
-  //       text: "仅演示，如需AI服务，请参考 https://deepchat.dev/docs/connect"
-  //     };
-  //   }
-  // };
+  edgeTriggerArea.value.addEventListener("mouseenter", handleEdgeMouseEnter);
+  document.addEventListener("mousemove", handleMouseMove);
 });
+
+onUnmounted(() => {
+  if (edgeTriggerArea.value) {
+    edgeTriggerArea.value.removeEventListener("mouseenter", handleEdgeMouseEnter);
+    document.body.removeChild(edgeTriggerArea.value);
+  }
+  document.removeEventListener("mousemove", handleMouseMove);
+  if (hideTimeout.value) {
+    clearTimeout(hideTimeout.value);
+  }
+});
+
+const handleEdgeMouseEnter = () => {
+  if (hideTimeout.value) {
+    clearTimeout(hideTimeout.value);
+    hideTimeout.value = null;
+  }
+  isVisible.value = true;
+};
+
+const handleMouseMove = (event: MouseEvent) => {
+  if (!isVisible.value) return;
+
+  const chatBox = document.getElementById("wrapper");
+  if (!chatBox) return;
+
+  const rect = chatBox.getBoundingClientRect();
+  const isInsideChatBox =
+    event.clientX >= rect.left &&
+    event.clientX <= rect.right &&
+    event.clientY >= rect.top &&
+    event.clientY <= rect.bottom;
+
+  if (!isInsideChatBox) {
+    if (hideTimeout.value) {
+      clearTimeout(hideTimeout.value);
+    }
+    hideTimeout.value = setTimeout(() => {
+      isVisible.value = false;
+    }, 2000);
+  } else {
+    if (hideTimeout.value) {
+      clearTimeout(hideTimeout.value);
+      hideTimeout.value = null;
+    }
+  }
+};
 </script>
 
 <template>
-  <div id="wrapper">
-    <deep-chat
-      ref="chatRef"
-      style="
+  <div id="wrapper" :style="{ display: isVisible ? 'block' : 'none' }">
+    <deep-chat ref="chatRef" style="
         background-color: #f9ccaa;
         border-color: #dcdcdc;
         border-radius: 10px;
-      "
-      :textInput="{
+      " :textInput="{
         styles: {
           container: {
             borderRadius: '20px',
@@ -78,8 +128,7 @@ onMounted(() => {
           text: { padding: '10px', paddingLeft: '15px', paddingRight: '34px' }
         },
         placeholder: { text: '发送消息', style: { color: '#bcbcbc' } }
-      }"
-      :messageStyles="{
+      }" :messageStyles="{
         default: {
           shared: {
             bubble: {
@@ -94,8 +143,7 @@ onMounted(() => {
             innerContainer: { borderRadius: '15px', backgroundColor: 'white' }
           }
         }
-      }"
-      :avatars="{
+      }" :avatars="{
         default: {
           styles: {
             position: 'left',
@@ -106,8 +154,7 @@ onMounted(() => {
           src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh6Z5ta8PtclH9J0m2vljJaUIDZq1YKNlHLQ&s',
           styles: { position: 'left', avatar: { paddingTop: '6px' } }
         }
-      }"
-      :speechToText="{
+      }" :speechToText="{
         webSpeech: { language: 'zh-CN' },
         button: {
           default: {
@@ -124,8 +171,7 @@ onMounted(() => {
           },
           position: 'inside-right'
         }
-      }"
-      :submitButtonStyles="{
+      }" :submitButtonStyles="{
         position: 'outside-right',
         submit: {
           container: {
@@ -170,16 +216,13 @@ onMounted(() => {
             }
           }
         }
-      }"
-      :history="[
+      }" :history="[
         { text: '你好！', role: 'user' },
         {
           text: '我是小埋啦，能给你唠唠智能家居的各种小知识呀，像安防怎么搞、怎么节能这些好玩的事儿都能跟你掰扯掰扯~',
           role: 'ai'
         }
-      ]"
-      :demo="false"
-      :directConnection="{
+      ]" :demo="false" :directConnection="{
         openAI: {
           key: '5eb3fb2b-6c29-4fab-8025-53bc6ef97eea',
           chat: {
@@ -190,8 +233,7 @@ onMounted(() => {
             system_prompt: prompt
           }
         }
-      }"
-    />
+      }" />
   </div>
 </template>
 
@@ -220,5 +262,4 @@ onMounted(() => {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 } */
-
 </style>
