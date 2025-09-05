@@ -6,8 +6,7 @@ const isVisible = ref(false);
 const hideTimeout = ref<NodeJS.Timeout | null>(null);
 const edgeTriggerArea = ref<HTMLElement | null>(null);
 
-const prompt =
-  `
+const prompt = `
 接下来的对话中，你将要扮演如下人物：
 姓名：小埋
 生日：9月26日 （16岁）/ 身高：160cm
@@ -44,7 +43,7 @@ const prompt =
 
 【你的任务】
 扮演小埋，用户会在接下来询问你一些问题，请根据上述资料回答。回答的风格可以风趣幽默一些。
-  `
+  `;
 
 onMounted(() => {
   console.log("AIChat.vue");
@@ -64,7 +63,10 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (edgeTriggerArea.value) {
-    edgeTriggerArea.value.removeEventListener("mouseenter", handleEdgeMouseEnter);
+    edgeTriggerArea.value.removeEventListener(
+      "mouseenter",
+      handleEdgeMouseEnter
+    );
     document.body.removeChild(edgeTriggerArea.value);
   }
   document.removeEventListener("mousemove", handleMouseMove);
@@ -100,7 +102,7 @@ const handleMouseMove = (event: MouseEvent) => {
     }
     hideTimeout.value = setTimeout(() => {
       isVisible.value = false;
-    }, 2000);
+    }, 100);
   } else {
     if (hideTimeout.value) {
       clearTimeout(hideTimeout.value);
@@ -114,127 +116,127 @@ const handleMouseMove = (event: MouseEvent) => {
   <transition name="chatbox">
     <div id="wrapper" v-if="isVisible">
       <deep-chat ref="chatRef" style="
-        background-color: #f9ccaa;
-        border-color: #dcdcdc;
-        border-radius: 10px;
-      " :textInput="{
-        styles: {
-          container: {
-            borderRadius: '20px',
-            border: '1px solid #969696',
-            boxShadow: 'unset',
-            width: '78%',
-            marginLeft: '-15px'
+          background-color: #f9ccaa;
+          border-color: #dcdcdc;
+          border-radius: 10px;
+        " :textInput="{
+          styles: {
+            container: {
+              borderRadius: '20px',
+              border: '1px solid #969696',
+              boxShadow: 'unset',
+              width: '78%',
+              marginLeft: '-15px'
+            },
+            text: { padding: '10px', paddingLeft: '15px', paddingRight: '34px' }
           },
-          text: { padding: '10px', paddingLeft: '15px', paddingRight: '34px' }
-        },
-        placeholder: { text: '发送消息', style: { color: '#bcbcbc' } }
-      }" :messageStyles="{
-        default: {
-          shared: {
-            bubble: {
-              maxWidth: '100%',
-              backgroundColor: 'unset',
-              marginTop: '10px',
-              marginBottom: '10px'
+          placeholder: { text: '发送消息', style: { color: '#bcbcbc' } }
+        }" :messageStyles="{
+          default: {
+            shared: {
+              bubble: {
+                maxWidth: '100%',
+                backgroundColor: 'unset',
+                marginTop: '10px',
+                marginBottom: '10px'
+              }
+            },
+            user: { bubble: { marginLeft: '0px', color: 'black' } },
+            ai: {
+              innerContainer: { borderRadius: '15px', backgroundColor: 'white' }
+            }
+          }
+        }" :avatars="{
+          default: {
+            styles: {
+              position: 'left',
+              container: { marginLeft: '12px', marginRight: '5px' }
             }
           },
-          user: { bubble: { marginLeft: '0px', color: 'black' } },
           ai: {
-            innerContainer: { borderRadius: '15px', backgroundColor: 'white' }
+            src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh6Z5ta8PtclH9J0m2vljJaUIDZq1YKNlHLQ&s',
+            styles: { position: 'left', avatar: { paddingTop: '6px' } }
           }
-        }
-      }" :avatars="{
-        default: {
-          styles: {
-            position: 'left',
-            container: { marginLeft: '12px', marginRight: '5px' }
+        }" :speechToText="{
+          webSpeech: { language: 'zh-CN' },
+          button: {
+            default: {
+              container: {
+                default: {
+                  bottom: '1em',
+                  right: '0.6em',
+                  borderRadius: '20px',
+                  width: '1.9em',
+                  height: '1.9em'
+                }
+              },
+              svg: { styles: { default: { bottom: '0.35em', left: '0.35em' } } }
+            },
+            position: 'inside-right'
           }
-        },
-        ai: {
-          src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh6Z5ta8PtclH9J0m2vljJaUIDZq1YKNlHLQ&s',
-          styles: { position: 'left', avatar: { paddingTop: '6px' } }
-        }
-      }" :speechToText="{
-        webSpeech: { language: 'zh-CN' },
-        button: {
-          default: {
+        }" :submitButtonStyles="{
+          position: 'outside-right',
+          submit: {
             container: {
               default: {
-                bottom: '1em',
-                right: '0.6em',
-                borderRadius: '20px',
-                width: '1.9em',
-                height: '1.9em'
-              }
+                bottom: '0.9em',
+                borderRadius: '25px',
+                padding: '6px 5px 4px',
+                backgroundColor: '#f3f6fc'
+              },
+              hover: { backgroundColor: '#b0deff4f' },
+              click: { backgroundColor: '#b0deffb5' }
             },
-            svg: { styles: { default: { bottom: '0.35em', left: '0.35em' } } }
+            svg: {
+              content:
+                '<?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?> <svg viewBox=&quot;0 0 24 24&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><path d=&quot;m21.426 11.095-17-8A.999.999 0 0 0 3.03 4.242L4.969 12 3.03 19.758a.998.998 0 0 0 1.396 1.147l17-8a1 1 0 0 0 0-1.81zM5.481 18.197l.839-3.357L12 12 6.32 9.16l-.839-3.357L18.651 12l-13.17 6.197z&quot;/></svg>',
+              styles: {
+                default: {
+                  filter:
+                    'brightness(0) saturate(100%) invert(10%) sepia(86%) saturate(6044%) hue-rotate(205deg) brightness(100%) contrast(100%)'
+                }
+              }
+            }
           },
-          position: 'inside-right'
-        }
-      }" :submitButtonStyles="{
-        position: 'outside-right',
-        submit: {
-          container: {
-            default: {
-              bottom: '0.9em',
-              borderRadius: '25px',
-              padding: '6px 5px 4px',
-              backgroundColor: '#f3f6fc'
-            },
-            hover: { backgroundColor: '#b0deff4f' },
-            click: { backgroundColor: '#b0deffb5' }
+          loading: {
+            svg: {
+              styles: {
+                default: {
+                  filter:
+                    'brightness(0) saturate(100%) invert(72%) sepia(0%) saturate(3044%) hue-rotate(322deg) brightness(100%) contrast(96%)'
+                }
+              }
+            }
           },
-          svg: {
-            content:
-              '<?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?> <svg viewBox=&quot;0 0 24 24&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><path d=&quot;m21.426 11.095-17-8A.999.999 0 0 0 3.03 4.242L4.969 12 3.03 19.758a.998.998 0 0 0 1.396 1.147l17-8a1 1 0 0 0 0-1.81zM5.481 18.197l.839-3.357L12 12 6.32 9.16l-.839-3.357L18.651 12l-13.17 6.197z&quot;/></svg>',
-            styles: {
-              default: {
-                filter:
-                  'brightness(0) saturate(100%) invert(10%) sepia(86%) saturate(6044%) hue-rotate(205deg) brightness(100%) contrast(100%)'
+          stop: {
+            container: { hover: { backgroundColor: '#ededed' } },
+            svg: {
+              styles: {
+                default: {
+                  filter:
+                    'brightness(0) saturate(100%) invert(59%) sepia(0%) saturate(0%) hue-rotate(348deg) brightness(96%) contrast(93%)'
+                }
               }
             }
           }
-        },
-        loading: {
-          svg: {
-            styles: {
-              default: {
-                filter:
-                  'brightness(0) saturate(100%) invert(72%) sepia(0%) saturate(3044%) hue-rotate(322deg) brightness(100%) contrast(96%)'
-              }
+        }" :history="[
+          { text: '你好！', role: 'user' },
+          {
+            text: '我是小埋啦，能给你唠唠智能家居的各种小知识呀，像安防怎么搞、怎么节能这些好玩的事儿都能跟你掰扯掰扯~',
+            role: 'ai'
+          }
+        ]" :demo="false" :directConnection="{
+          openAI: {
+            key: '5eb3fb2b-6c29-4fab-8025-53bc6ef97eea',
+            chat: {
+              model: 'doubao-seed-1-6-flash-250615',
+              max_tokens: 1024,
+              temperature: 1.5,
+              top_p: 0.8,
+              system_prompt: prompt
             }
           }
-        },
-        stop: {
-          container: { hover: { backgroundColor: '#ededed' } },
-          svg: {
-            styles: {
-              default: {
-                filter:
-                  'brightness(0) saturate(100%) invert(59%) sepia(0%) saturate(0%) hue-rotate(348deg) brightness(96%) contrast(93%)'
-              }
-            }
-          }
-        }
-      }" :history="[
-        { text: '你好！', role: 'user' },
-        {
-          text: '我是小埋啦，能给你唠唠智能家居的各种小知识呀，像安防怎么搞、怎么节能这些好玩的事儿都能跟你掰扯掰扯~',
-          role: 'ai'
-        }
-      ]" :demo="false" :directConnection="{
-        openAI: {
-          key: '5eb3fb2b-6c29-4fab-8025-53bc6ef97eea',
-          chat: {
-            model: 'doubao-seed-1-6-flash-250615',
-            max_tokens: 1024,
-            temperature: 1.5,
-            top_p: 0.8,
-            system_prompt: prompt
-          }
-        }
-      }" />
+        }" />
     </div>
   </transition>
 </template>

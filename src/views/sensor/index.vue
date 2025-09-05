@@ -29,20 +29,22 @@ const refreshInterval = ref<NodeJS.Timeout | null>(null);
 
 // 过滤后的传感器设备列表
 const filteredSensors = computed(() => {
-  return sensorStore.homeSensorData?.devices?.filter(device => {
-    const nameMatch = device.name
-      .toLowerCase()
-      .includes(searchKeyword.value.toLowerCase());
-    const roomMatch =
-      selectedRoom.value === "all" || device.roomId === selectedRoom.value;
-    const typeMatch =
-      selectedType.value === "all" || device.typeId === selectedType.value;
-    const statusMatch =
-      onlineStatus.value === "all" ||
-      device.onlineStatus === onlineStatus.value;
+  return (
+    sensorStore.homeSensorData?.devices?.filter(device => {
+      const nameMatch = device.name
+        .toLowerCase()
+        .includes(searchKeyword.value.toLowerCase());
+      const roomMatch =
+        selectedRoom.value === "all" || device.roomId === selectedRoom.value;
+      const typeMatch =
+        selectedType.value === "all" || device.typeId === selectedType.value;
+      const statusMatch =
+        onlineStatus.value === "all" ||
+        device.onlineStatus === onlineStatus.value;
 
-    return nameMatch && roomMatch && typeMatch && statusMatch;
-  }) || [];
+      return nameMatch && roomMatch && typeMatch && statusMatch;
+    }) || []
+  );
 });
 
 // 初始化数据
@@ -65,7 +67,7 @@ const initializeData = async () => {
 const refreshData = async () => {
   try {
     await sensorStore.fetchHomeAllSensorData();
-    ElMessage.success("数据刷新成功");
+    // ElMessage.success("数据刷新成功");
   } catch (error) {
     ElMessage.error("刷新数据失败");
     console.error("刷新失败:", error);
@@ -101,7 +103,7 @@ const setupAutoRefresh = () => {
   if (autoRefresh.value) {
     refreshInterval.value = setInterval(() => {
       refreshData();
-    }, 30000); // 30秒自动刷新
+    }, 3000); // 3秒自动刷新
   } else if (refreshInterval.value) {
     clearInterval(refreshInterval.value);
     refreshInterval.value = null;
@@ -133,10 +135,20 @@ watch(autoRefresh, setupAutoRefresh);
         <p class="page-subtitle">实时监控和管理所有传感器设备</p>
       </div>
       <div class="header-right">
-        <el-button type="primary" :icon="Refresh" :loading="loading" @click="refreshData">
+        <el-button
+          type="primary"
+          :icon="Refresh"
+          :loading="loading"
+          @click="refreshData"
+        >
           刷新数据
         </el-button>
-        <el-switch v-model="autoRefresh" active-text="自动刷新" inactive-text="手动刷新" style="margin-left: 12px" />
+        <el-switch
+          v-model="autoRefresh"
+          active-text="自动刷新"
+          inactive-text="手动刷新"
+          style="margin-left: 12px"
+        />
       </div>
     </div>
 
@@ -144,14 +156,25 @@ watch(autoRefresh, setupAutoRefresh);
     <SensorStats />
 
     <!-- 过滤条件 -->
-    <SensorFilter v-model:searchKeyword="searchKeyword" v-model:selectedRoom="selectedRoom"
-      v-model:selectedType="selectedType" v-model:onlineStatus="onlineStatus" :loading="loading" />
+    <SensorFilter
+      v-model:searchKeyword="searchKeyword"
+      v-model:selectedRoom="selectedRoom"
+      v-model:selectedType="selectedType"
+      v-model:onlineStatus="onlineStatus"
+      :loading="loading"
+    />
 
     <!-- 传感器设备网格 -->
     <div class="sensor-grid">
       <template v-if="filteredSensors.length > 0">
-        <SensorCard v-for="device in filteredSensors" :key="device.id" :device="device" @view-detail="viewSensorDetail"
-          @view-realtime="viewRealtimeData" @view-history="viewHistoryData" />
+        <SensorCard
+          v-for="device in filteredSensors"
+          :key="device.id"
+          :device="device"
+          @view-detail="viewSensorDetail"
+          @view-realtime="viewRealtimeData"
+          @view-history="viewHistoryData"
+        />
       </template>
       <template v-else>
         <div class="empty-state">
