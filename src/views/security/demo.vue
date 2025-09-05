@@ -1,3 +1,4 @@
+//演示页面
 <template>
   <div class="security-demo">
     <h2>安防监控系统演示</h2>

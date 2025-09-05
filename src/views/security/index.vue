@@ -1,3 +1,4 @@
+//安防系统监控主页面
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import { useSecurityStore } from "@/store/modules/security";

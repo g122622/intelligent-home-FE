@@ -1,3 +1,4 @@
+//历史报警记录管理
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { useSecurityStore } from "@/store/modules/security";

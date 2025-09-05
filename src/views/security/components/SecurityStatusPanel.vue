@@ -1,3 +1,4 @@
+//实时安防监控主界面
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, watch } from "vue";
 import { useSecurityStore } from "@/store/modules/security";
