@@ -442,3 +442,46 @@ export const getDeviceData = (homeId: number, deviceId: number) => {
     `/home/${homeId}/device/${deviceId}/getData`
   );
 };
+
+// ==================== 安防监控接口 ====================
+
+/** 获取安防传感器状态 */
+export const getSecuritySensorStatus = (homeId: number) => {
+  return http.request<SecuritySensorStatus[]>(
+    "get",
+    `/home/${homeId}/security/sensors`
+  );
+};
+
+/** 获取报警记录 */
+export const getAlarmRecords = (
+  homeId: number,
+  params?: {
+    startTime?: string;
+    endTime?: string;
+    alarmType?: string;
+    status?: string;
+  }
+) => {
+  return http.request<AlarmRecord[]>(
+    "get",
+    `/home/${homeId}/security/alarms`,
+    { params }
+  );
+};
+
+/** 确认报警 */
+export const confirmAlarm = (homeId: number, alarmId: number) => {
+  return http.request<{ message: string }>(
+    "post",
+    `/home/${homeId}/security/alarms/${alarmId}/confirm`
+  );
+};
+
+/** 忽略报警 */
+export const ignoreAlarm = (homeId: number, alarmId: number) => {
+  return http.request<{ message: string }>(
+    "post",
+    `/home/${homeId}/security/alarms/${alarmId}/ignore`
+  );
+};
