@@ -111,8 +111,9 @@ const handleMouseMove = (event: MouseEvent) => {
 </script>
 
 <template>
-  <div id="wrapper" :style="{ display: isVisible ? 'block' : 'none' }">
-    <deep-chat ref="chatRef" style="
+  <transition name="chatbox">
+    <div id="wrapper" v-if="isVisible">
+      <deep-chat ref="chatRef" style="
         background-color: #f9ccaa;
         border-color: #dcdcdc;
         border-radius: 10px;
@@ -234,7 +235,8 @@ const handleMouseMove = (event: MouseEvent) => {
           }
         }
       }" />
-  </div>
+    </div>
+  </transition>
 </template>
 
 <style scoped>
@@ -243,6 +245,24 @@ const handleMouseMove = (event: MouseEvent) => {
   bottom: 265px;
   left: 0px;
   z-index: 99999;
+  transition: all 0.3s ease-in-out;
+}
+
+.chatbox-enter-from,
+.chatbox-leave-to {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.chatbox-enter-to,
+.chatbox-leave-from {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.chatbox-enter-active,
+.chatbox-leave-active {
+  transition: all 0.3s ease-in-out;
 }
 
 /* 滚动条样式美化 */
