@@ -139,15 +139,24 @@ onMounted(() => {
         }
       ]"
       :demo="false"
-      :connect="{
-        url: '/home/1/ai/chat',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer YOUR_JWT_TOKEN_HERE'
-        },
-        additionalBodyProps: {},
-        stream: true
+      :directConnection="{
+        openAI: {
+          key: '5eb3fb2b-6c29-4fab-8025-53bc6ef97eea',
+          chat: {
+            model: 'doubao-seed-1-6-flash-250615',
+            max_tokens: 1024,
+            temperature: 0.7,
+            top_p: 0.8,
+            system_prompt: '你是一个乐于助人且知识渊博的助手。'
+          },
+          assistant: {
+            custom_base_url:
+              'https://ark.cn-beijing.volces.com/api/v3/chat/completions',
+            new_assistant: {
+              model: 'doubao-seed-1-6-flash-250615',
+            }
+          }
+        }
       }"
     />
   </div>

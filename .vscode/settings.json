@@ -2,7 +2,7 @@
   "editor.formatOnType": true,
   "editor.formatOnSave": true,
   "[vue]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "Vue.volar"
   },
   "editor.tabSize": 2,
   "editor.formatOnPaste": true,
@@ -27,7 +27,9 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "iconify.excludes": ["el"],
+  "iconify.excludes": [
+    "el"
+  ],
   "vscodeCustomCodeColor.highlightValue": [
     "v-loading",
     "v-auth",

@@ -50,7 +50,7 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
           changeOrigin: true,
           rewrite: path => path.replace(/^\/api/, "")
         },
-        "/guidance": {
+        "api.openai.com/": {
           // 这里填写后端地址
           target: "http://8.130.88.98:8080",
           changeOrigin: true,
