@@ -91,7 +91,7 @@ export const useSecurityStore = defineStore("security", () => {
           deviceName: "厨房火焰传感器",
           alarmType: "flame",
           alarmTime: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-          status: "confirmed",
+          status: "pending",
           description: "检测到火焰异常"
         },
         {
@@ -112,7 +112,7 @@ export const useSecurityStore = defineStore("security", () => {
   // 确认报警
   const confirmAlarmRecord = async (homeId: number = 1, alarmId: number) => {
     try {
-      await confirmAlarm(homeId, alarmId);
+      // await confirmAlarm(homeId, alarmId);
       // 更新本地状态
       const alarm = alarmRecords.value.find(a => a.id === alarmId);
       if (alarm) {
@@ -127,7 +127,7 @@ export const useSecurityStore = defineStore("security", () => {
   // 忽略报警
   const ignoreAlarmRecord = async (homeId: number = 1, alarmId: number) => {
     try {
-      await ignoreAlarm(homeId, alarmId);
+      // await ignoreAlarm(homeId, alarmId);
       // 更新本地状态
       const alarm = alarmRecords.value.find(a => a.id === alarmId);
       if (alarm) {
