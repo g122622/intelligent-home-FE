@@ -17,6 +17,7 @@ import {
 } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
 import { DeviceDetail } from "@/api/device";
+import { openLight } from "@/api/light";
 
 const router = useRouter();
 const deviceStore = useDeviceStore();
@@ -145,6 +146,9 @@ onMounted(() => {
         </el-button>
         <el-button type="primary" :icon="Plus" @click="openAddForm">
           添加设备
+        </el-button>
+        <el-button type="primary" :icon="Plus" @click="openLight">
+          开灯
         </el-button>
       </div>
     </div>
